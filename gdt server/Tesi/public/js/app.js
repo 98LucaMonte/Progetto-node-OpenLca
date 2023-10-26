@@ -26,10 +26,10 @@ class App {
             // Chiama la funzione di verifica al caricamento della pagina
             document.getElementById("ButtonConnessioneVPS").addEventListener("click", async event =>{
                 event.preventDefault();
-                let data = await api.version(vps1);
+                let data = await api.version(vps);
                 console.log(data);
                 
-                let data1 = await api.dataProviders(vps1);
+                let data1 = await api.dataProviders(vps);
                 //const provider = data1[0].provider;
                 console.log(data1);
                 
