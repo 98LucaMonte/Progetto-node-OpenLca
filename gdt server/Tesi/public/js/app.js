@@ -16,17 +16,16 @@ class App {
         this.footer = footer;
     
         //Inizio pagina di presentazione
-        page('/', () => {            
+        page('/', async () => {            
             this.header.innerHTML = '';
             this.main.innerHTML = '';
             this.footer.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend', creaHeader());
             this.main.insertAdjacentHTML('beforeend', creaMain());
             
-            this.getProductSystem(api,vps1);
-            this.getImpactMethod(api,vps1);
+            await this.getProductSystem(api,vps1);
+            await this.getImpactMethod(api,vps1);
             
-
             document.getElementById('buttonCalcolaProductSystem').addEventListener('click', async event => {
                 event.preventDefault();
 
@@ -54,9 +53,18 @@ class App {
                         console.log("idNewSet: " + idNewSet);
                         console.log("idProductSystem: " + idProductSystem);
 
-                        let result = await api.calcolaProductSystem(vps1,idProductSystem,idImpactMethod,idNewSet);
                         console.log("Calcola Product System");
-                        console.log(result);
+                        let result = await api.calcolaProductSystem(vps1,idProductSystem,idImpactMethod,idNewSet);
+                        const idCalcolo = result["@id"];
+
+                        let statoCalcolo = await api.getStatoCalcolo(vps1,idCalcolo);
+                        if(statoCalcolo.isReady){
+                            
+                        }
+                        else{
+                            console.log("Il calcolo non è andato a buon fine");
+                        }
+
                     } else {
                         console.log("Errore in fase di split");
                     }

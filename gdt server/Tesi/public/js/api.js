@@ -71,50 +71,69 @@ class Api {
         }
     }
 
-    calcolaProductSystem = async (vps, idProductSystem,idImpactMethod,idNewSet) => {
+    calcolaProductSystem = async (vps, idProductSystem, idImpactMethod, idNewSet) => {
         try {
             let url = vps + "result/calculate";
             console.log(url);
+
             let response = await fetch(url, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    jsonrpc: "2.0",
-                    id: 1,
-                    method: "result/calculate",
-                    params: {
-                      target: {
+                    target: {
                         "@type": "ProductSystem",
                         "@id": idProductSystem
-                      },
-                      impactMethod: {
-                        "@id": idImpactMethod,
-                      },
-                      nwSet: {
-                        "@id": idNewSet,
-                      },
-                      withCosts: true,
-                      amount: 1.0
-                    }
-                  })
+                    },
+                    impactMethod: {
+                        "@id": idImpactMethod
+                    },
+                    nwSet: {
+                        "@id": idNewSet
+                    },
+                    withCosts: true,
+                    amount: 1.0
+                })
             });
+
             if (response.ok) {
                 //La richiesta ha avuto successo
                 const responseData = await response.json();
-                console.log(responseData);
                 return responseData;
             } else {
                 //Gestisco l'errore se la richiesta non ha avuto successo
                 console.error('Errore nella risposta HTTP:', response.status, response.statusText);
-                return response.ok;
+                return response;
             }
         } catch (error) {
             console.error('Errore durante la connessione:', error);
         }
     }
-    
+
+    //id del calcolo del Product System
+    getStatoCalcolo = async (vps,id) => {
+        try {
+            let url = vps + "result/"+id+"/state";
+            console.log(url);
+            
+            console.log("Stiamo calcolando...");
+            await new Promise((resolve) => {
+                setTimeout(() => {
+                    
+                    resolve();
+                }, 3000);
+            });
+
+            console.log("calcolo finito!!!");
+            let resp = await fetch(url);
+            let v = await resp.json();
+            return v;
+        } catch (error) {
+            console.error('Errore durante la connessione:', error);
+        }
+    }
+
 
 }
 
