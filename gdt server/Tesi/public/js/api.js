@@ -35,11 +35,11 @@ class Api {
         }
     }
 
-    getProviders = async (vps,id,name,type) => {
+    getProviders = async (vps, id) => {
         try {
-            let url = `${vps}data/providers/?id=${id}`;
+            let url = vps + "data/providers/" + id;
             console.log(url);
-            let resp = await fetch(url);    
+            let resp = await fetch(url);
             let v = await resp.json();
             return v;
         } catch (error) {
@@ -47,27 +47,74 @@ class Api {
         }
     }
 
-    /*getProviders = async (vps, id,name,type) => {
+    getProductSystem = async (vps) => {
         try {
-            let resp = await fetch(vps+"data/get/providers", {
-                method: "POST",
-                body: JSON.stringify({
-                    jsonrpc: "2.0",                    
-                    params: {
-                        // only the ID is required here
-                        "@type": type,
-                        "@id": id,
-                        name: name
-                    }
-                })
-            });
+            let url = vps + "data/product-system/all";
+            console.log(url);
+            let resp = await fetch(url);
             let v = await resp.json();
-            console.log(v);
             return v;
         } catch (error) {
             console.error('Errore durante la connessione:', error);
         }
-    }*/
+    }
+
+    getImpactMethod = async (vps) => {
+        try {
+            let url = vps + "data/impact-method/all";
+            console.log(url);
+            let resp = await fetch(url);
+            let v = await resp.json();
+            return v;
+        } catch (error) {
+            console.error('Errore durante la connessione:', error);
+        }
+    }
+
+    calcolaProductSystem = async (vps, idProductSystem,idImpactMethod,idNewSet) => {
+        try {
+            let url = vps + "result/calculate";
+            console.log(url);
+            let response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    jsonrpc: "2.0",
+                    id: 1,
+                    method: "result/calculate",
+                    params: {
+                      target: {
+                        "@type": "ProductSystem",
+                        "@id": idProductSystem
+                      },
+                      impactMethod: {
+                        "@id": idImpactMethod,
+                      },
+                      nwSet: {
+                        "@id": idNewSet,
+                      },
+                      withCosts: true,
+                      amount: 1.0
+                    }
+                  })
+            });
+            if (response.ok) {
+                //La richiesta ha avuto successo
+                const responseData = await response.json();
+                console.log(responseData);
+                return responseData;
+            } else {
+                //Gestisco l'errore se la richiesta non ha avuto successo
+                console.error('Errore nella risposta HTTP:', response.status, response.statusText);
+                return response.ok;
+            }
+        } catch (error) {
+            console.error('Errore durante la connessione:', error);
+        }
+    }
+    
 
 }
 

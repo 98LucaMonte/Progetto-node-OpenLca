@@ -10,7 +10,7 @@ class App {
 
         const api = new Api();
         const vps = 'http://109.205.180.220:3000/';
-        const vps1 = 'http://127.0.0.1:3000/';//docker run -p 3000:8080 -v $HOME/openLCA-data-1.4:/app/data --rm -d gdt-server -db example
+        const vps1 = 'http://127.0.0.1:3000/';//docker run -p 3000:8080 -v $HOME/openLCA-data-1.4:/app/data --rm -d gdt-server -db elcd_3_2_greendelta_v2_pet_bonus_case_study
         this.header = header;
         this.main = main;
         this.footer = footer;
@@ -23,21 +23,105 @@ class App {
             this.header.insertAdjacentHTML('beforeend', creaHeader());
             this.main.insertAdjacentHTML('beforeend', creaMain());
             
-            // Chiama la funzione di verifica al caricamento della pagina
-            document.getElementById("ButtonConnessioneVPS").addEventListener("click", async event =>{
+            this.getProductSystem(api,vps1);
+            this.getImpactMethod(api,vps1);
+            
+
+            document.getElementById('buttonCalcolaProductSystem').addEventListener('click', async event => {
                 event.preventDefault();
-                let data = await api.version(vps);
-                console.log(data);
-                
-                let data1 = await api.dataProviders(vps);
-                //const provider = data1[0].provider;
-                console.log(data1);
-                
-                //let data2 = await api.getProviders(vps1,provider["@id"],provider.name,provider["@type"]);
-                //console.log(data2);
+
+                const selectProductSystem = document.getElementById("listaProductSystem");
+                const selectedOptionProductSystem = selectProductSystem.options[selectProductSystem.selectedIndex];
+                const idProductSystem = selectedOptionProductSystem.id;
+
+                const selectImpactMethod = document.getElementById("listaImpactMethod");
+                const selectedOptionImpactMethod = selectImpactMethod.options[selectImpactMethod.selectedIndex];
+                const optionIdImpactMethod = selectedOptionImpactMethod.id;
+
+                if(idProductSystem === "selectedProductSystem" || optionIdImpactMethod === "selectedImpactMethod"){
+                    console.log("Non si può effettuare il calcolo mancano degli input");
+                }
+                else{
+                    
+                    //contiene l'id dell'Impact Method e del NewSets 
+                    const idList = optionIdImpactMethod.split("/");
+
+                    if (idList.length === 2) {
+                        const idImpactMethod = idList[0]; 
+                        const idNewSet = idList[1];
+
+                        console.log("idImpactMethod: " + idImpactMethod);
+                        console.log("idNewSet: " + idNewSet);
+                        console.log("idProductSystem: " + idProductSystem);
+
+                        let result = await api.calcolaProductSystem(vps1,idProductSystem,idImpactMethod,idNewSet);
+                        console.log("Calcola Product System");
+                        console.log(result);
+                    } else {
+                        console.log("Errore in fase di split");
+                    }
+                }
+
             });
+
+
         });
         page();
+
+    }
+
+    getProductSystem = async (api,vps) => {
+        
+        const placeholder = document.getElementById("selectedProductSystem");
+        let listaProductSystem = await api.getProductSystem(vps);
+        console.log("ProductSystem");
+        console.log(listaProductSystem);
+
+        if(listaProductSystem.length == 0){
+            placeholder.innerHTML = "Non ci sono Product System selezionabili";          
+        }else{
+            const selectProductSystem = document.getElementById("listaProductSystem");
+            placeholder.innerHTML = "Seleziona un Product System";          
+            for (let i = 0; i < listaProductSystem.length; i++) {
+                let option = document.createElement("option");
+                option.value = listaProductSystem[i].name; 
+                option.text = listaProductSystem[i].name;
+                option.id = listaProductSystem[i]["@id"]; 
+                selectProductSystem.appendChild(option);
+            }
+        }
+
+    }
+
+    getImpactMethod = async (api,vps) => {
+        
+        const placeholder = document.getElementById("selectedImpactMethod");        
+        let listaImpactMethod = await api.getImpactMethod(vps);
+        console.log("impact-method");
+        console.log(listaImpactMethod);
+
+        if(listaImpactMethod.length == 0){
+        
+            placeholder.innerHTML = "Non ci sono Impact method selezionabili";          
+        
+        }else{
+            
+            const selectImpactMethod = document.getElementById("listaImpactMethod");
+            placeholder.innerHTML = "Seleziona un Impact Method";          
+            
+            for (let i = 0; i < listaImpactMethod.length; i++) {
+                
+                let option = document.createElement("option");
+
+                if(listaImpactMethod[i].hasOwnProperty("nwSets")){
+                    option.value = listaImpactMethod[i].name; 
+                    option.text = listaImpactMethod[i].name;
+                    option.id = listaImpactMethod[i]["@id"]+"/"+listaImpactMethod[i].nwSets[0]["@id"];
+                    selectImpactMethod.appendChild(option);
+                }
+
+            }
+        }
 
     }
 
