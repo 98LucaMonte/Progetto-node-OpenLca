@@ -112,9 +112,9 @@ class Api {
     }
 
     //id del calcolo del Product System
-    getStatoCalcolo = async (vps,id) => {
+    getStatoCalcolo = async (vps,idCalcolo) => {
         try {
-            let url = vps + "result/"+id+"/state";
+            let url = vps + "result/"+idCalcolo+"/state";
             console.log(url);
             
             console.log("Stiamo calcolando...");
@@ -125,7 +125,7 @@ class Api {
                 }, 3000);
             });
 
-            console.log("calcolo finito!!!");
+            
             let resp = await fetch(url);
             let v = await resp.json();
             return v;
@@ -134,6 +134,17 @@ class Api {
         }
     }
 
+    getTechnosphereFlows = async (vps,idCalcolo) => {
+        try {
+            let url = vps + "result/"+idCalcolo+"/tech-flows";
+            console.log(url);
+            let resp = await fetch(url);
+            let v = await resp.json();
+            return v;
+        } catch (error) {
+            console.error('Errore durante la connessione:', error);
+        }
+    }
 
 }
 
