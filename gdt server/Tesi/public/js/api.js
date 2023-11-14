@@ -17,36 +17,12 @@ class Api {
         }
     }
 
-    dataProviders = async (vps) => {
-        try {
-            // Esegui una richiesta verso il tuo server VPS
-            //http://109.205.180.220:3000/data/providers/
-            const response = await fetch(vps + "data/providers");
-            if (response.ok) {
-                console.log('Connessione riuscita');
-                let data = await response.json();
-                return data;
-                // Puoi fare qualcos'altro qui se la connessione ha successo
-            } else {
-                console.error('Errore durante la connessione');
-            }
-        } catch (error) {
-            console.error('Errore durante la connessione:', error);
-        }
-    }
-
-    getProviders = async (vps, id) => {
-        try {
-            let url = vps + "data/providers/" + id;
-            console.log(url);
-            let resp = await fetch(url);
-            let v = await resp.json();
-            return v;
-        } catch (error) {
-            console.error('Errore durante la connessione:', error);
-        }
-    }
-
+    /**
+     * Questo metodo serve per selezionare i Product System disponibili.
+     *
+     * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
+     * @returns {Json} - Json che contiene i product system.
+     */
     getProductSystem = async (vps) => {
         try {
             let url = vps + "data/product-system/all";
@@ -59,6 +35,12 @@ class Api {
         }
     }
 
+     /**
+     * Questo metodo serve per selezionare gli impact Method disponibili.
+     *
+     * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
+     * @returns {Json} - Json che contiene gli impact method.
+     */
     getImpactMethod = async (vps) => {
         try {
             let url = vps + "data/impact-method/all";
@@ -71,6 +53,15 @@ class Api {
         }
     }
 
+    /**
+     * Questo metodo serve per calcolare le caratteristiche di impatto di un Product system.
+     *
+     * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
+     * @param {String} idProductSystem - Identificativo del Product system che si vuole calcolare.
+     * @param {String} idImpactMethod - Identificativo del'Impact method che si vuole usare per effettuare il calcolo.
+     * @param {String} idNewSet - Identificativo del newSets.
+     * @returns {Json} - Json che contiene informazioni sul calcolo del product system (come ad esempio l'id del calcolo).
+     */
     calcolaProductSystem = async (vps, idProductSystem, idImpactMethod, idNewSet) => {
         try {
             let url = vps + "result/calculate";
@@ -111,7 +102,13 @@ class Api {
         }
     }
 
-    //id del calcolo del Product System
+    /**
+     * Questo metodo serve per sapere lo stato del Product system calcolato.
+     *
+     * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
+     * @param {String} idCalcolo - Identificativo del calcolo appena effettuato.
+     * @returns {Json} - Json che contiene informazioni sullo stato del calcolo.
+     */
     getStatoCalcolo = async (vps,idCalcolo) => {
         try {
             let url = vps + "result/"+idCalcolo+"/state";
@@ -120,7 +117,6 @@ class Api {
             console.log("Stiamo calcolando...");
             await new Promise((resolve) => {
                 setTimeout(() => {
-                    
                     resolve();
                 }, 3000);
             });

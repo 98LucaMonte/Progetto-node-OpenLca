@@ -11,7 +11,8 @@ class App {
     constructor(header, main, footer) {
 
         const vps = 'http://109.205.180.220:3000/';
-        const vps1 = 'http://127.0.0.1:3000/';//docker run -p 3000:8080 -v $HOME/openLCA-data-1.4:/app/data --rm -d gdt-server -db elcd_3_2_greendelta_v2_pet_bonus_case_study
+        const vps1 = 'http://127.0.0.1:3000/'; // docker run -p 3000:8080 -v $HOME/openLCA-data-1.4:/app/data --rm -d gdt-server -db elcd_3_2_greendelta_v2_pet_bonus_case_study
+        let idCalcolo = null;
         this.header = header;
         this.main = main;
         this.footer = footer;
@@ -23,29 +24,33 @@ class App {
             this.footer.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend', creaViewHeader());
             this.main.insertAdjacentHTML('beforeend', creaViewMain());
+            idCalcolo = null;
 
+            //Prendo i product system disponibili dal db
             await this.getProductSystem(api, vps1);
+            //Prendo gli impact method disponibili dal db
             await this.getImpactMethod(api, vps1);
 
             document.getElementById('buttonCalcolaProductSystem').addEventListener('click', async event => {
                 event.preventDefault();
-
+                
+                //Prendo l'id del product system selezionato
                 const selectProductSystem = document.getElementById("listaProductSystem");
                 const selectedOptionProductSystem = selectProductSystem.options[selectProductSystem.selectedIndex];
                 const idProductSystem = selectedOptionProductSystem.id;
-
+                //Prendo l'id dell'impact method selezionato
                 const selectImpactMethod = document.getElementById("listaImpactMethod");
                 const selectedOptionImpactMethod = selectImpactMethod.options[selectImpactMethod.selectedIndex];
                 const optionIdImpactMethod = selectedOptionImpactMethod.id;
 
-
+                //Se non è stato selezionato un tra product system o impact method non si può eseguire il calcolo del product system
                 if (idProductSystem === "selectedProductSystem" || optionIdImpactMethod === "selectedImpactMethod") {
                     const messaggioErrore = document.getElementById("risultatiRicerca");
                     const button = document.getElementById('buttonCalcolaProductSystem');
 
                     console.log("Non si può effettuare il calcolo mancano degli input");
                     messaggioErrore.innerHTML = '';
-                    messaggioErrore.insertAdjacentHTML('beforeend', `<h3>Non si può effettuare il calcolo mancano degli input</h3>`);
+                    messaggioErrore.insertAdjacentHTML('beforeend', `<h3 class="alert alert-danger" role="alert">Non si può effettuare il calcolo mancano degli input</h3>`);
                     button.disabled = true;
                     setTimeout(() => {
                         messaggioErrore.innerHTML = '';
@@ -54,7 +59,10 @@ class App {
                 }
                 else {
 
-                    //contiene l'id dell'Impact Method e del NewSets 
+                    /*
+                    Contiene l'id dell'Impact Method e del NewSets che sono stati messi insieme e divisi dal simbolo /
+                    quindi vado a prendere l'id dell'impact method e del new sets necessari per eseguire il calcolo del product system
+                    */
                     const idList = optionIdImpactMethod.split("/");
 
                     if (idList.length === 2) {
@@ -66,17 +74,23 @@ class App {
                         console.log("idProductSystem: " + idProductSystem);
 
                         console.log("Calcola Product System");
+                        //Eseguo il calcolo del product system
                         let result = await api.calcolaProductSystem(vps1, idProductSystem, idImpactMethod, idNewSet);
-                        const idCalcolo = result["@id"];
+                        idCalcolo = result["@id"];
 
                         const messaggio = document.getElementById("risultatiRicerca");
                         messaggio.innerHTML = '';
-                        messaggio.insertAdjacentHTML('beforeend', `<h3>Sto eseguendo il calcolo...</h3>`);
+                        messaggio.insertAdjacentHTML('beforeend', `<h3 class="alert alert-secondary" role="alert">Sto eseguendo il calcolo...</h3>`);4
                         let statoCalcolo = false;
+                        //Attraverso questo ciclo verifico inviando l'id del calcolo se quest'ultimo è stato ultimato 
                         while (statoCalcolo != true) {
                             statoCalcolo = await api.getStatoCalcolo(vps1, idCalcolo);
                             statoCalcolo = statoCalcolo.isReady;
                         }
+
+                        console.log("calcolo finito!!!");
+                        messaggio.innerHTML = '';
+                        messaggio.insertAdjacentHTML('beforeend', `<h3 class="alert alert-success" role="alert">Calcolo finito!!</h3>`);
 
                         setTimeout( async () => {
                             const listaTechnosphereFlows = await api.getTechnosphereFlows(vps1, idCalcolo);
@@ -84,17 +98,15 @@ class App {
                                 this.creaTabellaTechnosphereFlows(listaTechnosphereFlows);
                             }
                         }, 2000);
-
-                        console.log("calcolo finito!!!");
-                        messaggio.insertAdjacentHTML('beforeend', `<h3>Calcolo finito!!</h3>`);
-
+                        //page.redirect('/risultati');
 
                     } else {
+                        //Potrebbero capitare degli errori sul lato server durante il calcolo qui vengono gestiti
                         const messaggioErrore = document.getElementById("risultatiRicerca");
                         const button = document.getElementById('buttonCalcolaProductSystem');
 
                         messaggioErrore.innerHTML = '';
-                        messaggioErrore.insertAdjacentHTML('beforeend', `<h3>Errore in fase di preparazione del calcolo.</h3>`);
+                        messaggioErrore.insertAdjacentHTML('beforeend', `<h3 class="alert alert-danger" role="alert">Errore in fase di preparazione del calcolo.</h3>`);
                         button.disabled = true;
                         setTimeout(() => {
                             messaggioErrore.innerHTML = '';
@@ -108,10 +120,22 @@ class App {
 
 
         });
+        page('/risultati', async () => {
+            /*this.header.innerHTML = '';
+            this.main.innerHTML = '';
+            this.footer.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend', );
+            this.main.insertAdjacentHTML('beforeend', );*/
+        });
         page();
 
     }
 
+    /*
+    In questo metodo raccolgo dal db tutti i Product system che sono disponibili e li inserisco all'interno 
+    della select usata per selezionare il product system che si vuole calcolare andando a impostare l'id, 
+    il value e il text che andranno a formare l'option che verà aggiunto alla select.
+    */
     getProductSystem = async (api, vps) => {
 
         const placeholder = document.getElementById("selectedProductSystem");
@@ -135,6 +159,13 @@ class App {
 
     }
 
+    /*
+    In questo metodo raccolgo dal db tutti gli impact method che sono disponibili e li inserisco all'interno 
+    della select usata per selezionare l'impact method che si vuole utilizzare andando a impostare l'id, 
+    il value e il text che andranno a formare l'option che verà aggiunto alla select. Inoltre, si imposta 
+    anche l'id del nwSets necessario per fare il calcolo del product system.
+    Se non ci sono impact method si inserisce nel placeholder Non ci sono Impact method selezionabili.
+    */
     getImpactMethod = async (api, vps) => {
 
         const placeholder = document.getElementById("selectedImpactMethod");
@@ -143,9 +174,7 @@ class App {
         console.log(listaImpactMethod);
 
         if (listaImpactMethod.length == 0) {
-
             placeholder.innerHTML = "Non ci sono Impact method selezionabili";
-
         } else {
 
             const selectImpactMethod = document.getElementById("listaImpactMethod");
