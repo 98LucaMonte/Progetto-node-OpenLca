@@ -1,5 +1,11 @@
 class Api {
 
+    /**
+     * Questo metodo serve per selezionare la versione del db.
+     *
+     * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
+     * @returns {Json} - Json che contiene informazioni sulla versione del db.
+     */
     version = async (vps) => {
         try {
             // Esegui una richiesta verso il tuo server VPS
@@ -130,6 +136,13 @@ class Api {
         }
     }
 
+    /**
+     * Questo metodo serve per prelevare TechnosphereFlows tramite l'id del calcolo di un certo Product system.
+     *
+     * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
+     * @param {String} idCalcolo - Identificativo del calcolo di un product system.
+     * @returns {Json} - Json che contiene informazioni sulle TechnosphereFlows.
+     */
     getTechnosphereFlows = async (vps,idCalcolo) => {
         try {
             let url = vps + "result/"+idCalcolo+"/tech-flows";

@@ -2,7 +2,7 @@
 
 function creaViewMain() {
     return `
-    <div class="container container-fluid" style="margin-top: 15%;">
+    <div class="container container-fluid mt-5">
     
       <div class="row">
 
@@ -30,17 +30,61 @@ function creaViewMain() {
 
         </div>
 
-      </div>
+        <div class="mt-3" id="risultatiRicerca">
+          
+        </div>
 
+      </div>
+    </div>
+    `;
+}
+
+function creaViewMainRisultati() {
+    return `
+    <div class="container container-fluid mt-5">
       <div class="row">
-        <div class="col-7 mt-5">
+  
+        <h3>Calcolo terminato</h3>
+      
+        <div class="col-sm-7 order-element0 mt-5">
           <div class="table-responsive" id="risultatiRicerca">
-            
+          
           </div>
         </div>
-      </div>
 
+        <div class="col-sm-5 order-element1 mt-5">
+          
+          <div>
+            <canvas id="myChart"></canvas>
+          </div>
+
+        </div>
+      </div>
     </div>
+
+    <script>
+        const ctx = document.getElementById('myChart');
+    
+        new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [{
+            label: '# of Votes',
+            data: [12, 19, 3, 5, 2, 3],
+            borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+            y: {
+                beginAtZero: true
+            }
+            }
+        }
+        });
+    </script>
+
     `;
 }
 
@@ -73,4 +117,4 @@ function creaViewRowTechnosphereFlows(element,num){
 }
 
 
-export { creaViewMain, creaViewTableTechnosphereFlows,creaViewRowTechnosphereFlows };
+export { creaViewMain, creaViewMainRisultati, creaViewTableTechnosphereFlows, creaViewRowTechnosphereFlows };
