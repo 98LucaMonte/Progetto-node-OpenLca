@@ -45,76 +45,57 @@ function creaViewMainRisultati() {
       <div class="row">
   
         <h3>Calcolo terminato</h3>
-      
-        <div class="col-sm-7 order-element0 mt-5">
+
+        <div class="col-sm order-element0 mt-5">
+          <p>
+          Tale tabella mostra la quantità complessiva di risorse provenienti dalla tecnosfera, che sono richieste per soddisfare
+          la domanda associata al Product System, che è stato analizzato.
+          </p>
           <div class="table-responsive" id="risultatiRicerca">
-          
+
           </div>
         </div>
 
-        <div class="col-sm-5 order-element1 mt-5">
+        <div class="col-sm order-element1 mt-5">
           
-          <div>
-            <canvas id="myChart"></canvas>
-          </div>
+          Inserire un grafico
 
         </div>
       </div>
     </div>
 
-    <script>
-        const ctx = document.getElementById('myChart');
-    
-        new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-            y: {
-                beginAtZero: true
-            }
-            }
-        }
-        });
-    </script>
-
     `;
 }
 
-function creaViewTableTechnosphereFlows() {
+function creaViewTableTotalRequirements() {
     return `
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Provider</th>
-                    <th scope="col">Flow</th>
-                    <th scope="col">Unit</th>
+                    <th scope="col">Nome Provider</th>
+                    <th scope="col">Nome Flow</th>
+                    <th scope="col">Quantità</th>
+                    <th scope="col">Unità di misura</th>
                 </tr>
             </thead>
-            <tbody id="datiTabellaTechnosphereFlows">
+            <tbody id="datiTabellaTotalRequirements">
             </tbody>
         </table>  
     `;
 }
 
-function creaViewRowTechnosphereFlows(element,num){
+function creaViewRowTotalRequirements(element,num){
     return `
     <tr class="color-row-table">
         <th scope="row">${num}</th>
-        <td>${element.provider.name}</td>
-        <td>${element.flow.name}</td>
-        <td>${element.flow.refUnit}</td>        
+        <td>${element.techFlow.provider.name}</td>
+        <td>${element.techFlow.flow.name}</td>
+        <td>${element.amount}</td> 
+        <td>${element.techFlow.flow.refUnit}</td>      
     </tr>
     `;
 }
 
 
-export { creaViewMain, creaViewMainRisultati, creaViewTableTechnosphereFlows, creaViewRowTechnosphereFlows };
+export { creaViewMain, creaViewMainRisultati, creaViewTableTotalRequirements, creaViewRowTotalRequirements };

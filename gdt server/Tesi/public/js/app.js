@@ -1,6 +1,6 @@
 "use strict;"
 import Api from "./api.js";
-import { creaViewMain, creaViewMainRisultati , creaViewTableTechnosphereFlows, creaViewRowTechnosphereFlows } from './templates/main-view.js'
+import { creaViewMain, creaViewMainRisultati , creaViewTableTotalRequirements, creaViewRowTotalRequirements } from './templates/main-view.js'
 import { creaViewHeader } from './templates/header-view.js'
 import page from '//unpkg.com/page/page.mjs';
 
@@ -44,9 +44,9 @@ class App {
                         
             this.main.innerHTML = '';
             this.main.insertAdjacentHTML('beforeend', creaViewMainRisultati());
-            const listaTechnosphereFlows = await api.getTechnosphereFlows(vps1, idCalcolo);
-            if (listaTechnosphereFlows.length != 0) {
-                this.creaTabellaTechnosphereFlows(listaTechnosphereFlows);
+            const listaTotalRequirements = await api.getTotalRequirements(vps1, idCalcolo);
+            if (listaTotalRequirements.length != 0) {
+                this.creaTabellaTotalRequirements(listaTotalRequirements);
             }
 
         });
@@ -218,24 +218,24 @@ class App {
     }
 
     /** 
-    * In questo metodo si costruisce la tabella dei TechnosphereFlows 
-    * in cui si elencano Provider, Flow e unità di misura. 
+    * In questo metodo si costruisce la tabella dei TotalRequirements
+    * in cui si elencano nome dell'impact, categoria, quantità e unità di misura. 
     * 
-    * @param {List[TechnosphereFlows]} listaTechnosphereFlows - Lista di TechnosphereFlows.
+    * @param {List[TotalRequirements]} listaTotalRequirements - Lista di TotalRequirements.
     */
-    creaTabellaTechnosphereFlows = async (listaTechnosphereFlows) => {
-        console.log("creaTabellaTechnosphereFlows");
-        console.log(listaTechnosphereFlows);
+    creaTabellaTotalRequirements = async (listaTotalRequirements) => {
+        console.log("creaTabellaTotalRequirements");
+        console.log(listaTotalRequirements);
         const tabellaRisultatiRicerca = document.getElementById("risultatiRicerca");
 
         setTimeout(() => {
-            tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTableTechnosphereFlows());
+            tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTableTotalRequirements());
 
-            const tabellaRighe = document.getElementById("datiTabellaTechnosphereFlows");
+            const tabellaRighe = document.getElementById("datiTabellaTotalRequirements");
             let num = 0;
-            listaTechnosphereFlows.forEach(element => {
+            listaTotalRequirements.forEach(element => {
                 num++;
-                const riga = creaViewRowTechnosphereFlows(element, num);
+                const riga = creaViewRowTotalRequirements(element, num);
                 tabellaRighe.insertAdjacentHTML('beforeend', riga);
             });
 

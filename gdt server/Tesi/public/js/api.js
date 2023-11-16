@@ -137,18 +137,57 @@ class Api {
     }
 
     /**
-     * Questo metodo serve per prelevare TechnosphereFlows tramite l'id del calcolo di un certo Product system.
+     * Questo metodo restituisce i requisiti totali dei flussi della tecnosfera 
+     * necessari per soddisfare la domanda del sistema di prodotto calcolato.
      *
      * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
      * @param {String} idCalcolo - Identificativo del calcolo di un product system.
-     * @returns {Json} - Json che contiene informazioni sulle TechnosphereFlows.
+     * @returns {Json} - Json che contiene informazioni sui flussi della tecnosfera.
      */
-    getTechnosphereFlows = async (vps,idCalcolo) => {
+    getTotalRequirements = async (vps,idCalcolo) => {
         try {
-            let url = vps + "result/"+idCalcolo+"/tech-flows";
+            let url = vps + "result/"+idCalcolo+"/total-requirements";
             console.log(url);
             let resp = await fetch(url);
             let v = await resp.json();
+            return v;
+        } catch (error) {
+            console.error('Errore durante la connessione:', error);
+        }
+    }
+
+    /**
+     * Questo metodo ritorna l'inventario dei flussi del Product system calcolato.
+     *
+     * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
+     * @param {String} idCalcolo - Identificativo del calcolo di un product system.
+     * @returns {Json} - Json che contiene informazioni sui flussi del Product system calcolato.
+     */
+    getTotalFlows = async (vps,idCalcolo) => {
+        try {
+            let url = vps + "result/"+idCalcolo+"/total-flows";
+            console.log(url);
+            let response = await fetch(url);
+            let v = await response.json();
+            return v;
+        } catch (error) {
+            console.error('Errore durante la connessione:', error);
+        }
+    }
+
+    /**
+     * Questo metodo restituisce il risultato del costo totale del ciclo di vita (LCC).
+     *
+     * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
+     * @param {String} idCalcolo - Identificativo del calcolo di un product system.
+     * @returns {Json} - Json che contiene informazioni sui flussi del Product system calcolato.
+     */
+    getCosto = async (vps,idCalcolo) => {
+        try {
+            let url = vps + "result/"+idCalcolo+"/total-costs";
+            console.log(url);
+            let response = await fetch(url);
+            let v = await response.json();
             return v;
         } catch (error) {
             console.error('Errore durante la connessione:', error);
