@@ -165,7 +165,7 @@ class Api {
      */
     getTotalFlows = async (vps,idCalcolo) => {
         try {
-            let url = vps + "result/"+idCalcolo+"/total-flows";
+            let url = vps + "result/"+idCalcolo+"/envi-flows";
             console.log(url);
             let response = await fetch(url);
             let v = await response.json();

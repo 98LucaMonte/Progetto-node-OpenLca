@@ -1,7 +1,7 @@
 "use strict;"
 import Api from "./api.js";
-import { creaViewMain, creaViewMainRisultati , creaViewTableTotalRequirements, creaViewRowTotalRequirements } from './templates/main-view.js'
-import { creaViewHeader } from './templates/header-view.js'
+import {creaViewMain, creaViewMainRisultati, creaViewTableTotalRequirements, creaViewRowTotalRequirements , creaViewMainRisultatiInterventionFlows , creaViewTableInterventionFlowsInput ,creaViewTableInterventionFlowsOutput , creaViewRowInterventionFlows } from './templates/main-view.js'
+import { creaViewHeader,creaViewHeaderRisultati } from './templates/header-view.js'
 import page from '//unpkg.com/page/page.mjs';
 
 const api = new Api();
@@ -35,20 +35,31 @@ class App {
                 event.preventDefault();
                 idCalcolo = await this.calcolaProductSystem(api,vps1,idCalcolo);
                 if(idCalcolo !== undefined){
-                    page.redirect('/risultati');
+                    page.redirect('/totalRequirements');
                 }
                 
             });
         });
-        page('/risultati', async () => {
-                        
+        page('/totalRequirements', async () => {
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
             this.main.insertAdjacentHTML('beforeend', creaViewMainRisultati());
             const listaTotalRequirements = await api.getTotalRequirements(vps1, idCalcolo);
             if (listaTotalRequirements.length != 0) {
                 this.creaTabellaTotalRequirements(listaTotalRequirements);
             }
-
+        });
+        page('/interventionFlows', async () => {
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            this.main.innerHTML = '';
+            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiInterventionFlows());
+            const listaInterventionFlows = await api.getTotalFlows(vps1, idCalcolo);
+            if (listaInterventionFlows.length != 0) {
+                this.creaTabellaInterventionFlows(listaInterventionFlows);
+            }
+            
         });
         page();
 
@@ -184,7 +195,7 @@ class App {
 
                 const messaggio = document.getElementById("risultatiRicerca");
                 messaggio.innerHTML = '';
-                messaggio.insertAdjacentHTML('beforeend', `<h3 class="alert alert-secondary" role="alert">Sto eseguendo il calcolo...</h3>`);4
+                messaggio.insertAdjacentHTML('beforeend', `<h3 class="alert alert-secondary" role="alert">Sto eseguendo il calcolo...</h3>`);
                 let statoCalcolo = false;
                 //Attraverso questo ciclo verifico inviando l'id del calcolo se quest'ultimo è stato ultimato 
                 while (statoCalcolo != true) {
@@ -226,11 +237,10 @@ class App {
     creaTabellaTotalRequirements = async (listaTotalRequirements) => {
         console.log("creaTabellaTotalRequirements");
         console.log(listaTotalRequirements);
-        const tabellaRisultatiRicerca = document.getElementById("risultatiRicerca");
-
+        
         setTimeout(() => {
+            const tabellaRisultatiRicerca = document.getElementById("risultatiRicerca");
             tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTableTotalRequirements());
-
             const tabellaRighe = document.getElementById("datiTabellaTotalRequirements");
             let num = 0;
             listaTotalRequirements.forEach(element => {
@@ -240,7 +250,51 @@ class App {
             });
 
         }, 2000);
-        tabellaRisultatiRicerca.innerHTML = '';
+        
+    }
+
+    creaTabellaInterventionFlows = async (listaInterventionFlows) => {
+        console.log("creaTabellaInterventionFlows");
+        console.log(listaInterventionFlows);
+        
+
+        setTimeout(() => {
+            const tabellaRisultatiRicercaInput = document.getElementById("risultatiRicercaInput01");
+            console.log(tabellaRisultatiRicercaInput);
+            const tabellaRisultatiRicercaOutput = document.getElementById("risultatiRicercaOutput02");
+            console.log(tabellaRisultatiRicercaOutput);
+            tabellaRisultatiRicercaInput.insertAdjacentHTML('beforeend', creaViewTableInterventionFlowsInput());
+            tabellaRisultatiRicercaOutput.insertAdjacentHTML('beforeend', creaViewTableInterventionFlowsOutput());
+
+            console.log(tabellaRisultatiRicercaInput);
+            console.log(tabellaRisultatiRicercaOutput);
+
+            const tabellaRigheInput = document.getElementById("datiTabellaInterventionFlowsInput");
+            const tabellaRigheOutput = document.getElementById("datiTabellaInterventionFlowsOutput");
+
+            console.log(tabellaRigheInput);
+            console.log(tabellaRigheOutput);
+
+            let numInput = 0;
+            let numOutput = 0;
+
+            listaInterventionFlows.forEach(element => {
+
+                if(element.isInput){
+                    numInput++;
+                    const riga = creaViewRowInterventionFlows(element, numInput);
+                    tabellaRigheInput.insertAdjacentHTML('beforeend', riga);
+                }
+                else{
+                    numOutput++;
+                    const riga = creaViewRowInterventionFlows(element, numOutput);
+                    tabellaRigheOutput.insertAdjacentHTML('beforeend', riga);
+                }
+                
+            });
+
+        }, 2000);
+        
     }
 
 }
