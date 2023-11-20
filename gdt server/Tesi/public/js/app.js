@@ -1,10 +1,14 @@
 "use strict;"
 import Api from "./api.js";
+import ApiInterventionFlow from "./apiInterventionFlow.js";
+import ApiTechnosphereFlows from "./apiTechnosphereFlows.js";
 import {creaViewMain, creaViewMainRisultati, creaViewTableTotalRequirements, creaViewRowTotalRequirements , creaViewMainRisultatiInterventionFlows , creaViewTableInterventionFlowsInput ,creaViewTableInterventionFlowsOutput , creaViewRowInterventionFlows } from './templates/main-view.js'
 import { creaViewHeader,creaViewHeaderRisultati } from './templates/header-view.js'
 import page from '//unpkg.com/page/page.mjs';
 
 const api = new Api();
+const apiTechnosphereFlows = new ApiTechnosphereFlows();
+const apiInterventionFlow = new ApiInterventionFlow();
 
 class App {
 
@@ -45,7 +49,7 @@ class App {
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
             this.main.insertAdjacentHTML('beforeend', creaViewMainRisultati());
-            const listaTotalRequirements = await api.getTotalRequirements(vps1, idCalcolo);
+            const listaTotalRequirements = await apiTechnosphereFlows.getTotalRequirements(vps1, idCalcolo);
             if (listaTotalRequirements.length != 0) {
                 this.creaTabellaTotalRequirements(listaTotalRequirements);
             }
@@ -55,7 +59,7 @@ class App {
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
             this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiInterventionFlows());
-            const listaInterventionFlows = await api.getTotalFlows(vps1, idCalcolo);
+            const listaInterventionFlows = await apiInterventionFlow.getTotalFlowsgetTotalFlows(vps1, idCalcolo);
             if (listaInterventionFlows.length != 0) {
                 this.creaTabellaInterventionFlows(listaInterventionFlows);
             }

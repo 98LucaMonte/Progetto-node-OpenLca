@@ -1,7 +1,6 @@
 class Api {
 
-    /**
-     * Questo metodo serve per selezionare la versione del db.
+    /** Questo metodo serve per selezionare la versione del db.
      *
      * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
      * @returns {Json} - Json che contiene informazioni sulla versione del db.
@@ -23,8 +22,7 @@ class Api {
         }
     }
 
-    /**
-     * Questo metodo serve per selezionare i Product System disponibili.
+    /**Questo metodo serve per selezionare i Product System disponibili.
      *
      * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
      * @returns {Json} - Json che contiene i product system.
@@ -41,8 +39,7 @@ class Api {
         }
     }
 
-     /**
-     * Questo metodo serve per selezionare gli impact Method disponibili.
+     /**Questo metodo serve per selezionare gli impact Method disponibili.
      *
      * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
      * @returns {Json} - Json che contiene gli impact method.
@@ -59,8 +56,7 @@ class Api {
         }
     }
 
-    /**
-     * Questo metodo serve per calcolare le caratteristiche di impatto di un Product system.
+    /**Questo metodo serve per calcolare le caratteristiche di impatto di un Product system.
      *
      * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
      * @param {String} idProductSystem - Identificativo del Product system che si vuole calcolare.
@@ -108,8 +104,7 @@ class Api {
         }
     }
 
-    /**
-     * Questo metodo serve per sapere lo stato del Product system calcolato.
+    /**Questo metodo serve per sapere lo stato del Product system calcolato.
      *
      * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
      * @param {String} idCalcolo - Identificativo del calcolo appena effettuato.
@@ -135,65 +130,6 @@ class Api {
             console.error('Errore durante la connessione:', error);
         }
     }
-
-    /**
-     * Questo metodo restituisce i requisiti totali dei flussi della tecnosfera 
-     * necessari per soddisfare la domanda del sistema di prodotto calcolato.
-     *
-     * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
-     * @param {String} idCalcolo - Identificativo del calcolo di un product system.
-     * @returns {Json} - Json che contiene informazioni sui flussi della tecnosfera.
-     */
-    getTotalRequirements = async (vps,idCalcolo) => {
-        try {
-            let url = vps + "result/"+idCalcolo+"/total-requirements";
-            console.log(url);
-            let resp = await fetch(url);
-            let v = await resp.json();
-            return v;
-        } catch (error) {
-            console.error('Errore durante la connessione:', error);
-        }
-    }
-
-    /**
-     * Questo metodo ritorna l'inventario dei flussi del Product system calcolato.
-     *
-     * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
-     * @param {String} idCalcolo - Identificativo del calcolo di un product system.
-     * @returns {Json} - Json che contiene informazioni sui flussi del Product system calcolato.
-     */
-    getTotalFlows = async (vps,idCalcolo) => {
-        try {
-            let url = vps + "result/"+idCalcolo+"/envi-flows";
-            console.log(url);
-            let response = await fetch(url);
-            let v = await response.json();
-            return v;
-        } catch (error) {
-            console.error('Errore durante la connessione:', error);
-        }
-    }
-
-    /**
-     * Questo metodo restituisce il risultato del costo totale del ciclo di vita (LCC).
-     *
-     * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
-     * @param {String} idCalcolo - Identificativo del calcolo di un product system.
-     * @returns {Json} - Json che contiene informazioni sui flussi del Product system calcolato.
-     */
-    getCosto = async (vps,idCalcolo) => {
-        try {
-            let url = vps + "result/"+idCalcolo+"/total-costs";
-            console.log(url);
-            let response = await fetch(url);
-            let v = await response.json();
-            return v;
-        } catch (error) {
-            console.error('Errore durante la connessione:', error);
-        }
-    }
-
 }
 
 export default Api;
