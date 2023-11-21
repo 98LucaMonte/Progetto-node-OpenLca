@@ -1,6 +1,6 @@
 class ApiTechnosphereFlows {
 
-    /** (5.5)
+    /** (5.5)testato
      * Questo metodo restituisce gli n flussi di tecnosfera di un risultato. Questi 
      * sono i flussi attraverso i quali sono collegati i processi del sistema calcolato. 
      * Ogni flusso della tecnosfera è una coppia di un prodotto o flusso di rifiuti e 
@@ -23,7 +23,7 @@ class ApiTechnosphereFlows {
         }
     }
 
-    /** (5.5.1)
+    /** (5.5.1)testato
      * Un sistema di prodotto viene calcolato per un singolo valore di domanda per un flusso della tecnosfera: 
      * un prodotto in uscita o un input di rifiuti del sistema. È il riferimento quantitativo del sistema. 
      * Nel caso generale, un sistema può avere più valori di domanda organizzati in un 
@@ -66,7 +66,7 @@ class ApiTechnosphereFlows {
         }
     }
 
-    /** (5.5.3) DA FINIRE
+    /** (5.5.3) NON FUNZIONANTE
      * I requisiti diretti di un processo j sono gli input e gli output in scala 
      * del prodotto collegato e i flussi di rifiuti di quel processo relativi alla domanda finale del sistema di prodotto.
      *
@@ -74,9 +74,13 @@ class ApiTechnosphereFlows {
      * @param {String} idCalcolo - Identificativo del calcolo di un product system.
      * @returns {Json} - Json che contiene informazioni sui flussi della tecnosfera.
      */
-    getDirectRequirements = async (vps,idCalcolo) => {
+    getDirectRequirements = async (vps, idCalcolo, techFlow) => {
         try {
-            let url = vps + "result/"+idCalcolo+"/direct-requirements-of/{tech-flow}";
+            
+            let urlTechFlow = techFlow.provider["@id"]+"::"+techFlow.flow["@id"];
+            console.log(urlTechFlow);
+
+            let url = vps + "result/" + idCalcolo + "/direct-requirements-of/" + urlTechFlow;
             console.log(url);
             let resp = await fetch(url);
             let v = await resp.json();
@@ -84,8 +88,8 @@ class ApiTechnosphereFlows {
         } catch (error) {
             console.error('Errore durante la connessione:', error);
         }
-    }
-
+    };
+    
     /** (5.5.4) 
      * Il vettore di scala s contiene per ciascun processo j 
      * un fattore sj in base al quale il processo deve essere scalato per soddisfare la domanda del sistema di prodotto.

@@ -30,9 +30,9 @@ class ApiInterventionFlow {
      * @param {String} idCalcolo - Identificativo del calcolo di un product system.
      * @returns {Json} - Json che contiene informazioni sui flussi del Product system calcolato.
      */
-    getTotalFlows = async (vps,idCalcolo) => {
+    getInventoryResult = async (vps,idCalcolo) => {
         try {
-            let url = vps + "result/"+idCalcolo+"/envi-flows";
+            let url = vps + "result/"+idCalcolo+"/total-flows";
             console.log(url);
             let response = await fetch(url);
             let v = await response.json();

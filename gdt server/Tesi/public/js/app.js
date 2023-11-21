@@ -2,7 +2,17 @@
 import Api from "./api.js";
 import ApiInterventionFlow from "./apiInterventionFlow.js";
 import ApiTechnosphereFlows from "./apiTechnosphereFlows.js";
-import {creaViewMain, creaViewMainRisultati, creaViewTableTotalRequirements, creaViewRowTotalRequirements , creaViewMainRisultatiInterventionFlows , creaViewTableInterventionFlowsInput ,creaViewTableInterventionFlowsOutput , creaViewRowInterventionFlows } from './templates/main-view.js'
+import {creaViewMain, creaViewMainRisultati, creaViewMainRisultatiInterventionFlows} from './templates/main-view.js';
+import {creaViewTableTotalRequirements,creaViewRowTotalRequirements,
+        creaViewTableTechnosphereFlows, creaViewRowTechnosphereFlows,
+        creaViewTableFinalDemand,creaViewRowFinalDemand,
+        creaViewTableDirectRequirements,creaViewRowDirectRequirements,
+        creaViewTableScalingFactors,creaViewRowScalingFactors,
+        creaViewTableTotalityFactors,creaViewRowTotalityFactors}from './templates/main-view-technosphere-flows.js';
+
+import {creaViewTableInterventionFlowsInput ,creaViewTableInterventionFlowsOutput, creaViewRowInterventionFlows,
+        creaViewTableInventoryResultInput , creaViewTableInventoryResultOutput, creaViewRowInventoryResult}from './templates/main-view-intervention-flow.js';
+
 import { creaViewHeader,creaViewHeaderRisultati } from './templates/header-view.js'
 import page from '//unpkg.com/page/page.mjs';
 
@@ -44,6 +54,27 @@ class App {
                 
             });
         });
+        page('/technosphereFlows', async () => {
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            this.main.innerHTML = '';
+            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultati());
+            const listaTechnosphereFlows = await apiTechnosphereFlows.getTechnosphereFlows(vps1, idCalcolo);
+            if (listaTechnosphereFlows.length != 0) {
+                this.creaTabellaTechnosphereFlows(listaTechnosphereFlows);
+            }
+        });
+        page('/finalDemand', async () => {
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            this.main.innerHTML = '';
+            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultati());
+            const richiestaFinale = await apiTechnosphereFlows.getRichiestaFinale(vps1, idCalcolo);
+            console.log(richiestaFinale);
+            if (richiestaFinale.length != 0) {
+                this.creaTabellaFinalDemand(richiestaFinale);                                                                         
+            }
+        });
         page('/totalRequirements', async () => {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
@@ -54,14 +85,56 @@ class App {
                 this.creaTabellaTotalRequirements(listaTotalRequirements);
             }
         });
+        page('/directRequirements', async () => {
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            this.main.innerHTML = '';
+            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultati());
+            const techFlow = await apiTechnosphereFlows.getRichiestaFinale(vps1, idCalcolo);
+            const listaDirectRequirements = await apiTechnosphereFlows.getDirectRequirements(vps1, idCalcolo,techFlow.techFlow);
+            if (listaDirectRequirements.length != 0) {
+                this.creaTabellaDirectRequirements(listaDirectRequirements);
+            }
+        });
+        page('/scalingFactors', async () => {
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            this.main.innerHTML = '';
+            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultati());
+            const listaScalingFactors = await apiTechnosphereFlows.getScalingFactors(vps1, idCalcolo);
+            if (listaScalingFactors.length != 0) {
+                this.creaTabellaScalingFactors(listaScalingFactors);
+            }
+        });
+        page('/totalityFactors', async () => {
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            this.main.innerHTML = '';
+            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultati());
+            const listaTotalityFactors = await apiTechnosphereFlows.getTotalityFactors(vps1, idCalcolo);
+            if (listaTotalityFactors.length != 0) {
+                this.creaTabellaTotalityFactors(listaTotalityFactors);
+            }
+        });
         page('/interventionFlows', async () => {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
             this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiInterventionFlows());
-            const listaInterventionFlows = await apiInterventionFlow.getTotalFlowsgetTotalFlows(vps1, idCalcolo);
+            const listaInterventionFlows = await apiInterventionFlow.getInterventionFlows(vps1, idCalcolo);
             if (listaInterventionFlows.length != 0) {
                 this.creaTabellaInterventionFlows(listaInterventionFlows);
+            }
+            
+        });
+        page('/inventoryResult', async () => {
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            this.main.innerHTML = '';
+            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiInterventionFlows());
+            const listaInventoryResult = await apiInterventionFlow.getInventoryResult(vps1, idCalcolo);
+            if (listaInventoryResult.length != 0) {
+                this.creaTabellaInventoryResult(listaInventoryResult);
             }
             
         });
@@ -257,6 +330,89 @@ class App {
         
     }
 
+    creaTabellaTechnosphereFlows = async (listaTechnosphereFlows) => {
+        console.log("listaTechnosphereFlows");
+        console.log(listaTechnosphereFlows);
+        setTimeout(() => {
+            const tabellaRisultatiRicerca = document.getElementById("risultatiRicerca");
+            tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTableTechnosphereFlows());
+            const tabellaRighe = document.getElementById("datiTabellaTechnosphereFlows");
+            let num = 0;
+            listaTechnosphereFlows.forEach(element => {
+                num++;
+                const riga = creaViewRowTechnosphereFlows(element, num);
+                tabellaRighe.insertAdjacentHTML('beforeend', riga);
+            });
+
+        }, 2000);
+    }
+
+    creaTabellaFinalDemand = async (richiestaFinale) => {
+        console.log("richiestaFinale");
+        console.log(richiestaFinale);
+        setTimeout(() => {
+            const tabellaRisultatiRicerca = document.getElementById("risultatiRicerca");
+            tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTableFinalDemand());
+            const tabellaRighe = document.getElementById("datiTabellaFinalDemand");
+            
+            const riga = creaViewRowFinalDemand(richiestaFinale, 1);
+            tabellaRighe.insertAdjacentHTML('beforeend', riga);
+            
+                            
+        }, 2000);
+    }
+
+    creaTabellaDirectRequirements = async (listaDirectRequirements) => {
+        console.log("listaDirectRequirements");
+        console.log(listaDirectRequirements);
+        setTimeout(() => {
+            const tabellaRisultatiRicerca = document.getElementById("risultatiRicerca");
+            tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTableDirectRequirements());
+            const tabellaRighe = document.getElementById("datiTabellaDirectRequirements");
+            let num = 0;
+            listaDirectRequirements.forEach(element => {
+                num++;
+                const riga = creaViewRowDirectRequirements(element, num);
+                tabellaRighe.insertAdjacentHTML('beforeend', riga);
+            });
+
+        }, 2000);
+    }
+
+    creaTabellaScalingFactors = async (listaScalingFactors) => {
+        console.log("listaScalingFactors");
+        console.log(listaScalingFactors);
+        setTimeout(() => {
+            const tabellaRisultatiRicerca = document.getElementById("risultatiRicerca");
+            tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTableScalingFactors());
+            const tabellaRighe = document.getElementById("datiTabellaScalingFactors");
+            let num = 0;
+            listaScalingFactors.forEach(element => {
+                num++;
+                const riga = creaViewRowScalingFactors(element, num);
+                tabellaRighe.insertAdjacentHTML('beforeend', riga);
+            });
+
+        }, 2000);
+    }
+
+    creaTabellaTotalityFactors = async (listaTotalityFactors) => {
+        console.log("listaTotalityFactors");
+        console.log(listaTotalityFactors);
+        setTimeout(() => {
+            const tabellaRisultatiRicerca = document.getElementById("risultatiRicerca");
+            tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTableTotalityFactors());
+            const tabellaRighe = document.getElementById("datiTabellaTotalityFactors");
+            let num = 0;
+            listaTotalityFactors.forEach(element => {
+                num++;
+                const riga = creaViewRowTotalityFactors(element, num);
+                tabellaRighe.insertAdjacentHTML('beforeend', riga);
+            });
+
+        }, 2000);
+    }
+
     creaTabellaInterventionFlows = async (listaInterventionFlows) => {
         console.log("creaTabellaInterventionFlows");
         console.log(listaInterventionFlows);
@@ -264,20 +420,12 @@ class App {
 
         setTimeout(() => {
             const tabellaRisultatiRicercaInput = document.getElementById("risultatiRicercaInput01");
-            console.log(tabellaRisultatiRicercaInput);
             const tabellaRisultatiRicercaOutput = document.getElementById("risultatiRicercaOutput02");
-            console.log(tabellaRisultatiRicercaOutput);
             tabellaRisultatiRicercaInput.insertAdjacentHTML('beforeend', creaViewTableInterventionFlowsInput());
             tabellaRisultatiRicercaOutput.insertAdjacentHTML('beforeend', creaViewTableInterventionFlowsOutput());
 
-            console.log(tabellaRisultatiRicercaInput);
-            console.log(tabellaRisultatiRicercaOutput);
-
             const tabellaRigheInput = document.getElementById("datiTabellaInterventionFlowsInput");
             const tabellaRigheOutput = document.getElementById("datiTabellaInterventionFlowsOutput");
-
-            console.log(tabellaRigheInput);
-            console.log(tabellaRigheOutput);
 
             let numInput = 0;
             let numOutput = 0;
@@ -301,6 +449,46 @@ class App {
         
     }
 
+    creaTabellaInventoryResult = async (listaInventoryResult) => {
+        console.log("creaTabellaInventoryResult");
+        console.log(listaInventoryResult);
+        
+
+        setTimeout(() => {
+            const tabellaRisultatiRicercaInput = document.getElementById("risultatiRicercaInput01");
+            const tabellaRisultatiRicercaOutput = document.getElementById("risultatiRicercaOutput02");
+            tabellaRisultatiRicercaInput.insertAdjacentHTML('beforeend', creaViewTableInventoryResultInput());
+            tabellaRisultatiRicercaOutput.insertAdjacentHTML('beforeend', creaViewTableInventoryResultOutput());
+
+            const tabellaRigheInput = document.getElementById("datiTabellaInventoryResultInput");
+            const tabellaRigheOutput = document.getElementById("datiTabellaInventoryResultOutput");
+            
+            console.log(tabellaRigheInput);
+            console.log(tabellaRigheOutput);
+
+            let numInput = 0;
+            let numOutput = 0;
+
+            listaInventoryResult.forEach(element => {
+
+                if(element.enviFlow.isInput){
+                    numInput++;
+                    const riga = creaViewRowInventoryResult(element, numInput);
+                    tabellaRigheInput.insertAdjacentHTML('beforeend', riga);
+                }
+                else{
+                    numOutput++;
+                    const riga = creaViewRowInventoryResult(element, numOutput);
+                    tabellaRigheOutput.insertAdjacentHTML('beforeend', riga);
+                }
+                
+            });
+
+        }, 2000);
+        
+    }
+
+     
 }
 
 export default App;

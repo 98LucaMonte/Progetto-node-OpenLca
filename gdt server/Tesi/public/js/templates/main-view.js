@@ -49,51 +49,26 @@ function creaViewMainRisultati() {
       <div class="offcanvas-body">
         <div class="list-group list-group-flush">
           <a href="/" class="list-group-item list-group-item-action">Home</a>
-          <a href="/totalRequirements" class="list-group-item list-group-item-action">Informazioni generali</a>
-          <a href="/interventionFlows" class="list-group-item list-group-item-action">Risultati dell'inventario</a>
+          <a href="/technosphereFlows" class="list-group-item list-group-item-action">5.5 Technosphere Flows</a>
+          <a href="/finalDemand" class="list-group-item list-group-item-action">5.5.1 The final Demand</a>
+          <a href="/totalRequirements" class="list-group-item list-group-item-action">5.5.2 Total Requirements</a>
+          <a href="/directRequirements" class="list-group-item list-group-item-action">5.5.3 Direct Requirements</a>
+          <a href="/scalingFactors" class="list-group-item list-group-item-action">5.5.4 Scaling factors</a>
+          <a href="/totalityFactors" class="list-group-item list-group-item-action">5.5.5 Totality factors</a>
+          <a href="/interventionFlows" class="list-group-item list-group-item-action">5.6 Intervention Flows</a>
+          <a href="/inventoryResult" class="list-group-item list-group-item-action">5.6.1 Inventory Result</a>
         </div>
       </div>
     </div>
     <div class="container mt-5">
       <div class="row justify-content-center">
         <div class="col-md-10">
-          <p>La tabella mostra i requisiti totali dei flussi della tecnosfera necessari per soddisfare la domanda del product system calcolato.</p>
           <div class="table-responsive div-scrollabile" id="risultatiRicerca">
           
           </div>
         </div>
       </div>
     </div>
-    `;
-}
-
-function creaViewTableTotalRequirements() {
-    return `
-        <table class="table table-striped table-bordered table-scrollabile">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nome Provider</th>
-                    <th scope="col">Nome Flow</th>
-                    <th scope="col">Quantità</th>
-                    <th scope="col">Unità di misura</th>
-                </tr>
-            </thead>
-            <tbody id="datiTabellaTotalRequirements">
-            </tbody>
-        </table>  
-    `;
-}
-
-function creaViewRowTotalRequirements(element,num){
-    return `
-    <tr class="color-row-table">
-        <th scope="row">${num}</th>
-        <td>${element.techFlow.provider.name}</td>
-        <td>${element.techFlow.flow.name}</td>
-        <td>${element.amount}</td> 
-        <td>${element.techFlow.flow.refUnit}</td>      
-    </tr>
     `;
 }
 
@@ -107,20 +82,26 @@ function creaViewMainRisultatiInterventionFlows() {
     <div class="offcanvas-body">
       <div class="list-group list-group-flush">
         <a href="/" class="list-group-item list-group-item-action">Home</a>
-        <a href="/totalRequirements" class="list-group-item list-group-item-action">Informazioni generali</a>
-        <a href="/interventionFlows" class="list-group-item list-group-item-action">Risultati dell'inventario</a>
+        <a href="/technosphereFlows" class="list-group-item list-group-item-action">5.5 Technosphere Flows</a>
+        <a href="/finalDemand" class="list-group-item list-group-item-action">5.5.1 The final Demand</a>
+        <a href="/totalRequirements" class="list-group-item list-group-item-action">5.5.2 Total Requirements</a>
+        <a href="/directRequirements" class="list-group-item list-group-item-action">5.5.3 Direct Requirements</a>
+        <a href="/scalingFactors" class="list-group-item list-group-item-action">5.5.4 Scaling factors</a>
+        <a href="/totalityFactors" class="list-group-item list-group-item-action">5.5.5 Totality factors</a>
+        <a href="/interventionFlows" class="list-group-item list-group-item-action">5.6 Intervention Flows</a>
+        <a href="/inventoryResult" class="list-group-item list-group-item-action">5.6.1 Inventory Result</a>
       </div>
     </div>
   </div>
   <div class="container mt-2 mb-5">
     <div class="row justify-content-center">
-      <p style="text-align: center;">La tabella mostra i flussi che intervengono con il risultato.</p>
-      <div class="col-md-10 mt-4">Input
+      
+      <div class="col-md-10 mt-4"><p><strong>Input</strong></p>
         <div class="table-responsive div-scrollabile" id="risultatiRicercaInput01">
         
         </div>
       </div>
-      <div class="col-md-10 mt-4">Output
+      <div class="col-md-10 mt-4"><p><strong>Output</strong></p>
         <div class="table-responsive div-scrollabile" id="risultatiRicercaOutput02">
         
         </div>
@@ -130,53 +111,4 @@ function creaViewMainRisultatiInterventionFlows() {
   `;
 }
 
-function creaViewTableInterventionFlowsInput() {
-  return `
-      <table class="table table-striped table-bordered table-scrollabile">
-          <thead>
-              <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Input</th>
-                  <th scope="col">Nome Flow</th>
-                  <th scope="col">Categoria</th>
-                  <th scope="col">Unità di misura</th>
-              </tr>
-          </thead>
-          <tbody id="datiTabellaInterventionFlowsInput">
-          </tbody>
-      </table>  
-  `;
-}
-
-function creaViewTableInterventionFlowsOutput() {
-  return `
-      <table class="table table-striped table-bordered table-scrollabile">
-          <thead>
-              <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Input</th>
-                  <th scope="col">Nome Flow</th>
-                  <th scope="col">Categoria</th>
-                  <th scope="col">Unità di misura</th>
-              </tr>
-          </thead>
-          <tbody id="datiTabellaInterventionFlowsOutput">
-          </tbody>
-      </table>  
-  `;
-}
-
-function creaViewRowInterventionFlows(element,num){
-  return `
-  <tr class="color-row-table">
-      <th scope="row">${num}</th>
-      <td>${element.isInput}</td>
-      <td>${element.flow.name}</td>
-      <td>${element.flow.category}</td> 
-      <td>${element.flow.refUnit}</td>      
-  </tr>
-  `;
-}
-
-
-export { creaViewMain, creaViewMainRisultati, creaViewTableTotalRequirements, creaViewRowTotalRequirements , creaViewMainRisultatiInterventionFlows , creaViewTableInterventionFlowsInput ,creaViewTableInterventionFlowsOutput, creaViewRowInterventionFlows };
+export { creaViewMain, creaViewMainRisultati, creaViewMainRisultatiInterventionFlows};
