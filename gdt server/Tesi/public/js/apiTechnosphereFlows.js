@@ -66,7 +66,7 @@ class ApiTechnosphereFlows {
         }
     }
 
-    /** (5.5.3) NON FUNZIONANTE
+    /** testato
      * I requisiti diretti di un processo j sono gli input e gli output in scala 
      * del prodotto collegato e i flussi di rifiuti di quel processo relativi alla domanda finale del sistema di prodotto.
      *
@@ -74,13 +74,13 @@ class ApiTechnosphereFlows {
      * @param {String} idCalcolo - Identificativo del calcolo di un product system.
      * @returns {Json} - Json che contiene informazioni sui flussi della tecnosfera.
      */
-    getDirectRequirements = async (vps, idCalcolo, techFlow) => {
+    getTotalRequirementsOfFlows = async (vps, idCalcolo, techFlow) => {
         try {
             
             let urlTechFlow = techFlow.provider["@id"]+"::"+techFlow.flow["@id"];
             console.log(urlTechFlow);
 
-            let url = vps + "result/" + idCalcolo + "/direct-requirements-of/" + urlTechFlow;
+            let url = vps + "result/" + idCalcolo + "/total-requirements-of/" + urlTechFlow;
             console.log(url);
             let resp = await fetch(url);
             let v = await resp.json();
@@ -90,7 +90,7 @@ class ApiTechnosphereFlows {
         }
     };
     
-    /** (5.5.4) 
+    /** (5.5.4) testato
      * Il vettore di scala s contiene per ciascun processo j 
      * un fattore sj in base al quale il processo deve essere scalato per soddisfare la domanda del sistema di prodotto.
      *
@@ -109,22 +109,18 @@ class ApiTechnosphereFlows {
             console.error('Errore durante la connessione:', error);
         }
     }
-    /** (5.5.5) 
-     * Il concetto di fattori di totalità è un po' complicato, ma sono molto utili per visualizzazioni come i diagrammi di Sankey. 
-     * In breve, ridimensionano il risultato dell'intensità in un risultato totale. 
-     * Un risultato di intensità è correlato a un'unità di output del prodotto (input di rifiuti) 
-     * di un flusso della tecnosfera j inclusi i contributi diretti, a monte e a valle. 
-     * Moltiplicando tale intensità per il fattore di totalità tfj si ottiene il risultato totale relativo 
-     * al fabbisogno totale di prodotto (rifiuto) j. 
-     * Moltiplicando direttamente l'intensità per i requisiti totali si raddoppierebbero i possibili loop.
+
+    /** 
      *
      * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
      * @param {String} idCalcolo - Identificativo del calcolo di un product system.
      * @returns {Json} - Json che contiene informazioni sui flussi della tecnosfera.
      */
-    getTotalityFactors = async (vps,idCalcolo) => {
+    getScaledTechFlowsOf= async (vps,idCalcolo,techFlow) => {
         try {
-            let url = vps + "result/"+idCalcolo+"/totality-factors";
+            let urlTechFlow = techFlow.provider["@id"]+"::"+techFlow.flow["@id"];
+            console.log(urlTechFlow);
+            let url = vps + "result/" + idCalcolo + "/scaled-tech-flows-of/" + urlTechFlow;
             console.log(url);
             let resp = await fetch(url);
             let v = await resp.json();
@@ -134,17 +130,17 @@ class ApiTechnosphereFlows {
         }
     }
 
-    /** (5.5.6) DA FINIRE
-     * I requisiti non scalati di un processo j 
-     * sono i requisiti diretti del processo relativi al riferimento quantitativo di quel processo senza applicare un fattore di scala.
+    /** 
      *
      * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
      * @param {String} idCalcolo - Identificativo del calcolo di un product system.
      * @returns {Json} - Json che contiene informazioni sui flussi della tecnosfera.
      */
-    getUnscaledRequirements = async (vps,idCalcolo) => {
+    getUnscaledTechFlowsOf= async (vps,idCalcolo,techFlow) => {
         try {
-            let url = vps + "result/"+idCalcolo+"/unscaled-requirements-of/{tech-flow}";
+            let urlTechFlow = techFlow.provider["@id"]+"::"+techFlow.flow["@id"];
+            console.log(urlTechFlow);
+            let url = vps + "result/" + idCalcolo + "/unscaled-tech-flows-of/" + urlTechFlow;
             console.log(url);
             let resp = await fetch(url);
             let v = await resp.json();
@@ -153,7 +149,7 @@ class ApiTechnosphereFlows {
             console.error('Errore durante la connessione:', error);
         }
     }
-
+    
 }
 
 export default ApiTechnosphereFlows;

@@ -2,23 +2,28 @@
 import Api from "./api.js";
 import ApiInterventionFlow from "./apiInterventionFlow.js";
 import ApiTechnosphereFlows from "./apiTechnosphereFlows.js";
+import ApiImpactCategories from "./apiImpactCategories.js";
 import {creaViewMain, creaViewMainRisultati, creaViewMainRisultatiInterventionFlows} from './templates/main-view.js';
 import {creaViewTableTotalRequirements,creaViewRowTotalRequirements,
         creaViewTableTechnosphereFlows, creaViewRowTechnosphereFlows,
         creaViewTableFinalDemand,creaViewRowFinalDemand,
-        creaViewTableDirectRequirements,creaViewRowDirectRequirements,
+        creaViewTabletotalRequirementsOfFlows,creaViewRowtotalRequirementsOfFlows,
         creaViewTableScalingFactors,creaViewRowScalingFactors,
-        creaViewTableTotalityFactors,creaViewRowTotalityFactors}from './templates/main-view-technosphere-flows.js';
+        creaViewTableTotalityFactors,creaViewRowTotalityFactors,
+        creaViewTableScaledTechFlowsOf,creaViewRowScaledTechFlowsOf,
+        creaViewTableUnscaledTechFlowsOf,creaViewRowUnscaledTechFlowsOf}from './templates/main-view-technosphere-flows.js';
 
 import {creaViewTableInterventionFlowsInput ,creaViewTableInterventionFlowsOutput, creaViewRowInterventionFlows,
         creaViewTableInventoryResultInput , creaViewTableInventoryResultOutput, creaViewRowInventoryResult}from './templates/main-view-intervention-flow.js';
 
+import { creaViewTableImpactCategories, creaViewRowImpactCategories} from './templates/main-view-impact-categories.js';
 import { creaViewHeader,creaViewHeaderRisultati } from './templates/header-view.js'
 import page from '//unpkg.com/page/page.mjs';
 
 const api = new Api();
 const apiTechnosphereFlows = new ApiTechnosphereFlows();
 const apiInterventionFlow = new ApiInterventionFlow();
+const apiImpactCategories = new ApiImpactCategories();
 
 class App {
 
@@ -85,15 +90,15 @@ class App {
                 this.creaTabellaTotalRequirements(listaTotalRequirements);
             }
         });
-        page('/directRequirements', async () => {
+        page('/totalRequirementsOfFlows', async () => {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
             this.main.insertAdjacentHTML('beforeend', creaViewMainRisultati());
             const techFlow = await apiTechnosphereFlows.getRichiestaFinale(vps1, idCalcolo);
-            const listaDirectRequirements = await apiTechnosphereFlows.getDirectRequirements(vps1, idCalcolo,techFlow.techFlow);
-            if (listaDirectRequirements.length != 0) {
-                this.creaTabellaDirectRequirements(listaDirectRequirements);
+            const listatotalRequirementsOfFlows = await apiTechnosphereFlows.getTotalRequirementsOfFlows(vps1, idCalcolo,techFlow.techFlow);
+            if (listatotalRequirementsOfFlows.length != 0) {
+                this.creaTabellatotalRequirementsOfFlows(listatotalRequirementsOfFlows);
             }
         });
         page('/scalingFactors', async () => {
@@ -106,14 +111,26 @@ class App {
                 this.creaTabellaScalingFactors(listaScalingFactors);
             }
         });
-        page('/totalityFactors', async () => {
+        page('/scaledTechFlowsOf', async () => {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
             this.main.insertAdjacentHTML('beforeend', creaViewMainRisultati());
-            const listaTotalityFactors = await apiTechnosphereFlows.getTotalityFactors(vps1, idCalcolo);
-            if (listaTotalityFactors.length != 0) {
-                this.creaTabellaTotalityFactors(listaTotalityFactors);
+            const techFlow = await apiTechnosphereFlows.getRichiestaFinale(vps1, idCalcolo);
+            const listaScaledTechFlowsOf = await apiTechnosphereFlows.getScaledTechFlowsOf(vps1, idCalcolo,techFlow.techFlow);
+            if (listaScaledTechFlowsOf.length != 0) {
+                this.creaTabellaScaledTechFlowsOf(listaScaledTechFlowsOf);
+            }
+        });
+        page('/unscaledTechFlowsOf', async () => {
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            this.main.innerHTML = '';
+            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultati());
+            const techFlow = await apiTechnosphereFlows.getRichiestaFinale(vps1, idCalcolo);
+            const listaUnscaledTechFlowsOf = await apiTechnosphereFlows.getUnscaledTechFlowsOf(vps1, idCalcolo,techFlow.techFlow);
+            if (listaUnscaledTechFlowsOf.length != 0) {
+                this.creaTabellaUnscaledTechFlowsOf(listaUnscaledTechFlowsOf);
             }
         });
         page('/interventionFlows', async () => {
@@ -135,6 +152,17 @@ class App {
             const listaInventoryResult = await apiInterventionFlow.getInventoryResult(vps1, idCalcolo);
             if (listaInventoryResult.length != 0) {
                 this.creaTabellaInventoryResult(listaInventoryResult);
+            }
+            
+        });
+        page('/impactCategories', async () => {
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            this.main.innerHTML = '';
+            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultati());
+            const listaImpactCategories = await apiImpactCategories.getImpactCategories(vps1,idCalcolo);
+            if (listaImpactCategories.length != 0) {
+                this.creaTabellaImpactCategories(listaImpactCategories);
             }
             
         });
@@ -362,21 +390,16 @@ class App {
         }, 2000);
     }
 
-    creaTabellaDirectRequirements = async (listaDirectRequirements) => {
-        console.log("listaDirectRequirements");
-        console.log(listaDirectRequirements);
+    creaTabellatotalRequirementsOfFlows = async (listatotalRequirementsOfFlows) => {
+        console.log("listatotalRequirementsOfFlows");
+        console.log(listatotalRequirementsOfFlows);
         setTimeout(() => {
             const tabellaRisultatiRicerca = document.getElementById("risultatiRicerca");
-            tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTableDirectRequirements());
-            const tabellaRighe = document.getElementById("datiTabellaDirectRequirements");
-            let num = 0;
-            listaDirectRequirements.forEach(element => {
-                num++;
-                const riga = creaViewRowDirectRequirements(element, num);
-                tabellaRighe.insertAdjacentHTML('beforeend', riga);
-            });
-
-        }, 2000);
+            tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTabletotalRequirementsOfFlows());
+            const tabellaRighe = document.getElementById("datiTabellatotalRequirementsOfFlows");
+            const riga = creaViewRowtotalRequirementsOfFlows(listatotalRequirementsOfFlows, 1);
+            tabellaRighe.insertAdjacentHTML('beforeend', riga);
+        }, 500);
     }
 
     creaTabellaScalingFactors = async (listaScalingFactors) => {
@@ -488,6 +511,56 @@ class App {
         
     }
 
+    creaTabellaImpactCategories = async (listaImpactCategories) => {
+        console.log("listaImpactCategories");
+        console.log(listaImpactCategories);
+        setTimeout(() => {
+            const tabellaRisultatiRicerca = document.getElementById("risultatiRicerca");
+            tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTableImpactCategories());
+            const tabellaRighe = document.getElementById("datiTabellaImpactCategories");
+            let num = 0;
+            listaImpactCategories.forEach(element => {
+                num++;
+                const riga = creaViewRowImpactCategories(element, num);
+                tabellaRighe.insertAdjacentHTML('beforeend', riga);
+            });
+
+        }, 2000);
+    }
+
+    creaTabellaScaledTechFlowsOf = async (listaScaledTechFlowsOf) => {
+        console.log("listaScaledTechFlowsOf");
+        console.log(listaScaledTechFlowsOf);
+        setTimeout(() => {
+            const tabellaRisultatiRicerca = document.getElementById("risultatiRicerca");
+            tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTableImpactCategories());
+            const tabellaRighe = document.getElementById("datiTabellaImpactCategories");
+            let num = 0;
+            listaScaledTechFlowsOf.forEach(element => {
+                num++;
+                const riga = creaViewRowImpactCategories(element, num);
+                tabellaRighe.insertAdjacentHTML('beforeend', riga);
+            });
+
+        }, 2000);
+    }
+
+    creaTabellaUnscaledTechFlowsOf = async (listaUnscaledTechFlowsOf) => {
+        console.log("listaUnscaledTechFlowsOf");
+        console.log(listaUnscaledTechFlowsOf);
+        setTimeout(() => {
+            const tabellaRisultatiRicerca = document.getElementById("risultatiRicerca");
+            tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTableImpactCategories());
+            const tabellaRighe = document.getElementById("datiTabellaImpactCategories");
+            let num = 0;
+            listaUnscaledTechFlowsOf.forEach(element => {
+                num++;
+                const riga = creaViewRowImpactCategories(element, num);
+                tabellaRighe.insertAdjacentHTML('beforeend', riga);
+            });
+
+        }, 2000);
+    }
      
 }
 

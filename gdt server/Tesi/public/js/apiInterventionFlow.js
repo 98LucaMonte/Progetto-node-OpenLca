@@ -1,7 +1,7 @@
 
 class ApiInterventionFlow {
 
-    /** (5.6) 
+    /** (5.6) testato 
      * Questo metodo restituisce i flussi di intervento m di un risultato. 
      * Questi sono i flussi che attraversano il confine con l'ambiente del sistema calcolato 
      * (ecco perché il nome abbreviato è EnviFlow nell'API). Nei calcoli regionalizzati questi flussi possono essere coppie di flussi e luoghi, 

@@ -52,11 +52,13 @@ function creaViewMainRisultati() {
           <a href="/technosphereFlows" class="list-group-item list-group-item-action">5.5 Technosphere Flows</a>
           <a href="/finalDemand" class="list-group-item list-group-item-action">5.5.1 The final Demand</a>
           <a href="/totalRequirements" class="list-group-item list-group-item-action">5.5.2 Total Requirements</a>
-          <a href="/directRequirements" class="list-group-item list-group-item-action">5.5.3 Direct Requirements</a>
+          <a href="/totalRequirementsOfFlows" class="list-group-item list-group-item-action">Total Requirements Of Flows</a>
           <a href="/scalingFactors" class="list-group-item list-group-item-action">5.5.4 Scaling factors</a>
-          <a href="/totalityFactors" class="list-group-item list-group-item-action">5.5.5 Totality factors</a>
+          <a href="/scaledTechFlowsOf" class="list-group-item list-group-item-action">Scaled Requirements</a>
+          <a href="/unscaledTechFlowsOf" class="list-group-item list-group-item-action">Unscaled Requirements</a>
           <a href="/interventionFlows" class="list-group-item list-group-item-action">5.6 Intervention Flows</a>
           <a href="/inventoryResult" class="list-group-item list-group-item-action">5.6.1 Inventory Result</a>
+          <a href="/impactCategories" class="list-group-item list-group-item-action">5.7 impact Categories</a>
         </div>
       </div>
     </div>
@@ -85,11 +87,13 @@ function creaViewMainRisultatiInterventionFlows() {
         <a href="/technosphereFlows" class="list-group-item list-group-item-action">5.5 Technosphere Flows</a>
         <a href="/finalDemand" class="list-group-item list-group-item-action">5.5.1 The final Demand</a>
         <a href="/totalRequirements" class="list-group-item list-group-item-action">5.5.2 Total Requirements</a>
-        <a href="/directRequirements" class="list-group-item list-group-item-action">5.5.3 Direct Requirements</a>
+        <a href="/totalRequirementsOfFlows" class="list-group-item list-group-item-action">Total Requirements Of Flows</a>
         <a href="/scalingFactors" class="list-group-item list-group-item-action">5.5.4 Scaling factors</a>
-        <a href="/totalityFactors" class="list-group-item list-group-item-action">5.5.5 Totality factors</a>
+        <a href="/scaledTechFlowsOf" class="list-group-item list-group-item-action">Scaled Requirements</a>
+        <a href="/unscaledTechFlowsOf" class="list-group-item list-group-item-action">Unscaled Requirements</a>        
         <a href="/interventionFlows" class="list-group-item list-group-item-action">5.6 Intervention Flows</a>
         <a href="/inventoryResult" class="list-group-item list-group-item-action">5.6.1 Inventory Result</a>
+        <a href="/impactCategories" class="list-group-item list-group-item-action">5.7 impact Categories</a>
       </div>
     </div>
   </div>

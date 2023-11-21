@@ -89,12 +89,12 @@ function creaViewTableTechnosphereFlows() {
     `;
   }
   
-  function creaViewTableDirectRequirements() {
+  function creaViewTabletotalRequirementsOfFlows() {
     return `
-        <table class="table table-striped table-bordered table-scrollabile"">
+        <table class="table table-striped table-bordered"">
             <thead>
                 <tr>
-                    <th scope="col">#5.5.3</th>
+                    <th scope="col">#</th>
                     <th scope="col">Nome Provider</th>
                     <th scope="col">Categoria Provider</th>
                     <th scope="col">Nome Flow</th>
@@ -102,13 +102,13 @@ function creaViewTableTechnosphereFlows() {
                     <th scope="col">Quantità</th>
                 </tr>
             </thead>
-            <tbody id="datiTabellaDirectRequirements">
+            <tbody id="datiTabellatotalRequirementsOfFlows">
             </tbody>
         </table>  
     `;
   }
   
-  function creaViewRowDirectRequirements(element,num){
+  function creaViewRowtotalRequirementsOfFlows(element,num){
     return `
     <tr class="color-row-table">
         <th scope="row">${num}</th>
@@ -185,9 +185,75 @@ function creaViewTableTechnosphereFlows() {
     `;
   }
 
+  function creaViewTableScaledTechFlowsOf() {
+    return `
+        <table class="table table-striped table-bordered table-scrollabile"">
+            <thead>
+                <tr>
+                    <th scope="col">#5.5.5</th>
+                    <th scope="col">Nome Provider</th>
+                    <th scope="col">Categoria Provider</th>
+                    <th scope="col">Nome Flow</th>
+                    <th scope="col">Categoria Flow</th>
+                    <th scope="col">Quantità</th>
+                </tr>
+            </thead>
+            <tbody id="datiTabellaScaledTechFlowsOf">
+            </tbody>
+        </table>  
+    `;
+  }
+  
+  function creaViewRowScaledTechFlowsOf(element,num){
+    return `
+    <tr class="color-row-table">
+        <th scope="row">${num}</th>
+        <td>${element.techFlow.provider.name}</td>
+        <td>${element.techFlow.provider.category}</td>      
+        <td>${element.techFlow.flow.name}</td>
+        <td>${element.techFlow.flow.category}</td>
+        <td>${element.amount}</td>
+    </tr>
+    `;
+  }
+
+  function creaViewTableUnscaledTechFlowsOf() {
+    return `
+        <table class="table table-striped table-bordered table-scrollabile"">
+            <thead>
+                <tr>
+                    <th scope="col">#5.5.5</th>
+                    <th scope="col">Nome Provider</th>
+                    <th scope="col">Categoria Provider</th>
+                    <th scope="col">Nome Flow</th>
+                    <th scope="col">Categoria Flow</th>
+                    <th scope="col">Quantità</th>
+                </tr>
+            </thead>
+            <tbody id="datiTabellaUnscaledTechFlowsOf">
+            </tbody>
+        </table>  
+    `;
+  }
+  
+  function creaViewRowUnscaledTechFlowsOf(element,num){
+    return `
+    <tr class="color-row-table">
+        <th scope="row">${num}</th>
+        <td>${element.techFlow.provider.name}</td>
+        <td>${element.techFlow.provider.category}</td>      
+        <td>${element.techFlow.flow.name}</td>
+        <td>${element.techFlow.flow.category}</td>
+        <td>${element.amount}</td>
+    </tr>
+    `;
+  }
+
   export { creaViewTableTotalRequirements,creaViewRowTotalRequirements,
     creaViewTableTechnosphereFlows, creaViewRowTechnosphereFlows,
     creaViewTableFinalDemand,creaViewRowFinalDemand,
-    creaViewTableDirectRequirements,creaViewRowDirectRequirements,
+    creaViewTabletotalRequirementsOfFlows,creaViewRowtotalRequirementsOfFlows,
     creaViewTableScalingFactors,creaViewRowScalingFactors,
-    creaViewTableTotalityFactors,creaViewRowTotalityFactors};
+    creaViewTableTotalityFactors,creaViewRowTotalityFactors,
+    creaViewTableScaledTechFlowsOf,creaViewRowScaledTechFlowsOf,
+    creaViewTableUnscaledTechFlowsOf,creaViewRowUnscaledTechFlowsOf};
