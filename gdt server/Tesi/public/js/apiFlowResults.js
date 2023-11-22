@@ -19,7 +19,6 @@ class ApiFlowResults {
         }
     }
 
-    
 }
 
 export default ApiFlowResults;

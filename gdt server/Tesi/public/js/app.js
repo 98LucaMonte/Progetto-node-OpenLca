@@ -5,19 +5,21 @@ import ApiTechnosphereFlows from "./apiTechnosphereFlows.js";
 import ApiFlowResults from "./apiFlowResults.js";
 
 import {creaViewMain, creaViewMainRisultati, creaViewMainRisultatiInterventionFlows} from './templates/main-view.js';
+
+import {creaViewTableFinalDemand,creaViewRowFinalDemand,
+        creaViewTableTechnosphereFlows,creaViewRowTechnosphereFlows,
+        creaViewTableInterventionFlowsInput,creaViewTableInterventionFlowsOutput,creaViewRowInterventionFlows,
+        creaViewTableImpactCategories, creaViewRowImpactCategories} from './templates/main-view-result-queries.js';
+
 import {creaViewTableTotalRequirements,creaViewRowTotalRequirements,
-        creaViewTableTechnosphereFlows, creaViewRowTechnosphereFlows,
-        creaViewTableFinalDemand,creaViewRowFinalDemand,
         creaViewTabletotalRequirementsOfFlows,creaViewRowtotalRequirementsOfFlows,
         creaViewTableScalingFactors,creaViewRowScalingFactors,
         creaViewTableTotalityFactors,creaViewRowTotalityFactors,
         creaViewTableScaledTechFlowsOf,creaViewRowScaledTechFlowsOf,
         creaViewTableUnscaledTechFlowsOf,creaViewRowUnscaledTechFlowsOf}from './templates/main-view-technosphere-flows.js';
 
-import {creaViewTableInterventionFlowsInput ,creaViewTableInterventionFlowsOutput, creaViewRowInterventionFlows,
-        creaViewTableInventoryResultInput , creaViewTableInventoryResultOutput, creaViewRowInventoryResult}from './templates/main-view-intervention-flow.js';
+import {creaViewTableInventoryResultInput , creaViewTableInventoryResultOutput, creaViewRowInventoryResult}from './templates/main-view-flow-results.js';
 
-import { creaViewTableImpactCategories, creaViewRowImpactCategories} from './templates/main-view-impact-categories.js';
 import { creaViewHeader,creaViewHeaderRisultati } from './templates/header-view.js'
 import page from '//unpkg.com/page/page.mjs';
 
