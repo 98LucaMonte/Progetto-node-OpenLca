@@ -1,4 +1,3 @@
-
 function creaViewTableInventoryResultInput() {
     return `
         <table class="table table-striped table-bordered table-scrollabile">
@@ -49,5 +48,9 @@ function creaViewRowInventoryResult(element,num){
     </tr>
     `;
 }
+
+
+
+
 
 export {creaViewTableInventoryResultInput , creaViewTableInventoryResultOutput, creaViewRowInventoryResult};
