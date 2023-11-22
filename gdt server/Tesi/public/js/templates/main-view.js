@@ -59,6 +59,8 @@ function creaViewMainRisultati() {
           <a href="/interventionFlows" class="list-group-item list-group-item-action">5.6 Intervention Flows</a>
           <a href="/inventoryResult" class="list-group-item list-group-item-action">5.6.1 Inventory Result</a>
           <a href="/impactCategories" class="list-group-item list-group-item-action">5.7 impact Categories</a>
+          <a href="/totalFlowValueOf" class="list-group-item list-group-item-action">Total Flow Value Of</a>
+          <a href="/flowContributionsOf" class="list-group-item list-group-item-action">Flow Contributions Of</a>
         </div>
       </div>
     </div>
@@ -94,6 +96,8 @@ function creaViewMainRisultatiInterventionFlows() {
         <a href="/interventionFlows" class="list-group-item list-group-item-action">5.6 Intervention Flows</a>
         <a href="/inventoryResult" class="list-group-item list-group-item-action">5.6.1 Inventory Result</a>
         <a href="/impactCategories" class="list-group-item list-group-item-action">5.7 impact Categories</a>
+        <a href="/totalFlowValueOf" class="list-group-item list-group-item-action">Total Flow Value Of</a>
+        <a href="/flowContributionsOf" class="list-group-item list-group-item-action">Flow Contributions Of</a>
       </div>
     </div>
   </div>
