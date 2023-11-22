@@ -28,7 +28,6 @@ function creaViewRowTotalRequirements(element,num){
     `;
 }
 
-
 function creaViewTableTechnosphereFlows() {
     return `
         <table class="table table-striped table-bordered table-scrollabile">
@@ -190,11 +189,12 @@ function creaViewTableTechnosphereFlows() {
         <table class="table table-striped table-bordered table-scrollabile"">
             <thead>
                 <tr>
-                    <th scope="col">#5.5.5</th>
+                    <th scope="col">#</th>
                     <th scope="col">Nome Provider</th>
                     <th scope="col">Categoria Provider</th>
                     <th scope="col">Nome Flow</th>
                     <th scope="col">Categoria Flow</th>
+                    <th scope="col">Unità di misura Flow</th>
                     <th scope="col">Quantità</th>
                 </tr>
             </thead>
@@ -212,6 +212,7 @@ function creaViewTableTechnosphereFlows() {
         <td>${element.techFlow.provider.category}</td>      
         <td>${element.techFlow.flow.name}</td>
         <td>${element.techFlow.flow.category}</td>
+        <td>${element.techFlow.flow.refUnit}</td>
         <td>${element.amount}</td>
     </tr>
     `;
@@ -222,11 +223,12 @@ function creaViewTableTechnosphereFlows() {
         <table class="table table-striped table-bordered table-scrollabile"">
             <thead>
                 <tr>
-                    <th scope="col">#5.5.5</th>
+                    <th scope="col">#</th>
                     <th scope="col">Nome Provider</th>
                     <th scope="col">Categoria Provider</th>
                     <th scope="col">Nome Flow</th>
                     <th scope="col">Categoria Flow</th>
+                    <th scope="col">Unità di misura Flow</th>
                     <th scope="col">Quantità</th>
                 </tr>
             </thead>
@@ -244,6 +246,7 @@ function creaViewTableTechnosphereFlows() {
         <td>${element.techFlow.provider.category}</td>      
         <td>${element.techFlow.flow.name}</td>
         <td>${element.techFlow.flow.category}</td>
+        <td>${element.techFlow.flow.refUnit}</td>
         <td>${element.amount}</td>
     </tr>
     `;

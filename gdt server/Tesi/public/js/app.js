@@ -1,8 +1,9 @@
 "use strict;"
-import Api from "./api.js";
-import ApiInterventionFlow from "./apiInterventionFlow.js";
+import ApiCalculation from "./apiCalculation.js";
+import ApiResultQueries from "./apiResultQueries.js";
 import ApiTechnosphereFlows from "./apiTechnosphereFlows.js";
-import ApiImpactCategories from "./apiImpactCategories.js";
+import ApiFlowResults from "./apiFlowResults.js";
+
 import {creaViewMain, creaViewMainRisultati, creaViewMainRisultatiInterventionFlows} from './templates/main-view.js';
 import {creaViewTableTotalRequirements,creaViewRowTotalRequirements,
         creaViewTableTechnosphereFlows, creaViewRowTechnosphereFlows,
@@ -20,10 +21,10 @@ import { creaViewTableImpactCategories, creaViewRowImpactCategories} from './tem
 import { creaViewHeader,creaViewHeaderRisultati } from './templates/header-view.js'
 import page from '//unpkg.com/page/page.mjs';
 
-const api = new Api();
+const apiCalculation = new ApiCalculation();
+const apiResultQueries = new ApiResultQueries();
 const apiTechnosphereFlows = new ApiTechnosphereFlows();
-const apiInterventionFlow = new ApiInterventionFlow();
-const apiImpactCategories = new ApiImpactCategories();
+const apiFlowResults = new ApiFlowResults();
 
 class App {
 
@@ -46,13 +47,13 @@ class App {
             idCalcolo = null;
 
             //Prendo i product system disponibili dal db
-            await this.getProductSystem(api, vps1);
+            await this.getProductSystem(apiCalculation, vps1);
             //Prendo gli impact method disponibili dal db
-            await this.getImpactMethod(api, vps1);
+            await this.getImpactMethod(apiCalculation, vps1);
 
             document.getElementById('buttonCalcolaProductSystem').addEventListener('click', async event => {
                 event.preventDefault();
-                idCalcolo = await this.calcolaProductSystem(api,vps1,idCalcolo);
+                idCalcolo = await this.calcolaProductSystem(apiCalculation,vps1,idCalcolo);
                 if(idCalcolo !== undefined){
                     page.redirect('/totalRequirements');
                 }
@@ -64,7 +65,7 @@ class App {
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
             this.main.insertAdjacentHTML('beforeend', creaViewMainRisultati());
-            const listaTechnosphereFlows = await apiTechnosphereFlows.getTechnosphereFlows(vps1, idCalcolo);
+            const listaTechnosphereFlows = await apiResultQueries.getTechnosphereFlows(vps1, idCalcolo);
             if (listaTechnosphereFlows.length != 0) {
                 this.creaTabellaTechnosphereFlows(listaTechnosphereFlows);
             }
@@ -74,7 +75,7 @@ class App {
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
             this.main.insertAdjacentHTML('beforeend', creaViewMainRisultati());
-            const richiestaFinale = await apiTechnosphereFlows.getRichiestaFinale(vps1, idCalcolo);
+            const richiestaFinale = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
             console.log(richiestaFinale);
             if (richiestaFinale.length != 0) {
                 this.creaTabellaFinalDemand(richiestaFinale);                                                                         
@@ -95,7 +96,7 @@ class App {
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
             this.main.insertAdjacentHTML('beforeend', creaViewMainRisultati());
-            const techFlow = await apiTechnosphereFlows.getRichiestaFinale(vps1, idCalcolo);
+            const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
             const listatotalRequirementsOfFlows = await apiTechnosphereFlows.getTotalRequirementsOfFlows(vps1, idCalcolo,techFlow.techFlow);
             if (listatotalRequirementsOfFlows.length != 0) {
                 this.creaTabellatotalRequirementsOfFlows(listatotalRequirementsOfFlows);
@@ -116,7 +117,7 @@ class App {
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
             this.main.insertAdjacentHTML('beforeend', creaViewMainRisultati());
-            const techFlow = await apiTechnosphereFlows.getRichiestaFinale(vps1, idCalcolo);
+            const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
             const listaScaledTechFlowsOf = await apiTechnosphereFlows.getScaledTechFlowsOf(vps1, idCalcolo,techFlow.techFlow);
             if (listaScaledTechFlowsOf.length != 0) {
                 this.creaTabellaScaledTechFlowsOf(listaScaledTechFlowsOf);
@@ -127,7 +128,7 @@ class App {
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
             this.main.insertAdjacentHTML('beforeend', creaViewMainRisultati());
-            const techFlow = await apiTechnosphereFlows.getRichiestaFinale(vps1, idCalcolo);
+            const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
             const listaUnscaledTechFlowsOf = await apiTechnosphereFlows.getUnscaledTechFlowsOf(vps1, idCalcolo,techFlow.techFlow);
             if (listaUnscaledTechFlowsOf.length != 0) {
                 this.creaTabellaUnscaledTechFlowsOf(listaUnscaledTechFlowsOf);
@@ -138,7 +139,7 @@ class App {
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
             this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiInterventionFlows());
-            const listaInterventionFlows = await apiInterventionFlow.getInterventionFlows(vps1, idCalcolo);
+            const listaInterventionFlows = await apiResultQueries.getInterventionFlows(vps1, idCalcolo);
             if (listaInterventionFlows.length != 0) {
                 this.creaTabellaInterventionFlows(listaInterventionFlows);
             }
@@ -149,7 +150,7 @@ class App {
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
             this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiInterventionFlows());
-            const listaInventoryResult = await apiInterventionFlow.getInventoryResult(vps1, idCalcolo);
+            const listaInventoryResult = await apiFlowResults.getInventoryResult(vps1, idCalcolo);
             if (listaInventoryResult.length != 0) {
                 this.creaTabellaInventoryResult(listaInventoryResult);
             }
@@ -160,7 +161,7 @@ class App {
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
             this.main.insertAdjacentHTML('beforeend', creaViewMainRisultati());
-            const listaImpactCategories = await apiImpactCategories.getImpactCategories(vps1,idCalcolo);
+            const listaImpactCategories = await apiResultQueries.getImpactCategories(vps1,idCalcolo);
             if (listaImpactCategories.length != 0) {
                 this.creaTabellaImpactCategories(listaImpactCategories);
             }
@@ -175,13 +176,13 @@ class App {
     * della select usata per selezionare il product system che si vuole calcolare andando a impostare l'id, 
     * il value e il text che andranno a formare l'option che verà aggiunto alla select.
     * 
-    * @param {Api} api - Oggetto che permette il richiamo delle api.
+    * @param {Api} apiCalculation - Oggetto che permette il richiamo delle apiCalculation.
     * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
     */
-    getProductSystem = async (api, vps) => {
+    getProductSystem = async (apiCalculation, vps) => {
 
         const placeholder = document.getElementById("selectedProductSystem");
-        let listaProductSystem = await api.getProductSystem(vps);
+        let listaProductSystem = await apiCalculation.getProductSystem(vps);
         console.log("ProductSystem");
         console.log(listaProductSystem);
 
@@ -208,13 +209,13 @@ class App {
     * anche l'id del nwSets necessario per fare il calcolo del product system.
     * Se non ci sono impact method si inserisce nel placeholder Non ci sono Impact method selezionabili.
     *
-    * @param {Api} api - Oggetto che permette il richiamo delle api.
+    * @param {Api} apiCalculation - Oggetto che permette il richiamo delle apiCalculation.
     * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
     */
-    getImpactMethod = async (api, vps) => {
+    getImpactMethod = async (apiCalculation, vps) => {
 
         const placeholder = document.getElementById("selectedImpactMethod");
-        let listaImpactMethod = await api.getImpactMethod(vps);
+        let listaImpactMethod = await apiCalculation.getImpactMethod(vps);
         console.log("impact-method");
         console.log(listaImpactMethod);
 
@@ -246,11 +247,11 @@ class App {
     * selezionato dai select. Se non si seleziona uno tra product system e impact method
     * non si può effettuare il calcolo.
     * 
-    * @param {Api} api - Oggetto che permette il richiamo delle api.
+    * @param {Api} apiCalculation - Oggetto che permette il richiamo delle apiCalculation.
     * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
     * @returns {String} - Stringa che contiene l'id del calcolo del product system.
     */
-    calcolaProductSystem = async (api,vps) => {
+    calcolaProductSystem = async (apiCalculation,vps) => {
 
         let idCalcolo = undefined;
         //Prendo l'id del product system selezionato
@@ -295,7 +296,7 @@ class App {
 
                 console.log("Calcola Product System");
                 //Eseguo il calcolo del product system
-                let result = await api.calcolaProductSystem(vps, idProductSystem, idImpactMethod, idNewSet);
+                let result = await apiCalculation.calcolaProductSystem(vps, idProductSystem, idImpactMethod, idNewSet);
                 idCalcolo = result["@id"];
 
                 const messaggio = document.getElementById("risultatiRicerca");
@@ -304,7 +305,7 @@ class App {
                 let statoCalcolo = false;
                 //Attraverso questo ciclo verifico inviando l'id del calcolo se quest'ultimo è stato ultimato 
                 while (statoCalcolo != true) {
-                    statoCalcolo = await api.getStatoCalcolo(vps, idCalcolo);
+                    statoCalcolo = await apiCalculation.getStatoCalcolo(vps, idCalcolo);
                     statoCalcolo = statoCalcolo.isReady;
                 }
 
@@ -533,12 +534,12 @@ class App {
         console.log(listaScaledTechFlowsOf);
         setTimeout(() => {
             const tabellaRisultatiRicerca = document.getElementById("risultatiRicerca");
-            tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTableImpactCategories());
-            const tabellaRighe = document.getElementById("datiTabellaImpactCategories");
+            tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTableScaledTechFlowsOf());
+            const tabellaRighe = document.getElementById("datiTabellaScaledTechFlowsOf");
             let num = 0;
             listaScaledTechFlowsOf.forEach(element => {
                 num++;
-                const riga = creaViewRowImpactCategories(element, num);
+                const riga = creaViewRowScaledTechFlowsOf(element, num);
                 tabellaRighe.insertAdjacentHTML('beforeend', riga);
             });
 
@@ -550,12 +551,12 @@ class App {
         console.log(listaUnscaledTechFlowsOf);
         setTimeout(() => {
             const tabellaRisultatiRicerca = document.getElementById("risultatiRicerca");
-            tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTableImpactCategories());
-            const tabellaRighe = document.getElementById("datiTabellaImpactCategories");
+            tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTableUnscaledTechFlowsOf());
+            const tabellaRighe = document.getElementById("datiTabellaUnscaledTechFlowsOf");
             let num = 0;
             listaUnscaledTechFlowsOf.forEach(element => {
                 num++;
-                const riga = creaViewRowImpactCategories(element, num);
+                const riga = creaViewRowUnscaledTechFlowsOf(element, num);
                 tabellaRighe.insertAdjacentHTML('beforeend', riga);
             });
 
