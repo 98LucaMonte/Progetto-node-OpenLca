@@ -134,7 +134,99 @@ return `
 `;
 }
 
-export { creaViewTableFinalDemand,creaViewRowFinalDemand,
-         creaViewTableTechnosphereFlows,creaViewRowTechnosphereFlows,
-         creaViewTableInterventionFlowsInput,creaViewTableInterventionFlowsOutput,creaViewRowInterventionFlows,
-         creaViewTableImpactCategories, creaViewRowImpactCategories};
+function creaTabellaTechnosphereFlows(listaTechnosphereFlows) {
+    console.log("listaTechnosphereFlows");
+    console.log(listaTechnosphereFlows);
+    const messaggio = document.getElementById("informazioniDati");
+    messaggio.innerHTML='';
+    messaggio.insertAdjacentHTML('beforeend', `<h5 class="alert alert-secondary" role="alert">
+    Tabella che rappresenta i techosphere flows (lista di flow e di provider)</h5>`);
+
+    const tabellaRisultatiRicerca = document.getElementById("risultatiRicerca");
+    tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTableTechnosphereFlows());
+    const tabellaRighe = document.getElementById("datiTabellaTechnosphereFlows");
+    let num = 0;
+    listaTechnosphereFlows.forEach(element => {
+        num++;
+        const riga = creaViewRowTechnosphereFlows(element, num);
+        tabellaRighe.insertAdjacentHTML('beforeend', riga);
+    });
+
+    
+}
+
+function creaTabellaFinalDemand(richiestaFinale) {
+    console.log("richiestaFinale");
+    console.log(richiestaFinale);
+    const messaggio = document.getElementById("informazioniDati");
+    messaggio.innerHTML='';
+    messaggio.insertAdjacentHTML('beforeend', 
+    `<h5 class="alert alert-secondary" role="alert">Tabella che rappresenta un singolo Tech Flow</h5>`);
+
+    const tabellaRisultatiRicerca = document.getElementById("risultatiRicerca");
+    tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTableFinalDemand());
+    const tabellaRighe = document.getElementById("datiTabellaFinalDemand");
+    
+    const riga = creaViewRowFinalDemand(richiestaFinale, 1);
+    tabellaRighe.insertAdjacentHTML('beforeend', riga);                            
+}
+
+function creaTabellaInterventionFlows(listaInterventionFlows) {
+    console.log("creaTabellaInterventionFlows");
+    console.log(listaInterventionFlows);
+
+    const messaggio = document.getElementById("informazioniDati");
+    messaggio.innerHTML='';
+    messaggio.insertAdjacentHTML('beforeend', 
+    `<h5 class="alert alert-secondary" role="alert">Tabella che rappresenta una lista di Flow indicando se sono input o output</h5>`);
+    
+    const tabellaRisultatiRicercaInput = document.getElementById("risultatiRicercaInput01");
+    const tabellaRisultatiRicercaOutput = document.getElementById("risultatiRicercaOutput02");
+    tabellaRisultatiRicercaInput.insertAdjacentHTML('beforeend', creaViewTableInterventionFlowsInput());
+    tabellaRisultatiRicercaOutput.insertAdjacentHTML('beforeend', creaViewTableInterventionFlowsOutput());
+
+    const tabellaRigheInput = document.getElementById("datiTabellaInterventionFlowsInput");
+    const tabellaRigheOutput = document.getElementById("datiTabellaInterventionFlowsOutput");
+
+    let numInput = 0;
+    let numOutput = 0;
+
+    listaInterventionFlows.forEach(element => {
+
+        if(element.isInput){
+            numInput++;
+            const riga = creaViewRowInterventionFlows(element, numInput);
+            tabellaRigheInput.insertAdjacentHTML('beforeend', riga);
+        }
+        else{
+            numOutput++;
+            const riga = creaViewRowInterventionFlows(element, numOutput);
+            tabellaRigheOutput.insertAdjacentHTML('beforeend', riga);
+        }
+        
+    });
+
+            
+}
+
+function creaTabellaImpactCategories(listaImpactCategories)  {
+    console.log("listaImpactCategories");
+    console.log(listaImpactCategories);
+    const messaggio = document.getElementById("informazioniDati");
+    messaggio.innerHTML='';
+    messaggio.insertAdjacentHTML('beforeend', 
+    `<h5 class="alert alert-secondary" role="alert">Tabella che mostra una lista di impact cathegory</h5>`);
+
+    const tabellaRisultatiRicerca = document.getElementById("risultatiRicerca");
+    tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTableImpactCategories());
+    const tabellaRighe = document.getElementById("datiTabellaImpactCategories");
+    let num = 0;
+    listaImpactCategories.forEach(element => {
+        num++;
+        const riga = creaViewRowImpactCategories(element, num);
+        tabellaRighe.insertAdjacentHTML('beforeend', riga);
+    });
+
+}
+
+export{ creaTabellaTechnosphereFlows,creaTabellaFinalDemand,creaTabellaInterventionFlows,creaTabellaImpactCategories};

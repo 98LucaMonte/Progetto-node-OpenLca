@@ -59,7 +59,7 @@ class ApiFlowResults {
             let urlTechFlow = techFlow.provider["@id"]+"::"+techFlow.flow["@id"];
                 
             let url = vps + "result/"+idCalcolo+"/direct-interventions-of/"+urlTechFlow;
-            console.log(url);
+            
             let response = await fetch(url);
             let v = await response.json();
             return v;
@@ -78,7 +78,7 @@ class ApiFlowResults {
                 enviFlowUrl = element.enviFlow.flow["@id"] +"::"+element.enviFlow.location["@id"];*/
             
             let url = vps + "result/"+idCalcolo+"/direct-intervention-of/"+enviFlowUrl+"/"+urlTechFlow;
-            console.log(url);
+            
             let response = await fetch(url);
             let v = await response.json();
             return v;

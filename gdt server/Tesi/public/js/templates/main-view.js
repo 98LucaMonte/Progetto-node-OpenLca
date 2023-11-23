@@ -49,24 +49,29 @@ function creaViewMainRisultati() {
       <div class="offcanvas-body">
         <div class="list-group list-group-flush">
           <a href="/" class="list-group-item list-group-item-action">Home</a>
-          <a href="/technosphereFlows" class="list-group-item list-group-item-action">5.5 Technosphere Flows</a>
-          <a href="/finalDemand" class="list-group-item list-group-item-action">5.5.1 The final Demand</a>
-          <a href="/totalRequirements" class="list-group-item list-group-item-action">5.5.2 Total Requirements</a>
-          <a href="/totalRequirementsOfFlows" class="list-group-item list-group-item-action">Total Requirements Of Flows</a>
-          <a href="/scalingFactors" class="list-group-item list-group-item-action">5.5.4 Scaling factors</a>
-          <a href="/scaledTechFlowsOf" class="list-group-item list-group-item-action">Scaled Requirements</a>
-          <a href="/unscaledTechFlowsOf" class="list-group-item list-group-item-action">Unscaled Requirements</a>
-          <a href="/interventionFlows" class="list-group-item list-group-item-action">5.6 Intervention Flows</a>
-          <a href="/inventoryResult" class="list-group-item list-group-item-action">5.6.1 Inventory Result</a>
-          <a href="/impactCategories" class="list-group-item list-group-item-action">5.7 impact Categories</a>
-          <a href="/totalFlowValueOf" class="list-group-item list-group-item-action">Total Flow Value Of</a>
-          <a href="/flowContributionsOf" class="list-group-item list-group-item-action">Flow Contributions Of</a>
+          <a href="/resultQueries/technosphereFlows" class="list-group-item list-group-item-action">5.5 Technosphere Flows</a>
+          <a href="/resultQueries/finalDemand" class="list-group-item list-group-item-action">5.5.1 The final Demand</a>
+          <a href="/resultQueries/interventionFlows" class="list-group-item list-group-item-action">5.6 Intervention Flows</a>
+          <a href="/resultQueries/impactCategories" class="list-group-item list-group-item-action">5.7 impact Categories</a>
+          <a href="/technosphereFlows/totalRequirements" class="list-group-item list-group-item-action">5.5.2 Total Requirements</a>
+          <a href="/technosphereFlows/totalRequirementsOfFlows" class="list-group-item list-group-item-action">Total Requirements Of Flows</a>
+          <a href="/technosphereFlows/scalingFactors" class="list-group-item list-group-item-action">5.5.4 Scaling factors</a>
+          <a href="/technosphereFlows/scaledTechFlowsOf" class="list-group-item list-group-item-action">Scaled Requirements</a>
+          <a href="/technosphereFlows/unscaledTechFlowsOf" class="list-group-item list-group-item-action">Unscaled Requirements</a>
+          <a href="/flowResults/inventoryResult" class="list-group-item list-group-item-action">5.6.1 Inventory Result</a>
+          <a href="/flowResults/totalFlowValueOf" class="list-group-item list-group-item-action">Total Flow Value Of</a>
+          <a href="/flowResults/flowContributionsOf" class="list-group-item list-group-item-action">Flow Contributions Of</a>
+          <a href="/flowResults/directInterventionsOf" class="list-group-item list-group-item-action">Direct Interventions Of</a>
+          <a href="/flowResults/directInterventionsOfEnviFlowTechFlow" class="list-group-item list-group-item-action">Direct Interventions Of EnviFlow TechFlow</a>
+          <a href="/flowResults/flowIntensitiesOf" class="list-group-item list-group-item-action">Flow IntensitiesOf</a>        
+
         </div>
       </div>
     </div>
     <div class="container mt-5">
       <div class="row justify-content-center">
         <div class="col-md-10">
+          <div id="informazioniDati"> </div>
           <div class="table-responsive div-scrollabile" id="risultatiRicerca">
           
           </div>
@@ -86,24 +91,27 @@ function creaViewMainRisultatiInterventionFlows() {
     <div class="offcanvas-body">
       <div class="list-group list-group-flush">
         <a href="/" class="list-group-item list-group-item-action">Home</a>
-        <a href="/technosphereFlows" class="list-group-item list-group-item-action">5.5 Technosphere Flows</a>
-        <a href="/finalDemand" class="list-group-item list-group-item-action">5.5.1 The final Demand</a>
-        <a href="/totalRequirements" class="list-group-item list-group-item-action">5.5.2 Total Requirements</a>
-        <a href="/totalRequirementsOfFlows" class="list-group-item list-group-item-action">Total Requirements Of Flows</a>
-        <a href="/scalingFactors" class="list-group-item list-group-item-action">5.5.4 Scaling factors</a>
-        <a href="/scaledTechFlowsOf" class="list-group-item list-group-item-action">Scaled Requirements</a>
-        <a href="/unscaledTechFlowsOf" class="list-group-item list-group-item-action">Unscaled Requirements</a>        
-        <a href="/interventionFlows" class="list-group-item list-group-item-action">5.6 Intervention Flows</a>
-        <a href="/inventoryResult" class="list-group-item list-group-item-action">5.6.1 Inventory Result</a>
-        <a href="/impactCategories" class="list-group-item list-group-item-action">5.7 impact Categories</a>
-        <a href="/totalFlowValueOf" class="list-group-item list-group-item-action">Total Flow Value Of</a>
-        <a href="/flowContributionsOf" class="list-group-item list-group-item-action">Flow Contributions Of</a>
+        <a href="/resultQueries/technosphereFlows" class="list-group-item list-group-item-action">5.5 Technosphere Flows</a>
+        <a href="/resultQueries/finalDemand" class="list-group-item list-group-item-action">5.5.1 The final Demand</a>
+        <a href="/resultQueries/interventionFlows" class="list-group-item list-group-item-action">5.6 Intervention Flows</a>
+        <a href="/resultQueries/impactCategories" class="list-group-item list-group-item-action">5.7 impact Categories</a>
+        <a href="/technosphereFlows/totalRequirements" class="list-group-item list-group-item-action">5.5.2 Total Requirements</a>
+        <a href="/technosphereFlows/totalRequirementsOfFlows" class="list-group-item list-group-item-action">Total Requirements Of Flows</a>
+        <a href="/technosphereFlows/scalingFactors" class="list-group-item list-group-item-action">5.5.4 Scaling factors</a>
+        <a href="/technosphereFlows/scaledTechFlowsOf" class="list-group-item list-group-item-action">Scaled Requirements</a>
+        <a href="/technosphereFlows/unscaledTechFlowsOf" class="list-group-item list-group-item-action">Unscaled Requirements</a>
+        <a href="/flowResults/inventoryResult" class="list-group-item list-group-item-action">5.6.1 Inventory Result</a>
+        <a href="/flowResults/totalFlowValueOf" class="list-group-item list-group-item-action">Total Flow Value Of</a>
+        <a href="/flowResults/flowContributionsOf" class="list-group-item list-group-item-action">Flow Contributions Of</a>
+        <a href="/flowResults/directInterventionsOf" class="list-group-item list-group-item-action">Direct Interventions Of</a>
+        <a href="/flowResults/directInterventionsOfEnviFlowTechFlow" class="list-group-item list-group-item-action">Direct Interventions Of EnviFlow TechFlow</a>
+        <a href="/flowResults/flowIntensitiesOf" class="list-group-item list-group-item-action">Flow IntensitiesOf</a>        
       </div>
     </div>
   </div>
   <div class="container mt-2 mb-5">
     <div class="row justify-content-center">
-      
+      <div id="informazioniDati"> </div>
       <div class="col-md-10 mt-4"><p><strong>Input</strong></p>
         <div class="table-responsive div-scrollabile" id="risultatiRicercaInput01">
         
