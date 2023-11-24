@@ -24,7 +24,6 @@
     integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
     crossorigin="anonymous"></script>
 
-  <script defer src="./js/navbar-home.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
@@ -59,178 +58,57 @@
       <div class="offcanvas-body">
         <div class="list-group list-group-flush">
           <a href="/" class="list-group-item list-group-item-action">Home</a>
-          <a href="#" class="list-group-item list-group-item-action">Informazioni generali</a>
-          <a href="#" class="list-group-item list-group-item-action">Risultati dell'inventario</a>
+          <a href="/resultQueries/technosphereFlows" class="list-group-item list-group-item-action">5.5 Technosphere
+            Flows</a>
+          <a href="/resultQueries/finalDemand" class="list-group-item list-group-item-action">5.5.1 The final Demand</a>
+          <a href="/resultQueries/interventionFlows" class="list-group-item list-group-item-action">5.6 Intervention
+            Flows</a>
+          <a href="/resultQueries/impactCategories" class="list-group-item list-group-item-action">5.7 impact
+            Categories</a>
+          <a href="/technosphereFlows/totalRequirements" class="list-group-item list-group-item-action">5.5.2 Total
+            Requirements</a>
+          <a href="/technosphereFlows/totalRequirementsOfFlows" class="list-group-item list-group-item-action">Total
+            Requirements Of Flows</a>
+          <a href="/technosphereFlows/scalingFactors" class="list-group-item list-group-item-action">5.5.4 Scaling
+            factors</a>
+          <a href="/technosphereFlows/scaledTechFlowsOf" class="list-group-item list-group-item-action">Scaled
+            Requirements</a>
+          <a href="/technosphereFlows/unscaledTechFlowsOf" class="list-group-item list-group-item-action">Unscaled
+            Requirements</a>
+          <a href="/flowResults/inventoryResult" class="list-group-item list-group-item-action">5.6.1 Inventory
+            Result</a>
+          <a href="/flowResults/totalFlowValueOf" class="list-group-item list-group-item-action">Total Flow Value Of</a>
+          <a href="/flowResults/flowContributionsOf" class="list-group-item list-group-item-action">Flow Contributions
+            Of</a>
+          <a href="/flowResults/directInterventionsOf" class="list-group-item list-group-item-action">Direct
+            Interventions Of</a>
+          <a href="/flowResults/directInterventionsOfEnviFlowTechFlow"
+            class="list-group-item list-group-item-action">Direct Interventions Of EnviFlow TechFlow</a>
+          <a href="/flowResults/flowIntensitiesOf" class="list-group-item list-group-item-action">Flow IntensitiesOf</a>
         </div>
       </div>
     </div>
-    <div class="container mt-2">
+    <div class="container mt-2 mb-5">
       <div class="row justify-content-center">
-        
-        <div class="col-md-10 mt-4">Input
-          <div class="table-responsive div-scrollabile" id="risultatiRicerca">
-            <table class="table table-bordered table-scrollabile table-center table-padding">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">First Name</th>
-                  <th scope="col">Last Name</th>
-                  <th scope="col">Username</th>
-                  <th scope="col">Info</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- Add your table rows here -->
-                <tr>
-                  <th scope="row">1</th>
-                  <td>John</td>
-                  <td>Doe</td>
-                  <td>@john.doe</td>
-                  <td>
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                      info 
-                    </button>
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body">
-                            ...
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>Jane</td>
-                  <td>Doe</td>
-                  <td>@jane.doe</td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td>John</td>
-                  <td>Doe</td>
-                  <td>@john.doe</td>
-                </tr>
-                <tr>
-                  <th scope="row">4</th>
-                  <td>Jane</td>
-                  <td>Doe</td>
-                  <td>@jane.doe</td>
-                </tr>
-                <tr>
-                  <th scope="row">5</th>
-                  <td>John</td>
-                  <td>Doe</td>
-                  <td>@john.doe</td>
-                </tr>
-                <tr>
-                  <th scope="row">6</th>
-                  <td>Jane</td>
-                  <td>Doe</td>
-                  <td>@jane.doe</td>
-                </tr>
-                <tr>
-                  <th scope="row">7</th>
-                  <td>John</td>
-                  <td>Doe</td>
-                  <td>@john.doe</td>
-                </tr>
-                <tr>
-                  <th scope="row">8</th>
-                  <td>Jane</td>
-                  <td>Doe</td>
-                  <td>@jane.doe</td>
-                </tr>
-                <!-- More rows... -->
-              </tbody>
-            </table>
+        <div class="col-md-10 mt-4">
+          <select class="form-select form-select-sm" aria-label="Default select example" style="width:30%!important;" id="listaInput01">
+            <option selected id="selectedInput01">Open this select menu</option>
+          </select>
+        </div> 
+      </div>
+      <div class="row justify-content-center">
+        <div id="informazioniDati"> </div>
+        <div class="col-md-10 mt-4">
+          <p><strong>Input</strong></p>
+          <div class="table-responsive div-scrollabile" id="risultatiRicercaInput01">
 
           </div>
-
         </div>
-        
-        <div class="col-md-10 mt-4">Output
-          <div class="table-responsive div-scrollabile" id="risultatiRicerca">
-            <table class="table table-bordered table-scrollabile table-center table-padding">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">First Name</th>
-                  <th scope="col">Last Name</th>
-                  <th scope="col">Username</th>
-                  <th scope="col">Last Name</th>
-                  <th scope="col">Username</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- Add your table rows here -->
-                <tr>
-                  <th scope="row">1</th>
-                  <td>John</td>
-                  <td>Doe</td>
-                  <td>@john.doe</td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>Jane</td>
-                  <td>Doe</td>
-                  <td>@jane.doe</td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td>John</td>
-                  <td>Doe</td>
-                  <td>@john.doe</td>
-                </tr>
-                <tr>
-                  <th scope="row">4</th>
-                  <td>Jane</td>
-                  <td>Doe</td>
-                  <td>@jane.doe</td>
-                </tr>
-                <tr>
-                  <th scope="row">5</th>
-                  <td>John</td>
-                  <td>Doe</td>
-                  <td>@john.doe</td>
-                </tr>
-                <tr>
-                  <th scope="row">6</th>
-                  <td>Jane</td>
-                  <td>Doe</td>
-                  <td>@jane.doe</td>
-                </tr>
-                <tr>
-                  <th scope="row">7</th>
-                  <td>John</td>
-                  <td>Doe</td>
-                  <td>@john.doe</td>
-                </tr>
-                <tr>
-                  <th scope="row">8</th>
-                  <td>Jane</td>
-                  <td>Doe</td>
-                  <td>@jane.doe</td>
-                </tr>
-                <!-- More rows... -->
-              </tbody>
-            </table>
+        <div class="col-md-10 mt-4">
+          <p><strong>Output</strong></p>
+          <div class="table-responsive div-scrollabile" id="risultatiRicercaOutput02">
 
           </div>
-
         </div>
       </div>
     </div>

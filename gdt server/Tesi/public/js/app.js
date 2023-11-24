@@ -4,7 +4,8 @@ import ApiResultQueries from "./apiResultQueries.js";
 import ApiTechnosphereFlows from "./apiTechnosphereFlows.js";
 import ApiFlowResults from "./apiFlowResults.js";
 
-import {creaViewMain, creaViewMainRisultati, creaViewMainRisultatiInterventionFlows} from './templates/main-view.js';
+import {creaViewMain, creaViewMainRisultati, creaViewMainRisultatiDoppioInput , creaViewMainRisultatiSingoloInput, 
+        creaViewMainRisultatiDoppiaTabella , creaViewMainRisultatiSingoloInputDoppiaTabella, creaViewMainRisultatiDoppioInputDoppiaTabella} from './templates/main-view.js';
 
 import {creaTabellaTechnosphereFlows,creaTabellaFinalDemand,creaTabellaInterventionFlows,creaTabellaImpactCategories} from './templates/main-view-result-queries.js';
 
@@ -88,7 +89,7 @@ class App {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiInterventionFlows());
+            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppiaTabella());
             const listaInterventionFlows = await apiResultQueries.getInterventionFlows(vps1, idCalcolo);
             if (listaInterventionFlows.length != 0) {
                 creaTabellaInterventionFlows(listaInterventionFlows);
@@ -163,7 +164,7 @@ class App {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiInterventionFlows());
+            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppiaTabella());
             const listaInventoryResult = await apiFlowResults.getInventoryResult(vps1, idCalcolo);
             if (listaInventoryResult.length != 0) {
                 creaTabellaInventoryResult(listaInventoryResult);
@@ -174,21 +175,21 @@ class App {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiInterventionFlows());
+            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppiaTabella());
             await creaTabellaTotalFlowValueOf(vps1,idCalcolo,apiFlowResults);    
         });
         page('/flowResults/flowContributionsOf', async () => {//Capire come stampare bene
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiInterventionFlows());
+            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppiaTabella());
             await creaTabellaFlowContributionsOf(vps1,idCalcolo,apiFlowResults);    
         });
         page('/flowResults/directInterventionsOf', async () => {// capire come stampare bene
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiInterventionFlows());
+            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppiaTabella());
             const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
             const listaDirectInterventionsOf = await apiFlowResults.getDirectInterventionsOf(vps1, idCalcolo,techFlow.techFlow);
             if (listaDirectInterventionsOf.length != 0) {
@@ -199,7 +200,7 @@ class App {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiInterventionFlows());
+            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppiaTabella());
             const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
             const listaInventoryResult = await apiFlowResults.getInventoryResult(vps1,idCalcolo);
             if (listaInventoryResult.length != 0) {
@@ -210,7 +211,7 @@ class App {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiInterventionFlows());
+            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppiaTabella());
             const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
             const listaFlowIntesitiesOf = await apiFlowResults.getFlowIntensitiesOf(vps1,idCalcolo,techFlow.techFlow);
             if (listaFlowIntesitiesOf.length != 0) {
@@ -221,7 +222,7 @@ class App {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiInterventionFlows());
+            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppiaTabella());
             const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
             const listaFlowIntesitiesOf = await apiFlowResults.getFlowIntensitiesOf(vps1,idCalcolo,techFlow.techFlow);
             if (listaFlowIntesitiesOf.length != 0) {

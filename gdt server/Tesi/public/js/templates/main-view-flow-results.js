@@ -68,7 +68,6 @@ function creaViewTableFlowContributionsOf() {
     `;
 }
   
-
 function creaTabellaInventoryResult(listaInventoryResult){
     console.log("creaTabellaInventoryResult");
     console.log(listaInventoryResult);
