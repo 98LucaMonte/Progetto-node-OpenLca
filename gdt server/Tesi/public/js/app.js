@@ -121,12 +121,31 @@ class App {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultati());
-            const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
-            const listatotalRequirementsOfFlows = await apiTechnosphereFlows.getTotalRequirementsOfFlows(vps1, idCalcolo,techFlow.techFlow);
-            if (listatotalRequirementsOfFlows.length != 0) {
-                creaTabellatotalRequirementsOfFlows(listatotalRequirementsOfFlows);
-            }
+            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInput());
+            //const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
+            
+            //Prendo i tech flow disponibili dal db
+            await this.getTechFlow(apiResultQueries, vps1, idCalcolo);
+
+            document.getElementById('button').addEventListener('click', async event => {
+                const selectTechFlow = document.getElementById("listaInput01");
+                const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
+                const idTechFlow = selectedOptionTechFlow.id;
+                console.log(idTechFlow);
+                if(idTechFlow === "selectedInput01") {
+                    const messaggio = document.getElementById("informazioniDati");
+                    messaggio.innerHTML = '';
+                    messaggio.insertAdjacentHTML('beforeend', 
+                    `<h3 class="alert alert-danger" role="alert">Seleziona un tech flow.</h3>`);
+                }   
+                else{
+                    const listatotalRequirementsOfFlows = await apiTechnosphereFlows.getTotalRequirementsOfFlows(vps1, idCalcolo,idTechFlow);
+                    if (listatotalRequirementsOfFlows.length != 0) {
+                        creaTabellatotalRequirementsOfFlows(listatotalRequirementsOfFlows);
+                    }
+                }  
+            });
+
         });
         page('/technosphereFlows/scalingFactors', async () => {
             this.header.innerHTML = '';
@@ -142,23 +161,57 @@ class App {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultati());
-            const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
-            const listaScaledTechFlowsOf = await apiTechnosphereFlows.getScaledTechFlowsOf(vps1, idCalcolo,techFlow.techFlow);
-            if (listaScaledTechFlowsOf.length != 0) {
-                creaTabellaScaledTechFlowsOf(listaScaledTechFlowsOf);
-            }
+            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInput());
+            //Prendo i tech flow disponibili dal db
+            await this.getTechFlow(apiResultQueries, vps1, idCalcolo);
+
+            document.getElementById('button').addEventListener('click', async event => {
+                const selectTechFlow = document.getElementById("listaInput01");
+                const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
+                const idTechFlow = selectedOptionTechFlow.id;
+                console.log(idTechFlow);
+                if(idTechFlow === "selectedInput01") {
+                    const messaggio = document.getElementById("informazioniDati");
+                    messaggio.innerHTML = '';
+                    messaggio.insertAdjacentHTML('beforeend', 
+                    `<h3 class="alert alert-danger" role="alert">Seleziona un tech flow.</h3>`);
+                }   
+                else{
+                    const listaScaledTechFlowsOf = await apiTechnosphereFlows.getScaledTechFlowsOf(vps1, idCalcolo,idTechFlow);
+                    if (listaScaledTechFlowsOf.length != 0) {
+                        creaTabellaScaledTechFlowsOf(listaScaledTechFlowsOf);
+                    }
+                }  
+            });
+            
         });
         page('/technosphereFlows/unscaledTechFlowsOf', async () => {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultati());
-            const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
-            const listaUnscaledTechFlowsOf = await apiTechnosphereFlows.getUnscaledTechFlowsOf(vps1, idCalcolo,techFlow.techFlow);
-            if (listaUnscaledTechFlowsOf.length != 0) {
-                creaTabellaUnscaledTechFlowsOf(listaUnscaledTechFlowsOf);
-            }
+            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInput());
+            //const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
+            await this.getTechFlow(apiResultQueries, vps1, idCalcolo);
+
+            document.getElementById('button').addEventListener('click', async event => {
+                const selectTechFlow = document.getElementById("listaInput01");
+                const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
+                const idTechFlow = selectedOptionTechFlow.id;
+                console.log(idTechFlow);
+                if(idTechFlow === "selectedInput01") {
+                    const messaggio = document.getElementById("informazioniDati");
+                    messaggio.innerHTML = '';
+                    messaggio.insertAdjacentHTML('beforeend', 
+                    `<h3 class="alert alert-danger" role="alert">Seleziona un tech flow.</h3>`);
+                }   
+                else{
+                    const listaUnscaledTechFlowsOf = await apiTechnosphereFlows.getUnscaledTechFlowsOf(vps1, idCalcolo,idTechFlow);
+                    if (listaUnscaledTechFlowsOf.length != 0) {
+                        creaTabellaUnscaledTechFlowsOf(listaUnscaledTechFlowsOf);
+                    }
+                }  
+            });
+            
         });
         page('/flowResults/inventoryResult', async () => {
             this.header.innerHTML = '';
@@ -189,45 +242,113 @@ class App {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppiaTabella());
-            const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
-            const listaDirectInterventionsOf = await apiFlowResults.getDirectInterventionsOf(vps1, idCalcolo,techFlow.techFlow);
-            if (listaDirectInterventionsOf.length != 0) {
-                creaTabellaDirectInterventionsOf(listaDirectInterventionsOf);
-            }
+            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInputDoppiaTabella());
+            //const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
+            await this.getTechFlow(apiResultQueries, vps1, idCalcolo);
+            document.getElementById('button').addEventListener('click', async event => {
+                const selectTechFlow = document.getElementById("listaInput01");
+                const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
+                const idTechFlow = selectedOptionTechFlow.id;
+                console.log(idTechFlow);
+                if(idTechFlow === "selectedInput01") {
+                    const messaggio = document.getElementById("informazioniDati");
+                    messaggio.innerHTML = '';
+                    messaggio.insertAdjacentHTML('beforeend', 
+                    `<h3 class="alert alert-danger" role="alert">Seleziona un tech flow.</h3>`);
+                }   
+                else{
+                    const listaDirectInterventionsOf = await apiFlowResults.getDirectInterventionsOf(vps1, idCalcolo,idTechFlow);
+                    if (listaDirectInterventionsOf.length != 0) {
+                        creaTabellaDirectInterventionsOf(listaDirectInterventionsOf);
+                    }
+                }  
+            });
+
         });
         page('/flowResults/directInterventionsOfEnviFlowTechFlow', async () => {// capire come stampare bene
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppiaTabella());
-            const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
-            const listaInventoryResult = await apiFlowResults.getInventoryResult(vps1,idCalcolo);
-            if (listaInventoryResult.length != 0) {
-                creaTabellaDirectInterventionsOfEnviFlowTechFlow(listaInventoryResult,techFlow,apiFlowResults,vps1,idCalcolo);
-            }
+            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppioInputDoppiaTabella());
+            //const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
+            await this.getTechFlow(apiResultQueries, vps1, idCalcolo);
+            
+            document.getElementById('button').addEventListener('click', async event => {
+                const selectTechFlow = document.getElementById("listaInput01");
+                const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
+                const idTechFlow = selectedOptionTechFlow.id;
+                console.log(idTechFlow);
+                if(idTechFlow === "selectedInput01") {
+                    const messaggio = document.getElementById("informazioniDati");
+                    messaggio.innerHTML = '';
+                    messaggio.insertAdjacentHTML('beforeend', 
+                    `<h3 class="alert alert-danger" role="alert">Seleziona un tech flow.</h3>`);
+                }   
+                else{
+                    const listaInventoryResult = await apiFlowResults.getInventoryResult(vps1,idCalcolo);
+                    if (listaInventoryResult.length != 0) {
+                        creaTabellaDirectInterventionsOfEnviFlowTechFlow(listaInventoryResult,idTechFlow,apiFlowResults,vps1,idCalcolo);
+                    }
+                }  
+            });
+
+            
         });    
         page('/flowResults/flowIntensitiesOf', async () => {// capire come stampare bene
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppiaTabella());
-            const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
-            const listaFlowIntesitiesOf = await apiFlowResults.getFlowIntensitiesOf(vps1,idCalcolo,techFlow.techFlow);
-            if (listaFlowIntesitiesOf.length != 0) {
-                creaTabellaFlowIntesitiesOf(listaFlowIntesitiesOf);
-            }
+            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInputDoppiaTabella());
+            //const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
+            await this.getTechFlow(apiResultQueries, vps1, idCalcolo);
+            document.getElementById('button').addEventListener('click', async event => {
+                const selectTechFlow = document.getElementById("listaInput01");
+                const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
+                const idTechFlow = selectedOptionTechFlow.id;
+                console.log(idTechFlow);
+                if(idTechFlow === "selectedInput01") {
+                    const messaggio = document.getElementById("informazioniDati");
+                    messaggio.innerHTML = '';
+                    messaggio.insertAdjacentHTML('beforeend', 
+                    `<h3 class="alert alert-danger" role="alert">Seleziona un tech flow.</h3>`);
+                }   
+                else{
+                    const listaFlowIntesitiesOf = await apiFlowResults.getFlowIntensitiesOf(vps1,idCalcolo,idTechFlow);
+                    if (listaFlowIntesitiesOf.length != 0) {
+                        creaTabellaFlowIntesitiesOf(listaFlowIntesitiesOf);
+                    }
+                }  
+            });
+            
         });  
         page('/flowResults/flowIntensityOfEnviFlowTechFlow', async () => {// capire come stampare bene
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppiaTabella());
-            const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
-            const listaFlowIntesitiesOf = await apiFlowResults.getFlowIntensitiesOf(vps1,idCalcolo,techFlow.techFlow);
-            if (listaFlowIntesitiesOf.length != 0) {
-                creaTabellaFlowIntesitiesOf(listaFlowIntesitiesOf);
-            }
+            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppioInputDoppiaTabella());
+
+            await this.getTechFlow(apiResultQueries, vps1, idCalcolo);
+
+            //const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
+            
+            document.getElementById('button').addEventListener('click', async event => {
+                const selectTechFlow = document.getElementById("listaInput01");
+                const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
+                const idTechFlow = selectedOptionTechFlow.id;
+                console.log(idTechFlow);
+                if(idTechFlow === "selectedInput01") {
+                    const messaggio = document.getElementById("informazioniDati");
+                    messaggio.innerHTML = '';
+                    messaggio.insertAdjacentHTML('beforeend', 
+                    `<h3 class="alert alert-danger" role="alert">Seleziona un tech flow.</h3>`);
+                }   
+                else{
+                    const listaFlowIntesitiesOf = await apiFlowResults.getFlowIntensitiesOf(vps1,idCalcolo,idTechFlow);
+                    if (listaFlowIntesitiesOf.length != 0) {
+                        creaTabellaFlowIntesitiesOf(listaFlowIntesitiesOf);
+                    }
+                }  
+            });
         });   
         page();
 
@@ -391,6 +512,33 @@ class App {
         }
         return idCalcolo;
     }
+
+    getTechFlow = async (apiTechnosphereFlows, vps,idCalcolo) => {
+
+        const placeholder = document.getElementById("selectedInput01");
+        let listaTechFlow = await apiTechnosphereFlows.getTechnosphereFlows(vps, idCalcolo);
+        console.log("listaTechFlow");
+        console.log(listaTechFlow);
+
+        if (listaTechFlow.length == 0) {
+            placeholder.innerHTML = "Non ci sono Tech Flow selezionabili";
+        } else {
+            const select = document.getElementById("listaInput01");
+            placeholder.innerHTML = "Seleziona un Tech Flow";
+            for (let i = 0; i < listaTechFlow.length; i++) {
+                let option = document.createElement("option");
+                option.value = listaTechFlow[i].provider.name+" "+listaTechFlow[i].flow.name;
+                option.text = listaTechFlow[i].provider.name+" "+listaTechFlow[i].flow.name;
+                option.id = listaTechFlow[i].provider["@id"]+"::"+listaTechFlow[i].flow["@id"];
+                select.appendChild(option);
+                console.log(option.id);
+                console.log(option.text);
+            }
+        }
+       
+    }
+
+
 
 }
 

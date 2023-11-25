@@ -31,10 +31,10 @@ class ApiTechnosphereFlows {
     getTotalRequirementsOfFlows = async (vps, idCalcolo, techFlow) => {
         try {
             
-            let urlTechFlow = techFlow.provider["@id"]+"::"+techFlow.flow["@id"];
-            console.log(urlTechFlow);
+            //let urlTechFlow = techFlow.provider["@id"]+"::"+techFlow.flow["@id"];
+            //console.log(urlTechFlow);
 
-            let url = vps + "result/" + idCalcolo + "/total-requirements-of/" + urlTechFlow;
+            let url = vps + "result/" + idCalcolo + "/total-requirements-of/" + techFlow;
             console.log(url);
             let resp = await fetch(url);
             let v = await resp.json();
@@ -72,9 +72,9 @@ class ApiTechnosphereFlows {
      */
     getScaledTechFlowsOf= async (vps,idCalcolo,techFlow) => {
         try {
-            let urlTechFlow = techFlow.provider["@id"]+"::"+techFlow.flow["@id"];
-            console.log(urlTechFlow);
-            let url = vps + "result/" + idCalcolo + "/scaled-tech-flows-of/" + urlTechFlow;
+            //let urlTechFlow = techFlow.provider["@id"]+"::"+techFlow.flow["@id"];
+            //console.log(urlTechFlow);
+            let url = vps + "result/" + idCalcolo + "/scaled-tech-flows-of/" + techFlow;
             console.log(url);
             let resp = await fetch(url);
             let v = await resp.json();
@@ -92,9 +92,9 @@ class ApiTechnosphereFlows {
      */
     getUnscaledTechFlowsOf= async (vps,idCalcolo,techFlow) => {
         try {
-            let urlTechFlow = techFlow.provider["@id"]+"::"+techFlow.flow["@id"];
-            console.log(urlTechFlow);
-            let url = vps + "result/" + idCalcolo + "/unscaled-tech-flows-of/" + urlTechFlow;
+            //let urlTechFlow = techFlow.provider["@id"]+"::"+techFlow.flow["@id"];
+            //console.log(urlTechFlow);
+            let url = vps + "result/" + idCalcolo + "/unscaled-tech-flows-of/" + techFlow;
             console.log(url);
             let resp = await fetch(url);
             let v = await resp.json();

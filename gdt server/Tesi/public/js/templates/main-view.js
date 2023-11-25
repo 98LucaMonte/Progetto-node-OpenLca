@@ -64,7 +64,7 @@ function creaViewMainRisultati() {
           <a href="/flowResults/directInterventionsOf" class="list-group-item list-group-item-action">Direct Interventions Of</a>
           <a href="/flowResults/directInterventionsOfEnviFlowTechFlow" class="list-group-item list-group-item-action">Direct Interventions Of EnviFlow TechFlow</a>
           <a href="/flowResults/flowIntensitiesOf" class="list-group-item list-group-item-action">Flow IntensitiesOf</a>        
-
+          <a href="/flowResults/flowIntensityOfEnviFlowTechFlow" class="list-group-item list-group-item-action">Flow Intensity Of Envi Flow Tech Flow</a>        
         </div>
       </div>
     </div>
@@ -82,9 +82,7 @@ function creaViewMainRisultati() {
 }
 
 function creaViewMainRisultatiDoppioInput(){
-  return 
-  `
-  <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+  return `<div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
       <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Informazioni sul Product System</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -107,6 +105,7 @@ function creaViewMainRisultatiDoppioInput(){
           <a href="/flowResults/directInterventionsOf" class="list-group-item list-group-item-action">Direct Interventions Of</a>
           <a href="/flowResults/directInterventionsOfEnviFlowTechFlow" class="list-group-item list-group-item-action">Direct Interventions Of EnviFlow TechFlow</a>
           <a href="/flowResults/flowIntensitiesOf" class="list-group-item list-group-item-action">Flow IntensitiesOf</a>        
+          <a href="/flowResults/flowIntensityOfEnviFlowTechFlow" class="list-group-item list-group-item-action">Flow Intensity Of Envi Flow Tech Flow</a>        
 
         </div>
       </div>
@@ -119,6 +118,7 @@ function creaViewMainRisultatiDoppioInput(){
           <select class="form-select form-select-sm" aria-label="Small select example" id="listaInput01">
             <option selected id="selectedInput01"></option>
           </select>
+          <button type="button" class="btn btn-outline-primary" id="button">Mostra</button>
         </div>
         <div class="col-sm-4">
           <p><strong>Seleziona l'EnviFlow</strong></p>
@@ -126,11 +126,11 @@ function creaViewMainRisultatiDoppioInput(){
             <option selected id="selectedInput02">Open this select menu</option>
           </select>
         </div>
-        <div class="col-sm-2"></div>
+        <div class="col-sm-2"> </div>
       </div>
       <div class="row justify-content-center mt-3">
-        <div class="col-md-10">
-          <div id="informazioniDati"><p><strong>DATI DELLA TABELLA</strong></p></div>    
+        <div class="col-md-10 mb-5">
+          <div id="informazioniDati"></div>    
           <div class="table-responsive div-scrollabile" id="risultatiRicerca">
       
           </div>
@@ -141,9 +141,7 @@ function creaViewMainRisultatiDoppioInput(){
 }
 
 function creaViewMainRisultatiSingoloInput(){
-  return 
-  `
-  <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+  return `<div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
       <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Informazioni sul Product System</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -166,6 +164,7 @@ function creaViewMainRisultatiSingoloInput(){
           <a href="/flowResults/directInterventionsOf" class="list-group-item list-group-item-action">Direct Interventions Of</a>
           <a href="/flowResults/directInterventionsOfEnviFlowTechFlow" class="list-group-item list-group-item-action">Direct Interventions Of EnviFlow TechFlow</a>
           <a href="/flowResults/flowIntensitiesOf" class="list-group-item list-group-item-action">Flow IntensitiesOf</a>        
+          <a href="/flowResults/flowIntensityOfEnviFlowTechFlow" class="list-group-item list-group-item-action">Flow Intensity Of Envi Flow Tech Flow</a>        
 
         </div>
       </div>
@@ -176,13 +175,14 @@ function creaViewMainRisultatiSingoloInput(){
         <div class="col-md-10">
           <p><strong>Seleziona il TechFlow</strong></p>
           <select class="form-select form-select-sm" aria-label="Small select example" style="width: 30%!important;" id="listaInput01">
-            <option selected id="selectedInput01">Open this select menu</option>
+            <option selected id="selectedInput01"></option>
           </select>
+          <button type="button" class="btn btn-outline-primary" id="button">Mostra</button>
         </div>
       </div>
       <div class="row justify-content-center mt-3">
-        <div class="col-md-10">
-          <div id="informazioniDati"><p><strong>DATI DELLA TABELLA</strong></p></div>
+        <div class="col-md-10 mb-5">
+          <div id="informazioniDati"> </div>
           
           <div class="table-responsive div-scrollabile" id="risultatiRicerca">
             
@@ -231,13 +231,16 @@ function creaViewMainRisultatiDoppiaTabella() {
           <a href="/flowResults/directInterventionsOfEnviFlowTechFlow"
             class="list-group-item list-group-item-action">Direct Interventions Of EnviFlow TechFlow</a>
           <a href="/flowResults/flowIntensitiesOf" class="list-group-item list-group-item-action">Flow IntensitiesOf</a>
+          <a href="/flowResults/flowIntensityOfEnviFlowTechFlow" class="list-group-item list-group-item-action">Flow Intensity Of Envi Flow Tech Flow</a>        
+
         </div>
       </div>
     </div>
     <div class="container mt-2 mb-5">
       <div class="row justify-content-center">
-        <div id="informazioniDati"> </div>
+        
         <div class="col-md-10 mt-4">
+        <div id="informazioniDati"> </div>
           <p><strong>Input</strong></p>
           <div class="table-responsive div-scrollabile" id="risultatiRicercaInput01">
 
@@ -292,20 +295,24 @@ function creaViewMainRisultatiSingoloInputDoppiaTabella() {
           <a href="/flowResults/directInterventionsOfEnviFlowTechFlow"
             class="list-group-item list-group-item-action">Direct Interventions Of EnviFlow TechFlow</a>
           <a href="/flowResults/flowIntensitiesOf" class="list-group-item list-group-item-action">Flow IntensitiesOf</a>
+          <a href="/flowResults/flowIntensityOfEnviFlowTechFlow" class="list-group-item list-group-item-action">Flow Intensity Of Envi Flow Tech Flow</a>        
+
         </div>
       </div>
     </div>
     <div class="container mt-2 mb-5">
       <div class="row justify-content-center">
         <div class="col-md-10 mt-4">
+          <p><strong>Seleziona il TechFlow</strong></p>
           <select class="form-select form-select-sm" aria-label="Default select example" style="width:30%!important;" id="listaInput01">
-            <option selected id="selectedInput01">Open this select menu</option>
+            <option selected id="selectedInput01"></option>
           </select>
+          <button type="button" class="btn btn-outline-primary" id="button">Mostra</button>
         </div> 
       </div>
       <div class="row justify-content-center">
-        <div id="informazioniDati"> </div>
         <div class="col-md-10 mt-4">
+          <div id="informazioniDati"> </div>
           <p><strong>Input</strong></p>
           <div class="table-responsive div-scrollabile" id="risultatiRicercaInput01">
 
@@ -360,6 +367,8 @@ function creaViewMainRisultatiDoppioInputDoppiaTabella() {
           <a href="/flowResults/directInterventionsOfEnviFlowTechFlow"
             class="list-group-item list-group-item-action">Direct Interventions Of EnviFlow TechFlow</a>
           <a href="/flowResults/flowIntensitiesOf" class="list-group-item list-group-item-action">Flow IntensitiesOf</a>
+          <a href="/flowResults/flowIntensityOfEnviFlowTechFlow" class="list-group-item list-group-item-action">Flow Intensity Of Envi Flow Tech Flow</a>        
+
         </div>
       </div>
     </div>
@@ -371,6 +380,7 @@ function creaViewMainRisultatiDoppioInputDoppiaTabella() {
           <select class="form-select form-select-sm" aria-label="Small select example" id="listaInput01">
             <option selected id="selectedInput01"></option>
           </select>
+          <button type="button" class="btn btn-outline-primary" id="button">Mostra</button>
         </div>
         <div class="col-sm-4">
           <p><strong>Seleziona l'EnviFlow</strong></p>

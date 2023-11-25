@@ -189,6 +189,7 @@ function creaTabellatotalRequirementsOfFlows(listatotalRequirementsOfFlows){
     messaggio.insertAdjacentHTML('beforeend', 
     `<h5 class="alert alert-secondary" role="alert">Tabella che rappresenta un singolo Tech Flow</h5>`);
     const tabellaRisultatiRicerca = document.getElementById("risultatiRicerca");
+    tabellaRisultatiRicerca.innerHTML = '';
     tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTabletotalRequirementsOfFlows());
     const tabellaRighe = document.getElementById("datiTabellatotalRequirementsOfFlows");
     const riga = creaViewRowtotalRequirementsOfFlows(listatotalRequirementsOfFlows, 1);
@@ -222,6 +223,7 @@ function creaTabellaScaledTechFlowsOf(listaScaledTechFlowsOf){
     messaggio.insertAdjacentHTML('beforeend', 
     `<h5 class="alert alert-secondary" role="alert">Tabella che rappresenta una lista di tech flows (lista di techFlowValue)</h5>`);
     const tabellaRisultatiRicerca = document.getElementById("risultatiRicerca");
+    tabellaRisultatiRicerca.innerHTML = '';
     tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTableScaledTechFlowsOf());
     const tabellaRighe = document.getElementById("datiTabellaScaledTechFlowsOf");
     let num = 0;
@@ -241,6 +243,7 @@ function creaTabellaUnscaledTechFlowsOf(listaUnscaledTechFlowsOf) {
     `<h5 class="alert alert-secondary" role="alert">Tabella che rappresenta una lista di tech flows (lista di techFlowValue)</h5>`);
     
     const tabellaRisultatiRicerca = document.getElementById("risultatiRicerca");
+    tabellaRisultatiRicerca.innerHTML = '';
     tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTableUnscaledTechFlowsOf());
     const tabellaRighe = document.getElementById("datiTabellaUnscaledTechFlowsOf");
     let num = 0;

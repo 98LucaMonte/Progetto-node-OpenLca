@@ -56,9 +56,9 @@ class ApiFlowResults {
 
     getDirectInterventionsOf = async (vps,idCalcolo,techFlow) => {
         try {
-            let urlTechFlow = techFlow.provider["@id"]+"::"+techFlow.flow["@id"];
+            //let urlTechFlow = techFlow.provider["@id"]+"::"+techFlow.flow["@id"];
                 
-            let url = vps + "result/"+idCalcolo+"/direct-interventions-of/"+urlTechFlow;
+            let url = vps + "result/"+idCalcolo+"/direct-interventions-of/"+techFlow;
             
             let response = await fetch(url);
             let v = await response.json();
@@ -89,10 +89,10 @@ class ApiFlowResults {
 
     getFlowIntensitiesOf = async (vps,idCalcolo,techFlow) => {
         try {
-            let urlTechFlow = techFlow.provider["@id"]+"::"+techFlow.flow["@id"];
+            //let urlTechFlow = techFlow.provider["@id"]+"::"+techFlow.flow["@id"];
 
 
-            let url = vps + "result/"+idCalcolo+"/flow-intensities-of/"+urlTechFlow;
+            let url = vps + "result/"+idCalcolo+"/flow-intensities-of/"+techFlow;
             console.log(url);
             let response = await fetch(url);
             let v = await response.json();
