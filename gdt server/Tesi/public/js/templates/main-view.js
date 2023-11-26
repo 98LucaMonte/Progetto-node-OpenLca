@@ -385,7 +385,7 @@ function creaViewMainRisultatiDoppioInputDoppiaTabella() {
         <div class="col-sm-4">
           <p><strong>Seleziona l'EnviFlow</strong></p>
           <select class="form-select form-select-sm" aria-label="Small select example" id="listaInput02">
-            <option selected id="selectedInput02">Open this select menu</option>
+            <option selected id="selectedInput02"></option>
           </select>
         </div>
         <div class="col-sm-2"></div>

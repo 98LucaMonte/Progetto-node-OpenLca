@@ -13,7 +13,8 @@ import {creaTabellaTotalRequirements,creaTabellatotalRequirementsOfFlows,
         creaTabellaScalingFactors,creaTabellaScaledTechFlowsOf,creaTabellaUnscaledTechFlowsOf}from './templates/main-view-technosphere-flows.js';
 
 import {creaTabellaInventoryResult, creaTabellaTotalFlowValueOf, creaTabellaFlowContributionsOf, 
-        creaTabellaDirectInterventionsOf, creaTabellaDirectInterventionsOfEnviFlowTechFlow,creaTabellaFlowIntesitiesOf}from './templates/main-view-flow-results.js';
+        creaTabellaDirectInterventionsOf, creaTabellaDirectInterventionsOfEnviFlowTechFlow,creaTabellaFlowIntesitiesOf,
+        creaTabellaFlowIntesitiesOfEnviFlowTechFlow}from './templates/main-view-flow-results.js';
 
 import { creaViewHeader,creaViewHeaderRisultati } from './templates/header-view.js'
 import page from '//unpkg.com/page/page.mjs';
@@ -228,15 +229,57 @@ class App {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppiaTabella());
-            await creaTabellaTotalFlowValueOf(vps1,idCalcolo,apiFlowResults);    
+            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInputDoppiaTabella());
+            await this.getEnviFlow(apiFlowResults,vps1,idCalcolo);
+
+            document.getElementById('button').addEventListener('click', async event => {
+                const selectEnviFlow = document.getElementById("listaInput01");
+                const selectedOptionEnviFlow = selectEnviFlow.options[selectEnviFlow.selectedIndex];
+                const idEnviFlow = selectedOptionEnviFlow.id;
+                console.log(idEnviFlow);
+                if(idEnviFlow === "selectedInput01") {
+                    const messaggio = document.getElementById("informazioniDati");
+                    messaggio.innerHTML = '';
+                    messaggio.insertAdjacentHTML('beforeend', 
+                    `<h3 class="alert alert-danger" role="alert">Seleziona un envi flow.</h3>`);
+                }   
+                else{
+                    const listaEnviFlow = await apiFlowResults.getTotalFlowValueOf(vps1, idCalcolo,idEnviFlow); 
+                    if (listaEnviFlow.length != 0) {
+                        creaTabellaTotalFlowValueOf(listaEnviFlow);
+                    }
+                }  
+            });
+
+            //await creaTabellaTotalFlowValueOf(vps1,idCalcolo,apiFlowResults);    
         });
         page('/flowResults/flowContributionsOf', async () => {//Capire come stampare bene
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppiaTabella());
-            await creaTabellaFlowContributionsOf(vps1,idCalcolo,apiFlowResults);    
+            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInput());
+            await this.getEnviFlow(apiFlowResults,vps1,idCalcolo);
+
+            document.getElementById('button').addEventListener('click', async event => {
+                const selectEnviFlow = document.getElementById("listaInput01");
+                const selectedOptionEnviFlow = selectEnviFlow.options[selectEnviFlow.selectedIndex];
+                const idEnviFlow = selectedOptionEnviFlow.id;
+                console.log(idEnviFlow);
+                if(idEnviFlow === "selectedInput01") {
+                    const messaggio = document.getElementById("informazioniDati");
+                    messaggio.innerHTML = '';
+                    messaggio.insertAdjacentHTML('beforeend', 
+                    `<h3 class="alert alert-danger" role="alert">Seleziona un envi flow.</h3>`);
+                }   
+                else{
+                    const listaEnviFlow = await apiFlowResults.getFlowContributionsOf(vps1, idCalcolo,idEnviFlow); 
+                    console.log(listaEnviFlow);
+                    if (listaEnviFlow.length != 0) {
+                        creaTabellaFlowContributionsOf(listaEnviFlow);
+                    }
+                }  
+            });
+            //await creaTabellaFlowContributionsOf(vps1,idCalcolo,apiFlowResults);    
         });
         page('/flowResults/directInterventionsOf', async () => {// capire come stampare bene
             this.header.innerHTML = '';
@@ -271,23 +314,29 @@ class App {
             this.main.innerHTML = '';
             this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppioInputDoppiaTabella());
             //const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
-            await this.getTechFlow(apiResultQueries, vps1, idCalcolo);
+            //await this.getTechFlow(apiResultQueries, vps1, idCalcolo);
             
+            await this.getTechFlowEnviFlow(apiResultQueries,apiFlowResults,vps1,idCalcolo);
             document.getElementById('button').addEventListener('click', async event => {
                 const selectTechFlow = document.getElementById("listaInput01");
                 const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
                 const idTechFlow = selectedOptionTechFlow.id;
+
+                const selectEnviFlow = document.getElementById("listaInput02");
+                const selectedOptionEnviFlow = selectEnviFlow.options[selectEnviFlow.selectedIndex];
+                const idEnviFlow = selectedOptionEnviFlow.id;
+
                 console.log(idTechFlow);
-                if(idTechFlow === "selectedInput01") {
+                if(idTechFlow === "selectedInput01" || idEnviFlow === "selectedInput02") {
                     const messaggio = document.getElementById("informazioniDati");
                     messaggio.innerHTML = '';
                     messaggio.insertAdjacentHTML('beforeend', 
                     `<h3 class="alert alert-danger" role="alert">Seleziona un tech flow.</h3>`);
                 }   
                 else{
-                    const listaInventoryResult = await apiFlowResults.getInventoryResult(vps1,idCalcolo);
-                    if (listaInventoryResult.length != 0) {
-                        creaTabellaDirectInterventionsOfEnviFlowTechFlow(listaInventoryResult,idTechFlow,apiFlowResults,vps1,idCalcolo);
+                    const enviFlowValue = await apiFlowResults.getDirectInterventionsOfEnviFlowTechFlow(vps1, idCalcolo,idEnviFlow,idTechFlow);
+                    if (enviFlowValue.length != 0) {
+                        creaTabellaDirectInterventionsOfEnviFlowTechFlow(enviFlowValue);
                     }
                 }  
             });
@@ -327,25 +376,28 @@ class App {
             this.main.innerHTML = '';
             this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppioInputDoppiaTabella());
 
-            await this.getTechFlow(apiResultQueries, vps1, idCalcolo);
-
-            //const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
+            await this.getTechFlowEnviFlow(apiResultQueries,apiFlowResults,vps1,idCalcolo);
             
             document.getElementById('button').addEventListener('click', async event => {
                 const selectTechFlow = document.getElementById("listaInput01");
                 const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
                 const idTechFlow = selectedOptionTechFlow.id;
+
+                const selectEnviFlow = document.getElementById("listaInput02");
+                const selectedOptionEnviFlow = selectEnviFlow.options[selectEnviFlow.selectedIndex];
+                const idEnviFlow = selectedOptionEnviFlow.id;
                 console.log(idTechFlow);
-                if(idTechFlow === "selectedInput01") {
+                if(idTechFlow === "selectedInput01" || idEnviFlow === "selectedInput02") {
                     const messaggio = document.getElementById("informazioniDati");
                     messaggio.innerHTML = '';
                     messaggio.insertAdjacentHTML('beforeend', 
-                    `<h3 class="alert alert-danger" role="alert">Seleziona un tech flow.</h3>`);
+                    `<h3 class="alert alert-danger" role="alert">Seleziona un tech flow e un EnviFlow.</h3>`);
                 }   
                 else{
-                    const listaFlowIntesitiesOf = await apiFlowResults.getFlowIntensitiesOf(vps1,idCalcolo,idTechFlow);
-                    if (listaFlowIntesitiesOf.length != 0) {
-                        creaTabellaFlowIntesitiesOf(listaFlowIntesitiesOf);
+                    const listaFlowIntesitiesOfEnviFlowTechFlow = await apiFlowResults.getFlowIntensityOfEnviFlowTechFlow(vps1,idCalcolo,idEnviFlow,idTechFlow);
+                    console.log(listaFlowIntesitiesOfEnviFlowTechFlow);
+                    if (listaFlowIntesitiesOfEnviFlowTechFlow.length != 0) {
+                        creaTabellaFlowIntesitiesOfEnviFlowTechFlow(listaFlowIntesitiesOfEnviFlowTechFlow);
                     }
                 }  
             });
@@ -513,10 +565,10 @@ class App {
         return idCalcolo;
     }
 
-    getTechFlow = async (apiTechnosphereFlows, vps,idCalcolo) => {
+    getTechFlow = async (apiResultQueries, vps,idCalcolo) => {
 
         const placeholder = document.getElementById("selectedInput01");
-        let listaTechFlow = await apiTechnosphereFlows.getTechnosphereFlows(vps, idCalcolo);
+        let listaTechFlow = await apiResultQueries.getTechnosphereFlows(vps, idCalcolo);
         console.log("listaTechFlow");
         console.log(listaTechFlow);
 
@@ -538,7 +590,73 @@ class App {
        
     }
 
+    getEnviFlow = async (apiFlowResults, vps,idCalcolo) => {
 
+        const placeholder = document.getElementById("selectedInput01");
+        let listaEnviFlow = await apiFlowResults.getInventoryResult(vps, idCalcolo);
+        console.log("listaEnviFlow");
+        console.log(listaEnviFlow);
+
+        if (listaEnviFlow.length == 0) {
+            placeholder.innerHTML = "Non ci sono Envi Flow selezionabili";
+        } else {
+            const select = document.getElementById("listaInput01");
+            placeholder.innerHTML = "Seleziona un Envi Flow";
+            for (let i = 0; i < listaEnviFlow.length; i++) {
+                let option = document.createElement("option");
+                option.value = listaEnviFlow[i].enviFlow.flow.name;
+                option.text = listaEnviFlow[i].enviFlow.flow.name;
+                option.id = listaEnviFlow[i].enviFlow.flow["@id"];
+                select.appendChild(option);
+            }
+        }
+       
+    }
+
+    getTechFlowEnviFlow = async (apiResultQueries,apiFlowResults, vps,idCalcolo) => {
+
+        const placeholder1 = document.getElementById("selectedInput01");
+        let listaTechFlow = await apiResultQueries.getTechnosphereFlows(vps, idCalcolo);
+        console.log("listaTechFlow");
+        console.log(listaTechFlow);
+
+        if (listaTechFlow.length == 0) {
+            placeholder1.innerHTML = "Non ci sono Tech Flow selezionabili";
+        } else {
+            const select = document.getElementById("listaInput01");
+            placeholder1.innerHTML = "Seleziona un Tech Flow";
+            for (let i = 0; i < listaTechFlow.length; i++) {
+                let option = document.createElement("option");
+                option.value = listaTechFlow[i].provider.name+" "+listaTechFlow[i].flow.name;
+                option.text = listaTechFlow[i].provider.name+" "+listaTechFlow[i].flow.name;
+                option.id = listaTechFlow[i].provider["@id"]+"::"+listaTechFlow[i].flow["@id"];
+                select.appendChild(option);
+                console.log(option.id);
+                console.log(option.text);
+            }
+        }
+
+
+        const placeholder = document.getElementById("selectedInput02");
+        let listaEnviFlow = await apiFlowResults.getInventoryResult(vps, idCalcolo);
+        console.log("listaEnviFlow");
+        console.log(listaEnviFlow);
+
+        if (listaEnviFlow.length == 0) {
+            placeholder.innerHTML = "Non ci sono Envi Flow selezionabili";
+        } else {
+            const select = document.getElementById("listaInput02");
+            placeholder.innerHTML = "Seleziona un Envi Flow";
+            for (let i = 0; i < listaEnviFlow.length; i++) {
+                let option = document.createElement("option");
+                option.value = listaEnviFlow[i].enviFlow.flow.name;
+                option.text = listaEnviFlow[i].enviFlow.flow.name;
+                option.id = listaEnviFlow[i].enviFlow.flow["@id"]+"::";
+                select.appendChild(option);
+            }
+        }
+       
+    }
 
 }
 
