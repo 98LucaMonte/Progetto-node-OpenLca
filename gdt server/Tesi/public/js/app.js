@@ -3,8 +3,9 @@ import ApiCalculation from "./apiCalculation.js";
 import ApiResultQueries from "./apiResultQueries.js";
 import ApiTechnosphereFlows from "./apiTechnosphereFlows.js";
 import ApiFlowResults from "./apiFlowResults.js";
+import ApiImpactResults from "./apiImpactResults.js";
 
-import {creaViewMain, creaViewMainRisultati, creaViewMainRisultatiDoppioInput , creaViewMainRisultatiSingoloInput, 
+import {creaViewMain, creaLateralNavbar,creaViewMainRisultati, creaViewMainRisultatiDoppioInput , creaViewMainRisultatiSingoloInput, 
         creaViewMainRisultatiDoppiaTabella , creaViewMainRisultatiSingoloInputDoppiaTabella, creaViewMainRisultatiDoppioInputDoppiaTabella} from './templates/main-view.js';
 
 import {creaTabellaTechnosphereFlows,creaTabellaFinalDemand,creaTabellaInterventionFlows,creaTabellaImpactCategories} from './templates/main-view-result-queries.js';
@@ -14,7 +15,9 @@ import {creaTabellaTotalRequirements,creaTabellatotalRequirementsOfFlows,
 
 import {creaTabellaInventoryResult, creaTabellaTotalFlowValueOf, creaTabellaFlowContributionsOf, 
         creaTabellaDirectInterventionsOf, creaTabellaDirectInterventionsOfEnviFlowTechFlow,creaTabellaFlowIntesitiesOf,
-        creaTabellaFlowIntesitiesOfEnviFlowTechFlow}from './templates/main-view-flow-results.js';
+        creaTabellaFlowIntesitiesOfEnviFlowTechFlow,creaTabellaTotalInterventionsOf,creaTabellaTotalInterventionOfEnviFlowTechFlow}from './templates/main-view-flow-results.js';
+
+import { creaTabellaTotalImpacts} from './templates/main-view-impact-results.js';
 
 import { creaViewHeader,creaViewHeaderRisultati } from './templates/header-view.js'
 import page from '//unpkg.com/page/page.mjs';
@@ -23,6 +26,7 @@ const apiCalculation = new ApiCalculation();
 const apiResultQueries = new ApiResultQueries();
 const apiTechnosphereFlows = new ApiTechnosphereFlows();
 const apiFlowResults = new ApiFlowResults();
+const apiImpactResults = new ApiImpactResults();
 
 class App {
 
@@ -69,7 +73,8 @@ class App {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultati());
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultati());
             const listaTechnosphereFlows = await apiResultQueries.getTechnosphereFlows(vps1, idCalcolo);
             if (listaTechnosphereFlows.length != 0) {
                 creaTabellaTechnosphereFlows(listaTechnosphereFlows);
@@ -79,7 +84,8 @@ class App {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultati());
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultati());
             const richiestaFinale = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
             console.log(richiestaFinale);
             if (richiestaFinale.length != 0) {
@@ -90,7 +96,8 @@ class App {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppiaTabella());
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiDoppiaTabella());
             const listaInterventionFlows = await apiResultQueries.getInterventionFlows(vps1, idCalcolo);
             if (listaInterventionFlows.length != 0) {
                 creaTabellaInterventionFlows(listaInterventionFlows);
@@ -101,7 +108,8 @@ class App {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultati());
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultati());
             const listaImpactCategories = await apiResultQueries.getImpactCategories(vps1,idCalcolo);
             if (listaImpactCategories.length != 0) {
                 creaTabellaImpactCategories(listaImpactCategories);
@@ -112,7 +120,8 @@ class App {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultati());
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultati());
             const listaTotalRequirements = await apiTechnosphereFlows.getTotalRequirements(vps1, idCalcolo);
             if (listaTotalRequirements.length != 0) {
                 creaTabellaTotalRequirements(listaTotalRequirements);
@@ -122,9 +131,8 @@ class App {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInput());
-            //const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
-            
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInput());
             //Prendo i tech flow disponibili dal db
             await this.getTechFlow(apiResultQueries, vps1, idCalcolo);
 
@@ -152,7 +160,8 @@ class App {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultati());
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultati());
             const listaScalingFactors = await apiTechnosphereFlows.getScalingFactors(vps1, idCalcolo);
             if (listaScalingFactors.length != 0) {
                 creaTabellaScalingFactors(listaScalingFactors);
@@ -162,7 +171,8 @@ class App {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInput());
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInput());
             //Prendo i tech flow disponibili dal db
             await this.getTechFlow(apiResultQueries, vps1, idCalcolo);
 
@@ -190,7 +200,8 @@ class App {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInput());
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInput());
             //const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
             await this.getTechFlow(apiResultQueries, vps1, idCalcolo);
 
@@ -218,7 +229,8 @@ class App {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppiaTabella());
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiDoppiaTabella());
             const listaInventoryResult = await apiFlowResults.getInventoryResult(vps1, idCalcolo);
             if (listaInventoryResult.length != 0) {
                 creaTabellaInventoryResult(listaInventoryResult);
@@ -229,7 +241,8 @@ class App {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInputDoppiaTabella());
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInputDoppiaTabella());
             await this.getEnviFlow(apiFlowResults,vps1,idCalcolo);
 
             document.getElementById('button').addEventListener('click', async event => {
@@ -253,11 +266,13 @@ class App {
 
             //await creaTabellaTotalFlowValueOf(vps1,idCalcolo,apiFlowResults);    
         });
-        page('/flowResults/flowContributionsOf', async () => {//Capire come stampare bene
+        page('/flowResults/flowContributionsOf', async () => {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInput());
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInput());
+            
             await this.getEnviFlow(apiFlowResults,vps1,idCalcolo);
 
             document.getElementById('button').addEventListener('click', async event => {
@@ -281,11 +296,13 @@ class App {
             });
             //await creaTabellaFlowContributionsOf(vps1,idCalcolo,apiFlowResults);    
         });
-        page('/flowResults/directInterventionsOf', async () => {// capire come stampare bene
+        page('/flowResults/directInterventionsOf', async () => {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInputDoppiaTabella());
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInputDoppiaTabella());
+           
             //const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
             await this.getTechFlow(apiResultQueries, vps1, idCalcolo);
             document.getElementById('button').addEventListener('click', async event => {
@@ -308,14 +325,13 @@ class App {
             });
 
         });
-        page('/flowResults/directInterventionsOfEnviFlowTechFlow', async () => {// capire come stampare bene
+        page('/flowResults/directInterventionsOfEnviFlowTechFlow', async () => {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppioInputDoppiaTabella());
-            //const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
-            //await this.getTechFlow(apiResultQueries, vps1, idCalcolo);
-            
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiDoppioInputDoppiaTabella());
+           
             await this.getTechFlowEnviFlow(apiResultQueries,apiFlowResults,vps1,idCalcolo);
             document.getElementById('button').addEventListener('click', async event => {
                 const selectTechFlow = document.getElementById("listaInput01");
@@ -343,11 +359,13 @@ class App {
 
             
         });    
-        page('/flowResults/flowIntensitiesOf', async () => {// capire come stampare bene
+        page('/flowResults/flowIntensitiesOf', async () => {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInputDoppiaTabella());
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInputDoppiaTabella());
+           
             //const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
             await this.getTechFlow(apiResultQueries, vps1, idCalcolo);
             document.getElementById('button').addEventListener('click', async event => {
@@ -370,12 +388,13 @@ class App {
             });
             
         });  
-        page('/flowResults/flowIntensityOfEnviFlowTechFlow', async () => {// capire come stampare bene
+        page('/flowResults/flowIntensityOfEnviFlowTechFlow', async () => {
             this.header.innerHTML = '';
             this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
             this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppioInputDoppiaTabella());
-
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiDoppioInputDoppiaTabella());
+           
             await this.getTechFlowEnviFlow(apiResultQueries,apiFlowResults,vps1,idCalcolo);
             
             document.getElementById('button').addEventListener('click', async event => {
@@ -402,6 +421,147 @@ class App {
                 }  
             });
         });   
+        page('/flowResults/totalInterventionsOf', async () => {
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            this.main.innerHTML = '';
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInputDoppiaTabella());
+            await this.getTechFlow(apiResultQueries,vps1,idCalcolo);
+            document.getElementById('button').addEventListener('click', async event => {
+                const selectTechFlow = document.getElementById("listaInput01");
+                const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
+                const idTechFlow = selectedOptionTechFlow.id;
+
+                console.log(idTechFlow);
+                if(idTechFlow === "selectedInput01") {
+                    const messaggio = document.getElementById("informazioniDati");
+                    messaggio.innerHTML = '';
+                    messaggio.insertAdjacentHTML('beforeend', 
+                    `<h3 class="alert alert-danger" role="alert">Seleziona un tech flow.</h3>`);
+                }   
+                else{
+                    const listaTotalInterventionsOf = await apiFlowResults.getTotalInterventionsOf(vps1,idCalcolo,idTechFlow);
+                    console.log(listaTotalInterventionsOf);
+                    if (listaTotalInterventionsOf.length != 0) {
+                        creaTabellaTotalInterventionsOf(listaTotalInterventionsOf);
+                    }
+                }  
+            });
+        });
+        page('/flowResults/totalInterventionOfEnviFlowTechFlow', async () => {
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            this.main.innerHTML = '';
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiDoppioInputDoppiaTabella());
+           
+            await this.getTechFlowEnviFlow(apiResultQueries,apiFlowResults,vps1,idCalcolo);
+            document.getElementById('button').addEventListener('click', async event => {
+                const selectTechFlow = document.getElementById("listaInput01");
+                const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
+                const idTechFlow = selectedOptionTechFlow.id;
+
+                const selectEnviFlow = document.getElementById("listaInput02");
+                const selectedOptionEnviFlow = selectEnviFlow.options[selectEnviFlow.selectedIndex];
+                const idEnviFlow = selectedOptionEnviFlow.id;
+                console.log(idTechFlow);
+                if(idTechFlow === "selectedInput01" || idEnviFlow === "selectedInput02") {
+                    const messaggio = document.getElementById("informazioniDati");
+                    messaggio.innerHTML = '';
+                    messaggio.insertAdjacentHTML('beforeend', 
+                    `<h3 class="alert alert-danger" role="alert">Seleziona un tech flow e un EnviFlow.</h3>`);
+                }   
+                else{
+                    const listaTotalInterventionOfEnviFlowTechFlow = await apiFlowResults.getTotalInterventionOfEnviFlowTechFlow(vps1,idCalcolo,idEnviFlow,idTechFlow);
+                    console.log(listaTotalInterventionOfEnviFlowTechFlow);
+                    if (listaTotalInterventionOfEnviFlowTechFlow.length != 0) {
+                        creaTabellaTotalInterventionOfEnviFlowTechFlow(listaTotalInterventionOfEnviFlowTechFlow);
+                    }
+                }  
+            });
+        }); 
+        /*Not found url 
+        page('/flowResults/upstreamInterventionsOf', async () => {
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            this.main.innerHTML = '';
+            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInput());
+            await this.getEnviFlow(apiFlowResults,vps1,idCalcolo);
+            document.getElementById('button').addEventListener('click', async event => {
+                
+                const selectEnviFlow = document.getElementById("listaInput01");
+                const selectedOptionEnviFlow = selectEnviFlow.options[selectEnviFlow.selectedIndex];
+                const idEnviFlow = selectedOptionEnviFlow.id;
+                if(idEnviFlow === "selectedInput01") {
+                    const messaggio = document.getElementById("informazioniDati");
+                    messaggio.innerHTML = '';
+                    messaggio.insertAdjacentHTML('beforeend', 
+                    `<h3 class="alert alert-danger" role="alert">Seleziona un EnviFlow.</h3>`);
+                }   
+                else{
+                    const listaUpstreamInterventionsOf = await apiFlowResults.getUpstreamInterventionsOf(vps1,idCalcolo,idEnviFlow);
+                    console.log(listaUpstreamInterventionsOf);
+                    if (listaUpstreamInterventionsOf.length != 0) {
+                        creaTabellaTotalInterventionOfEnviFlowTechFlow(listaUpstreamInterventionsOf);
+                    }
+                }  
+            });
+        });*/   
+        page('/impactResults/totalImpacts', async () => {
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            this.main.innerHTML = '';
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultati());
+            const listaTotalImpacts = await apiImpactResults.getTotalImpacts(vps1,idCalcolo);
+            if(listaTotalImpacts.length != 0){
+                creaTabellaTotalImpacts(listaTotalImpacts);
+            }
+            console.log(listaTotalImpacts);
+        });
+        page('/impactResults/totalImpactsNormalized', async () => {
+           
+        }); 
+        page('/impactResults/totalImpactsWeighted', async () => {
+           
+        }); 
+        page('/impactResults/totalImpactValueOf', async () => {
+           
+        }); 
+        page('/impactResults/impactContributionsOf', async () => {
+           
+        }); 
+        page('/impactResults/directImpactsOf', async () => {
+           
+        }); 
+        page('/impactResults/directImpactOfImpactCategoryTechFlow', async () => {
+           
+        }); 
+        page('/impactResults/impactIntensitiesOf', async () => {
+           
+        }); 
+        page('/impactResults/directImpactIntensityOfImpactCategoryTechFlow', async () => {
+           
+        }); 
+        page('/impactResults/totalImpactsOf', async () => {
+           
+        });
+        page('/impactResults/totalImpactOfImpactCategoryTechFlow', async () => {
+           
+        }); 
+        page('/impactResults/impactFactorsOf', async () => {
+           
+        }); 
+        page('/impactResults/impactFactorsOfImpactCategoryEnviFlow', async () => {
+           
+        });
+        page('/impactResults/flowImpactsOf', async () => {
+           
+        });  
+        page('/impactResults/flowImpactOfImpactCategoryEnviFlow', async () => {
+           
+        });     
         page();
 
     }
@@ -583,8 +743,6 @@ class App {
                 option.text = listaTechFlow[i].provider.name+" "+listaTechFlow[i].flow.name;
                 option.id = listaTechFlow[i].provider["@id"]+"::"+listaTechFlow[i].flow["@id"];
                 select.appendChild(option);
-                console.log(option.id);
-                console.log(option.text);
             }
         }
        
@@ -631,8 +789,6 @@ class App {
                 option.text = listaTechFlow[i].provider.name+" "+listaTechFlow[i].flow.name;
                 option.id = listaTechFlow[i].provider["@id"]+"::"+listaTechFlow[i].flow["@id"];
                 select.appendChild(option);
-                console.log(option.id);
-                console.log(option.text);
             }
         }
 

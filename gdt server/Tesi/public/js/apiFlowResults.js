@@ -125,9 +125,9 @@ class ApiFlowResults {
 
     getTotalInterventionsOf = async (vps,idCalcolo,techFlow) => {
         try {
-            let urlTechFlow = techFlow.provider["@id"]+"::"+techFlow.flow["@id"];
+            //let urlTechFlow = techFlow.provider["@id"]+"::"+techFlow.flow["@id"];
 
-            let url = vps + "result/"+idCalcolo+"/total-interventions-of/"+urlTechFlow;
+            let url = vps + "result/"+idCalcolo+"/total-interventions-of/"+techFlow;
             console.log(url);
             let response = await fetch(url);
             let v = await response.json();
@@ -137,16 +137,16 @@ class ApiFlowResults {
         }
     }
 
-    getTotalInterventionOfEnviFlowTechFlow = async (vps,idCalcolo,element,techFlow) => {
+    getTotalInterventionOfEnviFlowTechFlow = async (vps,idCalcolo,enviFlow,techFlow) => {
         try {
-            let enviFlowUrl = element.enviFlow.flow["@id"]+"::";
-            let urlTechFlow = techFlow.provider["@id"]+"::"+techFlow.flow["@id"];
+            //let enviFlowUrl = element.enviFlow.flow["@id"]+"::";
+            //let urlTechFlow = techFlow.provider["@id"]+"::"+techFlow.flow["@id"];
             /*if(element.enviFlow.location["@id"] === undefined)
                 enviFlowUrl = element.enviFlow.flow["@id"]+"::";
             else
                 enviFlowUrl = element.enviFlow.flow["@id"] +"::"+element.enviFlow.location["@id"];*/
 
-            let url = vps + "result/"+idCalcolo+"/total-intervention-of/"+enviFlowUrl+"/"+urlTechFlow;
+            let url = vps + "result/"+idCalcolo+"/total-intervention-of/"+enviFlow+"/"+techFlow;
             console.log(url);
             let response = await fetch(url);
             let v = await response.json();
@@ -156,17 +156,24 @@ class ApiFlowResults {
         }
     }
 
-    getUpstreamInterventionsOf = async (vps,idCalcolo,element) => {
+
+    //not found url
+    getUpstreamInterventionsOf = async (vps,idCalcolo,enviFlow) => {
         try {
-            let enviFlowUrl = element.enviFlow.flow["@id"]+"::";
+            //let enviFlowUrl = element.enviFlow.flow["@id"]+"::";
             /*if(element.enviFlow.location["@id"] === undefined)
                 enviFlowUrl = element.enviFlow.flow["@id"]+"::";
             else
                 enviFlowUrl = element.enviFlow.flow["@id"] +"::"+element.enviFlow.location["@id"];*/
 
-            let url = vps + "result/"+idCalcolo+"/upstream-interventions-of/"+enviFlowUrl;
+            let url = vps + "result/"+idCalcolo+"/upstream-interventions-of/"+enviFlow+"::";
             console.log(url);
-            let response = await fetch(url);
+            let response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                }                
+            });
             let v = await response.json();
             return v;
         } catch (error) {

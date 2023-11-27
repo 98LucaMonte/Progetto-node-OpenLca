@@ -1,4 +1,4 @@
-function creaViewTableInventoryResultInput() {
+function creaViewTableResultInput() {
     return `
         <table class="table table-striped table-bordered table-scrollabile">
             <thead>
@@ -17,7 +17,7 @@ function creaViewTableInventoryResultInput() {
     `;
 }
   
-function creaViewTableInventoryResultOutput() {
+function creaViewTableResultOutput() {
     return `
         <table class="table table-striped table-bordered table-scrollabile">
             <thead>
@@ -36,7 +36,7 @@ function creaViewTableInventoryResultOutput() {
     `;
 }
   
-function creaViewRowInventoryResult(element,num){
+function creaViewRowResult(element,num){
     return `
     <tr class="color-row-table">
         <th scope="row">${num}</th>
@@ -91,8 +91,8 @@ function creaTabellaInventoryResult(listaInventoryResult){
 
     const tabellaRisultatiRicercaInput = document.getElementById("risultatiRicercaInput01");
     const tabellaRisultatiRicercaOutput = document.getElementById("risultatiRicercaOutput02");
-    tabellaRisultatiRicercaInput.insertAdjacentHTML('beforeend', creaViewTableInventoryResultInput());
-    tabellaRisultatiRicercaOutput.insertAdjacentHTML('beforeend', creaViewTableInventoryResultOutput());
+    tabellaRisultatiRicercaInput.insertAdjacentHTML('beforeend', creaViewTableResultInput());
+    tabellaRisultatiRicercaOutput.insertAdjacentHTML('beforeend', creaViewTableResultOutput());
 
     const tabellaRigheInput = document.getElementById("datiTabellaInventoryResultInput");
     const tabellaRigheOutput = document.getElementById("datiTabellaInventoryResultOutput");
@@ -104,12 +104,12 @@ function creaTabellaInventoryResult(listaInventoryResult){
 
         if(element.enviFlow.isInput){
             numInput++;
-            const riga = creaViewRowInventoryResult(element, numInput);
+            const riga = creaViewRowResult(element, numInput);
             tabellaRigheInput.insertAdjacentHTML('beforeend', riga);
         }
         else{
             numOutput++;
-            const riga = creaViewRowInventoryResult(element, numOutput);
+            const riga = creaViewRowResult(element, numOutput);
             tabellaRigheOutput.insertAdjacentHTML('beforeend', riga);
         }
         
@@ -131,8 +131,8 @@ function creaTabellaTotalFlowValueOf(listaEnviFlow){
     tabellaRisultatiRicercaInput.innerHTML = '';
     const tabellaRisultatiRicercaOutput = document.getElementById("risultatiRicercaOutput02");
     tabellaRisultatiRicercaOutput.innerHTML = '';
-    tabellaRisultatiRicercaInput.insertAdjacentHTML('beforeend', creaViewTableInventoryResultInput());
-    tabellaRisultatiRicercaOutput.insertAdjacentHTML('beforeend', creaViewTableInventoryResultOutput());
+    tabellaRisultatiRicercaInput.insertAdjacentHTML('beforeend', creaViewTableResultInput());
+    tabellaRisultatiRicercaOutput.insertAdjacentHTML('beforeend', creaViewTableResultOutput());
 
     const tabellaRigheInput = document.getElementById("datiTabellaInventoryResultInput");
     const tabellaRigheOutput = document.getElementById("datiTabellaInventoryResultOutput");
@@ -144,12 +144,12 @@ function creaTabellaTotalFlowValueOf(listaEnviFlow){
 
         if(listaEnviFlow.enviFlow.isInput){
             numInput++;
-            const riga = creaViewRowInventoryResult(listaEnviFlow, numInput);
+            const riga = creaViewRowResult(listaEnviFlow, numInput);
             tabellaRigheInput.insertAdjacentHTML('beforeend', riga);
         }
         else{
             numOutput++;
-            const riga = creaViewRowInventoryResult(listaEnviFlow, numOutput);
+            const riga = creaViewRowResult(listaEnviFlow, numOutput);
             tabellaRigheOutput.insertAdjacentHTML('beforeend', riga);
         } 
     }
@@ -158,12 +158,12 @@ function creaTabellaTotalFlowValueOf(listaEnviFlow){
             
             if(element.enviFlow.isInput){
                 numInput++;
-                const riga = creaViewRowInventoryResult(element, numInput);
+                const riga = creaViewRowResult(element, numInput);
                 tabellaRigheInput.insertAdjacentHTML('beforeend', riga);
             }
             else{
                 numOutput++;
-                const riga = creaViewRowInventoryResult(element, numOutput);
+                const riga = creaViewRowResult(element, numOutput);
                 tabellaRigheOutput.insertAdjacentHTML('beforeend', riga);
             }
         }
@@ -224,8 +224,8 @@ function creaTabellaDirectInterventionsOf(listaDirectInterventionsOf){
   
     const tabellaRisultatiRicercaInput = document.getElementById("risultatiRicercaInput01");
     const tabellaRisultatiRicercaOutput = document.getElementById("risultatiRicercaOutput02");
-    tabellaRisultatiRicercaInput.insertAdjacentHTML('beforeend', creaViewTableInventoryResultInput());
-    tabellaRisultatiRicercaOutput.insertAdjacentHTML('beforeend', creaViewTableInventoryResultOutput());
+    tabellaRisultatiRicercaInput.insertAdjacentHTML('beforeend', creaViewTableResultInput());
+    tabellaRisultatiRicercaOutput.insertAdjacentHTML('beforeend', creaViewTableResultOutput());
 
     const tabellaRigheInput = document.getElementById("datiTabellaInventoryResultInput");
     const tabellaRigheOutput = document.getElementById("datiTabellaInventoryResultOutput");
@@ -237,12 +237,12 @@ function creaTabellaDirectInterventionsOf(listaDirectInterventionsOf){
 
         if(element.enviFlow.isInput){
             numInput++;
-            const riga = creaViewRowInventoryResult(element, numInput);
+            const riga = creaViewRowResult(element, numInput);
             tabellaRigheInput.insertAdjacentHTML('beforeend', riga);
         }
         else{
             numOutput++;
-            const riga = creaViewRowInventoryResult(element, numOutput);
+            const riga = creaViewRowResult(element, numOutput);
             tabellaRigheOutput.insertAdjacentHTML('beforeend', riga);
         }
         
@@ -263,8 +263,8 @@ function creaTabellaDirectInterventionsOfEnviFlowTechFlow(enviFlowValue){
     tabellaRisultatiRicercaInput.innerHTML = '';
     const tabellaRisultatiRicercaOutput = document.getElementById("risultatiRicercaOutput02");
     tabellaRisultatiRicercaOutput.innerHTML = '';
-    tabellaRisultatiRicercaInput.insertAdjacentHTML('beforeend', creaViewTableInventoryResultInput());
-    tabellaRisultatiRicercaOutput.insertAdjacentHTML('beforeend', creaViewTableInventoryResultOutput());
+    tabellaRisultatiRicercaInput.insertAdjacentHTML('beforeend', creaViewTableResultInput());
+    tabellaRisultatiRicercaOutput.insertAdjacentHTML('beforeend', creaViewTableResultOutput());
 
     const tabellaRigheInput = document.getElementById("datiTabellaInventoryResultInput");
     const tabellaRigheOutput = document.getElementById("datiTabellaInventoryResultOutput");
@@ -274,12 +274,12 @@ function creaTabellaDirectInterventionsOfEnviFlowTechFlow(enviFlowValue){
     
     if(enviFlowValue.enviFlow.isInput){
         numInput++;
-        const riga = creaViewRowInventoryResult(enviFlowValue, numInput);
+        const riga = creaViewRowResult(enviFlowValue, numInput);
         tabellaRigheInput.insertAdjacentHTML('beforeend', riga);
     }
     else{
         numOutput++;
-        const riga = creaViewRowInventoryResult(enviFlowValue, numOutput);
+        const riga = creaViewRowResult(enviFlowValue, numOutput);
         tabellaRigheOutput.insertAdjacentHTML('beforeend', riga);
     }
     
@@ -305,8 +305,8 @@ function creaTabellaFlowIntesitiesOf(listaFlowIntesitiesOf){
     tabellaRisultatiRicercaInput.innerHTML = '';
     const tabellaRisultatiRicercaOutput = document.getElementById("risultatiRicercaOutput02");
     tabellaRisultatiRicercaOutput.innerHTML = '';
-    tabellaRisultatiRicercaInput.insertAdjacentHTML('beforeend', creaViewTableInventoryResultInput());
-    tabellaRisultatiRicercaOutput.insertAdjacentHTML('beforeend', creaViewTableInventoryResultOutput());
+    tabellaRisultatiRicercaInput.insertAdjacentHTML('beforeend', creaViewTableResultInput());
+    tabellaRisultatiRicercaOutput.insertAdjacentHTML('beforeend', creaViewTableResultOutput());
 
     const tabellaRigheInput = document.getElementById("datiTabellaInventoryResultInput");
     const tabellaRigheOutput = document.getElementById("datiTabellaInventoryResultOutput");
@@ -318,12 +318,12 @@ function creaTabellaFlowIntesitiesOf(listaFlowIntesitiesOf){
 
         if(element.enviFlow.isInput){
             numInput++;
-            const riga = creaViewRowInventoryResult(element, numInput);
+            const riga = creaViewRowResult(element, numInput);
             tabellaRigheInput.insertAdjacentHTML('beforeend', riga);
         }
         else{
             numOutput++;
-            const riga = creaViewRowInventoryResult(element, numOutput);
+            const riga = creaViewRowResult(element, numOutput);
             tabellaRigheOutput.insertAdjacentHTML('beforeend', riga);
         }
         
@@ -352,8 +352,8 @@ function creaTabellaFlowIntesitiesOfEnviFlowTechFlow(listaFlowIntesitiesOf){
     tabellaRisultatiRicercaInput.innerHTML = '';
     const tabellaRisultatiRicercaOutput = document.getElementById("risultatiRicercaOutput02");
     tabellaRisultatiRicercaOutput.innerHTML = '';
-    tabellaRisultatiRicercaInput.insertAdjacentHTML('beforeend', creaViewTableInventoryResultInput());
-    tabellaRisultatiRicercaOutput.insertAdjacentHTML('beforeend', creaViewTableInventoryResultOutput());
+    tabellaRisultatiRicercaInput.insertAdjacentHTML('beforeend', creaViewTableResultInput());
+    tabellaRisultatiRicercaOutput.insertAdjacentHTML('beforeend', creaViewTableResultOutput());
 
     const tabellaRigheInput = document.getElementById("datiTabellaInventoryResultInput");
     const tabellaRigheOutput = document.getElementById("datiTabellaInventoryResultOutput");
@@ -366,12 +366,12 @@ function creaTabellaFlowIntesitiesOfEnviFlowTechFlow(listaFlowIntesitiesOf){
 
             if(element.enviFlow.isInput){
                 numInput++;
-                const riga = creaViewRowInventoryResult(element, numInput);
+                const riga = creaViewRowResult(element, numInput);
                 tabellaRigheInput.insertAdjacentHTML('beforeend', riga);
             }
             else{
                 numOutput++;
-                const riga = creaViewRowInventoryResult(element, numOutput);
+                const riga = creaViewRowResult(element, numOutput);
                 tabellaRigheOutput.insertAdjacentHTML('beforeend', riga);
             }
             
@@ -380,12 +380,12 @@ function creaTabellaFlowIntesitiesOfEnviFlowTechFlow(listaFlowIntesitiesOf){
     else{
         if(listaFlowIntesitiesOf.enviFlow.isInput){
             numInput++;
-            const riga = creaViewRowInventoryResult(listaFlowIntesitiesOf, numInput);
+            const riga = creaViewRowResult(listaFlowIntesitiesOf, numInput);
             tabellaRigheInput.insertAdjacentHTML('beforeend', riga);
         }
         else{
             numOutput++;
-            const riga = creaViewRowInventoryResult(listaFlowIntesitiesOf, numOutput);
+            const riga = creaViewRowResult(listaFlowIntesitiesOf, numOutput);
             tabellaRigheOutput.insertAdjacentHTML('beforeend', riga);
         }
     }
@@ -401,7 +401,128 @@ function creaTabellaFlowIntesitiesOfEnviFlowTechFlow(listaFlowIntesitiesOf){
 
 }
 
+function creaTabellaTotalInterventionsOf(listaTotalInterventionsOf){
+    console.log("listaTotalInterventionsOf");
+    console.log(listaTotalInterventionsOf);
+    const messaggio = document.getElementById("informazioniDati");
+    messaggio.innerHTML='';
+    messaggio.insertAdjacentHTML('beforeend', 
+    `<h5 class="alert alert-secondary" role="alert">Lista di enviflowValue dato un tech flow</h5>`);
+  
+    const tabellaRisultatiRicercaInput = document.getElementById("risultatiRicercaInput01");
+    tabellaRisultatiRicercaInput.innerHTML = '';
+    const tabellaRisultatiRicercaOutput = document.getElementById("risultatiRicercaOutput02");
+    tabellaRisultatiRicercaOutput.innerHTML = '';
+    tabellaRisultatiRicercaInput.insertAdjacentHTML('beforeend', creaViewTableResultInput());
+    tabellaRisultatiRicercaOutput.insertAdjacentHTML('beforeend', creaViewTableResultOutput());
+
+    const tabellaRigheInput = document.getElementById("datiTabellaInventoryResultInput");
+    const tabellaRigheOutput = document.getElementById("datiTabellaInventoryResultOutput");
+
+    let numInput = 0;
+    let numOutput = 0;
+
+    if(isIterable(listaTotalInterventionsOf)){
+        listaTotalInterventionsOf.forEach(element => {
+
+            if(element.enviFlow.isInput){
+                numInput++;
+                const riga = creaViewRowResult(element, numInput);
+                tabellaRigheInput.insertAdjacentHTML('beforeend', riga);
+            }
+            else{
+                numOutput++;
+                const riga = creaViewRowResult(element, numOutput);
+                tabellaRigheOutput.insertAdjacentHTML('beforeend', riga);
+            }
+            
+        });
+    }
+    else{
+        if(listaTotalInterventionsOf.enviFlow.isInput){
+            numInput++;
+            const riga = creaViewRowResult(listaTotalInterventionsOf, numInput);
+            tabellaRigheInput.insertAdjacentHTML('beforeend', riga);
+        }
+        else{
+            numOutput++;
+            const riga = creaViewRowResult(listaTotalInterventionsOf, numOutput);
+            tabellaRigheOutput.insertAdjacentHTML('beforeend', riga);
+        }
+    }
+
+    if(numInput === 0){
+        tabellaRisultatiRicercaInput.innerHTML="";
+        tabellaRisultatiRicercaInput.insertAdjacentHTML('beforeend', `<p>Non è presente nessun envi Flow di input</p>`);
+    }
+    if(numOutput === 0){
+        tabellaRisultatiRicercaOutput.innerHTML="";
+        tabellaRisultatiRicercaOutput.insertAdjacentHTML('beforeend', `<p>Non è presente nessun envi Flow di output</p>`) 
+    }
+}
+
+function creaTabellaTotalInterventionOfEnviFlowTechFlow(listaTotalInterventionOfEnviFlowTechFlow){
+    console.log("listaTotalInterventionOfEnviFlowTechFlow");
+    console.log(listaTotalInterventionOfEnviFlowTechFlow);
+    const messaggio = document.getElementById("informazioniDati");
+    messaggio.innerHTML='';
+    messaggio.insertAdjacentHTML('beforeend', 
+    `<h5 class="alert alert-secondary" role="alert">Lista di enviflowValue dato un tech flow</h5>`);
+  
+    const tabellaRisultatiRicercaInput = document.getElementById("risultatiRicercaInput01");
+    tabellaRisultatiRicercaInput.innerHTML = '';
+    const tabellaRisultatiRicercaOutput = document.getElementById("risultatiRicercaOutput02");
+    tabellaRisultatiRicercaOutput.innerHTML = '';
+    tabellaRisultatiRicercaInput.insertAdjacentHTML('beforeend', creaViewTableResultInput());
+    tabellaRisultatiRicercaOutput.insertAdjacentHTML('beforeend', creaViewTableResultOutput());
+
+    const tabellaRigheInput = document.getElementById("datiTabellaInventoryResultInput");
+    const tabellaRigheOutput = document.getElementById("datiTabellaInventoryResultOutput");
+
+    let numInput = 0;
+    let numOutput = 0;
+
+    if(isIterable(listaTotalInterventionOfEnviFlowTechFlow)){
+        listaTotalInterventionOfEnviFlowTechFlow.forEach(element => {
+
+            if(element.enviFlow.isInput){
+                numInput++;
+                const riga = creaViewRowResult(element, numInput);
+                tabellaRigheInput.insertAdjacentHTML('beforeend', riga);
+            }
+            else{
+                numOutput++;
+                const riga = creaViewRowResult(element, numOutput);
+                tabellaRigheOutput.insertAdjacentHTML('beforeend', riga);
+            }
+            
+        });
+    }
+    else{
+        if(listaTotalInterventionOfEnviFlowTechFlow.enviFlow.isInput){
+            numInput++;
+            const riga = creaViewRowResult(listaTotalInterventionOfEnviFlowTechFlow, numInput);
+            tabellaRigheInput.insertAdjacentHTML('beforeend', riga);
+        }
+        else{
+            numOutput++;
+            const riga = creaViewRowResult(listaTotalInterventionOfEnviFlowTechFlow, numOutput);
+            tabellaRigheOutput.insertAdjacentHTML('beforeend', riga);
+        }
+    }
+
+    if(numInput === 0){
+        tabellaRisultatiRicercaInput.innerHTML="";
+        tabellaRisultatiRicercaInput.insertAdjacentHTML('beforeend', `<p>Non è presente nessun envi Flow di input</p>`);
+    }
+    if(numOutput === 0){
+        tabellaRisultatiRicercaOutput.innerHTML="";
+        tabellaRisultatiRicercaOutput.insertAdjacentHTML('beforeend', `<p>Non è presente nessun envi Flow di output</p>`) 
+    }
+
+}
 
 export {creaTabellaInventoryResult, creaTabellaTotalFlowValueOf, creaTabellaFlowContributionsOf, 
         creaTabellaDirectInterventionsOf, creaTabellaDirectInterventionsOfEnviFlowTechFlow,
-        creaTabellaFlowIntesitiesOf,creaTabellaFlowIntesitiesOfEnviFlowTechFlow};
+        creaTabellaFlowIntesitiesOf,creaTabellaFlowIntesitiesOfEnviFlowTechFlow,creaTabellaTotalInterventionsOf,
+        creaTabellaTotalInterventionOfEnviFlowTechFlow};
