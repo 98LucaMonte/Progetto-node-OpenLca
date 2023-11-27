@@ -17,7 +17,12 @@ import {creaTabellaInventoryResult, creaTabellaTotalFlowValueOf, creaTabellaFlow
         creaTabellaDirectInterventionsOf, creaTabellaDirectInterventionsOfEnviFlowTechFlow,creaTabellaFlowIntesitiesOf,
         creaTabellaFlowIntesitiesOfEnviFlowTechFlow,creaTabellaTotalInterventionsOf,creaTabellaTotalInterventionOfEnviFlowTechFlow}from './templates/main-view-flow-results.js';
 
-import { creaTabellaTotalImpacts} from './templates/main-view-impact-results.js';
+import {creaTabellaTotalImpacts,creaTabellaTotalImpactsNormalized,creaTabellaTotalImpactsWeighted,
+        creaTabellaImpactCathegory,creaTabellaImpactContributionsOf,creaTabellaDirectImpactsOf,
+        creaTabellaImpactIntensitiesOf,creaTabellaTotalImpactsOf,creaTabellaImpactFactorsOf,
+        creaTabellaFlowImpactsOf,creaTabellaDirectImpactOfImpactCategoryTechFlow,
+        creaTabellaDirectImpactIntensityOfImpactCategoryTechFlow,creaTabellaTotalImpactOfImpactCategoryTechFlow,
+        creaTabellaImpactFactorsOfImpactCategoryEnviFlow,creaTabellaFlowImpactOfImpactCategoryEnviFlow} from './templates/main-view-impact-results.js';
 
 import { creaViewHeader,creaViewHeaderRisultati } from './templates/header-view.js'
 import page from '//unpkg.com/page/page.mjs';
@@ -356,8 +361,6 @@ class App {
                     }
                 }  
             });
-
-            
         });    
         page('/flowResults/flowIntensitiesOf', async () => {
             this.header.innerHTML = '';
@@ -518,49 +521,381 @@ class App {
             if(listaTotalImpacts.length != 0){
                 creaTabellaTotalImpacts(listaTotalImpacts);
             }
-            console.log(listaTotalImpacts);
         });
         page('/impactResults/totalImpactsNormalized', async () => {
-           
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            this.main.innerHTML = '';
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultati());
+            const listaTotalImpactsNormalized = await apiImpactResults.getTotalImpactsNormalized(vps1,idCalcolo);
+            if(listaTotalImpactsNormalized.length != 0){
+                creaTabellaTotalImpactsNormalized(listaTotalImpactsNormalized);
+            }
         }); 
         page('/impactResults/totalImpactsWeighted', async () => {
-           
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            this.main.innerHTML = '';
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultati());
+            const listaTotalImpactsWeighted = await apiImpactResults.getTotalImpactsWeighted(vps1,idCalcolo);
+            if(listaTotalImpactsWeighted.length != 0){
+                creaTabellaTotalImpactsWeighted(listaTotalImpactsWeighted);
+            }
         }); 
         page('/impactResults/totalImpactValueOf', async () => {
-           
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            this.main.innerHTML = '';
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInput());
+            await this.getImpactCathegory(apiResultQueries,vps1,idCalcolo);
+            document.getElementById('button').addEventListener('click', async event => {
+                const selectImpactCathegory = document.getElementById("listaInput01");
+                const selectedOptionImpactCathegory = selectImpactCathegory.options[selectImpactCathegory.selectedIndex];
+                const idImpactCathegory = selectedOptionImpactCathegory.id;
+
+                console.log(idImpactCathegory);
+                if(idImpactCathegory === "selectedInput01") {
+                    const messaggio = document.getElementById("informazioniDati");
+                    messaggio.innerHTML = '';
+                    messaggio.insertAdjacentHTML('beforeend', 
+                    `<h3 class="alert alert-danger" role="alert">Seleziona un Impact Cathegory.</h3>`);
+                }   
+                else{
+                    const listaImpactCathegory = await apiImpactResults.getTotalImpactValueOf(vps1,idCalcolo,idImpactCathegory);
+                    if (listaImpactCathegory.length != 0) {
+                        creaTabellaImpactCathegory(listaImpactCathegory);
+                    }
+                }  
+            });
         }); 
         page('/impactResults/impactContributionsOf', async () => {
-           
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            this.main.innerHTML = '';
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInput());
+            await this.getImpactCathegory(apiResultQueries,vps1,idCalcolo);
+            document.getElementById('button').addEventListener('click', async event => {
+                const selectImpactCathegory = document.getElementById("listaInput01");
+                const selectedOptionImpactCathegory = selectImpactCathegory.options[selectImpactCathegory.selectedIndex];
+                const idImpactCathegory = selectedOptionImpactCathegory.id;
+
+                console.log(idImpactCathegory);
+                if(idImpactCathegory === "selectedInput01") {
+                    const messaggio = document.getElementById("informazioniDati");
+                    messaggio.innerHTML = '';
+                    messaggio.insertAdjacentHTML('beforeend', 
+                    `<h3 class="alert alert-danger" role="alert">Seleziona un Impact Cathegory.</h3>`);
+                }   
+                else{
+                    const listaImpactContributionsOf = await apiImpactResults.getImpactContributionsOf(vps1,idCalcolo,idImpactCathegory);
+                    if (listaImpactContributionsOf.length != 0) {
+                        creaTabellaImpactContributionsOf(listaImpactContributionsOf);
+                    }
+                }  
+            });
         }); 
         page('/impactResults/directImpactsOf', async () => {
-           
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            this.main.innerHTML = '';
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInput());
+            await this.getTechFlow(apiResultQueries,vps1,idCalcolo);
+            document.getElementById('button').addEventListener('click', async event => {
+                const selectTechFlow = document.getElementById("listaInput01");
+                const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
+                const idTechFlow = selectedOptionTechFlow.id;
+
+                console.log(idTechFlow);
+                if(idTechFlow === "selectedInput01") {
+                    const messaggio = document.getElementById("informazioniDati");
+                    messaggio.innerHTML = '';
+                    messaggio.insertAdjacentHTML('beforeend', 
+                    `<h3 class="alert alert-danger" role="alert">Seleziona un TechFlow.</h3>`);
+                }   
+                else{
+                    const listaDirectImpactsOf = await apiImpactResults.getDirectImpactsOf(vps1,idCalcolo,idTechFlow);
+                    if (listaDirectImpactsOf.length != 0) {
+                        creaTabellaDirectImpactsOf(listaDirectImpactsOf);
+                    }
+                }  
+            });
         }); 
         page('/impactResults/directImpactOfImpactCategoryTechFlow', async () => {
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            this.main.innerHTML = '';
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiDoppioInput());
            
+            await this.getImpactCathegoryTechFlow(apiResultQueries,vps1,idCalcolo);
+            document.getElementById('button').addEventListener('click', async event => {
+                
+                const selectImpactCathegory = document.getElementById("listaInput01");
+                const selectedOptionImpactCathegory = selectImpactCathegory.options[selectImpactCathegory.selectedIndex];
+                const idImpactCathegory= selectedOptionImpactCathegory.id;
+
+                const selectTechFlow = document.getElementById("listaInput02");
+                const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
+                const idTechFlow = selectedOptionTechFlow.id;
+
+                console.log(idTechFlow);
+                if(idImpactCathegory === "selectedInput01" || idTechFlow === "selectedInput02") {
+                    const messaggio = document.getElementById("informazioniDati");
+                    messaggio.innerHTML = '';
+                    messaggio.insertAdjacentHTML('beforeend', 
+                    `<h3 class="alert alert-danger" role="alert">Seleziona un tech flow e un Impact Cathegory.</h3>`);
+                }   
+                else{
+                    const listaDirectImpactOfImpactCategoryTechFlow = await apiImpactResults.getDirectImpactOfImpactCategoryTechFlow(vps1, idCalcolo,idTechFlow,idImpactCathegory);
+                    if (listaDirectImpactOfImpactCategoryTechFlow.length != 0) {
+                        creaTabellaDirectImpactOfImpactCategoryTechFlow(listaDirectImpactOfImpactCategoryTechFlow);
+                    }
+                }  
+            });
+
         }); 
         page('/impactResults/impactIntensitiesOf', async () => {
-           
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            this.main.innerHTML = '';
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInput());
+            await this.getTechFlow(apiResultQueries,vps1,idCalcolo);
+            document.getElementById('button').addEventListener('click', async event => {
+                const selectTechFlow = document.getElementById("listaInput01");
+                const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
+                const idTechFlow = selectedOptionTechFlow.id;
+
+                console.log(idTechFlow);
+                if(idTechFlow === "selectedInput01") {
+                    const messaggio = document.getElementById("informazioniDati");
+                    messaggio.innerHTML = '';
+                    messaggio.insertAdjacentHTML('beforeend', 
+                    `<h3 class="alert alert-danger" role="alert">Seleziona un TechFlow.</h3>`);
+                }   
+                else{
+                    const listaImpactIntensitiesOf = await apiImpactResults.getImpactIntensitiesOf(vps1,idCalcolo,idTechFlow);
+                    if (listaImpactIntensitiesOf.length != 0) {
+                        creaTabellaImpactIntensitiesOf(listaImpactIntensitiesOf);
+                    }
+                }  
+            });
         }); 
         page('/impactResults/directImpactIntensityOfImpactCategoryTechFlow', async () => {
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            this.main.innerHTML = '';
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiDoppioInput());
            
+            await this.getImpactCathegoryTechFlow(apiResultQueries,vps1,idCalcolo);
+            document.getElementById('button').addEventListener('click', async event => {
+                
+                const selectImpactCathegory = document.getElementById("listaInput01");
+                const selectedOptionImpactCathegory = selectImpactCathegory.options[selectImpactCathegory.selectedIndex];
+                const idImpactCathegory= selectedOptionImpactCathegory.id;
+
+                const selectTechFlow = document.getElementById("listaInput02");
+                const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
+                const idTechFlow = selectedOptionTechFlow.id;
+
+                console.log(idTechFlow);
+                if(idImpactCathegory === "selectedInput01" || idTechFlow === "selectedInput02") {
+                    const messaggio = document.getElementById("informazioniDati");
+                    messaggio.innerHTML = '';
+                    messaggio.insertAdjacentHTML('beforeend', 
+                    `<h3 class="alert alert-danger" role="alert">Seleziona un tech flow e un Impact Cathegory.</h3>`);
+                }   
+                else{
+                    const listaDirectImpactIntensityOfImpactCategoryTechFlow = await apiImpactResults.getDirectImpactIntensityOfImpactCategoryTechFlow(vps1, idCalcolo,idTechFlow,idImpactCathegory);
+                    if (listaDirectImpactIntensityOfImpactCategoryTechFlow.length != 0) {
+                        creaTabellaDirectImpactIntensityOfImpactCategoryTechFlow(listaDirectImpactIntensityOfImpactCategoryTechFlow);
+                    }
+                }  
+            });
         }); 
         page('/impactResults/totalImpactsOf', async () => {
-           
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            this.main.innerHTML = '';
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInput());
+            await this.getTechFlow(apiResultQueries,vps1,idCalcolo);
+            document.getElementById('button').addEventListener('click', async event => {
+                const selectTechFlow = document.getElementById("listaInput01");
+                const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
+                const idTechFlow = selectedOptionTechFlow.id;
+
+                console.log(idTechFlow);
+                if(idTechFlow === "selectedInput01") {
+                    const messaggio = document.getElementById("informazioniDati");
+                    messaggio.innerHTML = '';
+                    messaggio.insertAdjacentHTML('beforeend', 
+                    `<h3 class="alert alert-danger" role="alert">Seleziona un TechFlow.</h3>`);
+                }   
+                else{
+                    const listaTotalImpactsOf = await apiImpactResults.getTotalImpactsOf(vps1,idCalcolo,idTechFlow);
+                    if (listaTotalImpactsOf.length != 0) {
+                        creaTabellaTotalImpactsOf(listaTotalImpactsOf);
+                    }
+                }  
+            });
         });
         page('/impactResults/totalImpactOfImpactCategoryTechFlow', async () => {
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            this.main.innerHTML = '';
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiDoppioInputDoppiaTabella());
            
+            await this.getImpactCathegoryTechFlow(apiResultQueries,vps1,idCalcolo);
+            document.getElementById('button').addEventListener('click', async event => {
+                
+                const selectImpactCathegory = document.getElementById("listaInput01");
+                const selectedOptionImpactCathegory = selectImpactCathegory.options[selectImpactCathegory.selectedIndex];
+                const idImpactCathegory= selectedOptionImpactCathegory.id;
+
+                const selectTechFlow = document.getElementById("listaInput02");
+                const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
+                const idTechFlow = selectedOptionTechFlow.id;
+
+                console.log(idTechFlow);
+                if(idImpactCathegory === "selectedInput01" || idTechFlow === "selectedInput02") {
+                    const messaggio = document.getElementById("informazioniDati");
+                    messaggio.innerHTML = '';
+                    messaggio.insertAdjacentHTML('beforeend', 
+                    `<h3 class="alert alert-danger" role="alert">Seleziona un tech flow e un Impact Cathegory.</h3>`);
+                }   
+                else{
+                    const listaTotalImpactOfImpactCategoryTechFlow = await apiImpactResults.getTotalImpactOfImpactCategoryTechFlow(vps1, idCalcolo,idTechFlow,idImpactCathegory);
+                    if (listaTotalImpactOfImpactCategoryTechFlow.length != 0) {
+                        creaTabellaTotalImpactOfImpactCategoryTechFlow(listaTotalImpactOfImpactCategoryTechFlow);
+                    }
+                }  
+            });
         }); 
         page('/impactResults/impactFactorsOf', async () => {
-           
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            this.main.innerHTML = '';
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInputDoppiaTabella());
+            await this.getImpactCathegory(apiResultQueries,vps1,idCalcolo);
+            document.getElementById('button').addEventListener('click', async event => {
+                const selectImpactCathegory = document.getElementById("listaInput01");
+                const selectedOptionImpactCathegory = selectImpactCathegory.options[selectImpactCathegory.selectedIndex];
+                const idImpactCathegory = selectedOptionImpactCathegory.id;
+
+                console.log(idImpactCathegory);
+                if(idImpactCathegory === "selectedInput01") {
+                    const messaggio = document.getElementById("informazioniDati");
+                    messaggio.innerHTML = '';
+                    messaggio.insertAdjacentHTML('beforeend', 
+                    `<h3 class="alert alert-danger" role="alert">Seleziona un Impact Cathegory.</h3>`);
+                }   
+                else{
+                    const listaImpactFactorsOf = await apiImpactResults.getImpactFactorsOf(vps1,idCalcolo,idImpactCathegory);
+                    if (listaImpactFactorsOf.length != 0) {
+                        creaTabellaImpactFactorsOf(listaImpactFactorsOf);
+                    }
+                }  
+            });
         }); 
         page('/impactResults/impactFactorsOfImpactCategoryEnviFlow', async () => {
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            this.main.innerHTML = '';
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiDoppioInputDoppiaTabella());
            
+            await this.getImpactCathegoryEnviFlow(apiResultQueries,apiFlowResults,vps1,idCalcolo);
+            document.getElementById('button').addEventListener('click', async event => {
+                
+                const selectImpactCathegory = document.getElementById("listaInput01");
+                const selectedOptionImpactCathegory = selectImpactCathegory.options[selectImpactCathegory.selectedIndex];
+                const idImpactCathegory= selectedOptionImpactCathegory.id;
+
+                const selectEnviFlow = document.getElementById("listaInput02");
+                const selectedOptionEnviFlow = selectEnviFlow.options[selectEnviFlow.selectedIndex];
+                const idEnviFlow = selectedOptionEnviFlow.id;
+
+                if(idImpactCathegory === "selectedInput01" || idEnviFlow === "selectedInput02") {
+                    const messaggio = document.getElementById("informazioniDati");
+                    messaggio.innerHTML = '';
+                    messaggio.insertAdjacentHTML('beforeend', 
+                    `<h3 class="alert alert-danger" role="alert">Seleziona un Envi flow e un Impact Cathegory.</h3>`);
+                }   
+                else{
+                    const listaImpactFactorsOfImpactCategoryEnviFlow = await apiImpactResults.getImpactFactorsOfImpactCategoryEnviFlow(vps1, idCalcolo,idImpactCathegory,idEnviFlow);
+                    if (listaImpactFactorsOfImpactCategoryEnviFlow.length != 0) {
+                        creaTabellaImpactFactorsOfImpactCategoryEnviFlow(listaImpactFactorsOfImpactCategoryEnviFlow);
+                    }
+                }  
+            });
         });
         page('/impactResults/flowImpactsOf', async () => {
-           
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            this.main.innerHTML = '';
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInputDoppiaTabella());
+            await this.getImpactCathegory(apiResultQueries,vps1,idCalcolo);
+            document.getElementById('button').addEventListener('click', async event => {
+                const selectImpactCathegory = document.getElementById("listaInput01");
+                const selectedOptionImpactCathegory = selectImpactCathegory.options[selectImpactCathegory.selectedIndex];
+                const idImpactCathegory = selectedOptionImpactCathegory.id;
+
+                console.log(idImpactCathegory);
+                if(idImpactCathegory === "selectedInput01") {
+                    const messaggio = document.getElementById("informazioniDati");
+                    messaggio.innerHTML = '';
+                    messaggio.insertAdjacentHTML('beforeend', 
+                    `<h3 class="alert alert-danger" role="alert">Seleziona un Impact Cathegory.</h3>`);
+                }   
+                else{
+                    const listaFlowImpactsOf = await apiImpactResults.getFlowImpactsOf(vps1,idCalcolo,idImpactCathegory);
+                    if (listaFlowImpactsOf.length != 0) {
+                        creaTabellaFlowImpactsOf(listaFlowImpactsOf);
+                    }
+                }  
+            });
         });  
         page('/impactResults/flowImpactOfImpactCategoryEnviFlow', async () => {
+            this.header.innerHTML = '';
+            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            this.main.innerHTML = '';
+            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiDoppioInputDoppiaTabella());
            
+            await this.getImpactCathegoryEnviFlow(apiResultQueries,apiFlowResults,vps1,idCalcolo);
+            document.getElementById('button').addEventListener('click', async event => {
+                
+                const selectImpactCathegory = document.getElementById("listaInput01");
+                const selectedOptionImpactCathegory = selectImpactCathegory.options[selectImpactCathegory.selectedIndex];
+                const idImpactCathegory= selectedOptionImpactCathegory.id;
+
+                const selectEnviFlow = document.getElementById("listaInput02");
+                const selectedOptionEnviFlow = selectEnviFlow.options[selectEnviFlow.selectedIndex];
+                const idEnviFlow = selectedOptionEnviFlow.id;
+
+                if(idImpactCathegory === "selectedInput01" || idEnviFlow === "selectedInput02") {
+                    const messaggio = document.getElementById("informazioniDati");
+                    messaggio.innerHTML = '';
+                    messaggio.insertAdjacentHTML('beforeend', 
+                    `<h3 class="alert alert-danger" role="alert">Seleziona un Envi flow e un Impact Cathegory.</h3>`);
+                }   
+                else{
+                    const listaFlowImpactOfImpactCategoryEnviFlow = await apiImpactResults.getFlowImpactOfImpactCategoryEnviFlow(vps1, idCalcolo,idImpactCathegory,idEnviFlow);
+                    if (listaFlowImpactOfImpactCategoryEnviFlow.length != 0) {
+                        creaTabellaFlowImpactOfImpactCategoryEnviFlow(listaFlowImpactOfImpactCategoryEnviFlow);
+                    }
+                }  
+            });
         });     
         page();
 
@@ -814,6 +1149,114 @@ class App {
        
     }
 
+    getImpactCathegory = async (apiResultQueries, vps,idCalcolo) => {
+
+        const placeholder = document.getElementById("selectedInput01");
+        let listaImpactCathegory= await apiResultQueries.getImpactCategories(vps,idCalcolo);
+        console.log("listaImpactCathegory");
+        console.log(listaImpactCathegory);
+
+        if (listaImpactCathegory.length == 0) {
+            placeholder.innerHTML = "Non ci sono Impact cathegory selezionabili";
+        } else {
+            const select = document.getElementById("listaInput01");
+            placeholder.innerHTML = "Seleziona un Impact cathegory";
+            for (let i = 0; i < listaImpactCathegory.length; i++) {
+                let option = document.createElement("option");
+                option.value = listaImpactCathegory[i].name;
+                option.text = listaImpactCathegory[i].name;
+                option.id = listaImpactCathegory[i]["@id"];
+                select.appendChild(option);
+            }
+        }
+       
+    }
+
+    getImpactCathegoryEnviFlow = async (apiResultQueries,apiFlowResults, vps,idCalcolo) => {
+
+        const placeholder1 = document.getElementById("selectedInput01");
+        let listaImpactCathegory= await apiResultQueries.getImpactCategories(vps,idCalcolo);
+        console.log("listaImpactCathegory");
+        console.log(listaImpactCathegory);
+
+        if (listaImpactCathegory.length == 0) {
+            placeholder1.innerHTML = "Non ci sono Impact cathegory selezionabili";
+        } else {
+            const select = document.getElementById("listaInput01");
+            placeholder1.innerHTML = "Seleziona un Impact cathegory";
+            for (let i = 0; i < listaImpactCathegory.length; i++) {
+                let option = document.createElement("option");
+                option.value = listaImpactCathegory[i].name;
+                option.text = listaImpactCathegory[i].name;
+                option.id = listaImpactCathegory[i]["@id"];
+                select.appendChild(option);
+            }
+        }
+
+
+        const placeholder = document.getElementById("selectedInput02");
+        let listaEnviFlow = await apiFlowResults.getInventoryResult(vps, idCalcolo);
+        console.log("listaEnviFlow");
+        console.log(listaEnviFlow);
+
+        if (listaEnviFlow.length == 0) {
+            placeholder.innerHTML = "Non ci sono Envi Flow selezionabili";
+        } else {
+            const select = document.getElementById("listaInput02");
+            placeholder.innerHTML = "Seleziona un Envi Flow";
+            for (let i = 0; i < listaEnviFlow.length; i++) {
+                let option = document.createElement("option");
+                option.value = listaEnviFlow[i].enviFlow.flow.name;
+                option.text = listaEnviFlow[i].enviFlow.flow.name;
+                option.id = listaEnviFlow[i].enviFlow.flow["@id"]+"::";
+                select.appendChild(option);
+            }
+        }
+       
+    }
+
+    getImpactCathegoryTechFlow = async (apiResultQueries,vps,idCalcolo) => {
+
+        const placeholder1 = document.getElementById("selectedInput01");
+        let listaImpactCathegory= await apiResultQueries.getImpactCategories(vps,idCalcolo);
+        console.log("listaImpactCathegory");
+        console.log(listaImpactCathegory);
+
+        if (listaImpactCathegory.length == 0) {
+            placeholder1.innerHTML = "Non ci sono Impact cathegory selezionabili";
+        } else {
+            const select = document.getElementById("listaInput01");
+            placeholder1.innerHTML = "Seleziona un Impact cathegory";
+            for (let i = 0; i < listaImpactCathegory.length; i++) {
+                let option = document.createElement("option");
+                option.value = listaImpactCathegory[i].name;
+                option.text = listaImpactCathegory[i].name;
+                option.id = listaImpactCathegory[i]["@id"];
+                select.appendChild(option);
+            }
+        }
+
+
+        const placeholder = document.getElementById("selectedInput02");
+        let listaTechFlow = await apiResultQueries.getTechnosphereFlows(vps, idCalcolo);
+        console.log("listaTechFlow");
+        console.log(listaTechFlow);
+
+        if (listaTechFlow.length == 0) {
+            placeholder.innerHTML = "Non ci sono Tech Flow selezionabili";
+        } else {
+            const select = document.getElementById("listaInput02");
+            placeholder.innerHTML = "Seleziona un Tech Flow";
+            for (let i = 0; i < listaTechFlow.length; i++) {
+                let option = document.createElement("option");
+                option.value = listaTechFlow[i].provider.name+" "+listaTechFlow[i].flow.name;
+                option.text = listaTechFlow[i].provider.name+" "+listaTechFlow[i].flow.name;
+                option.id = listaTechFlow[i].provider["@id"]+"::"+listaTechFlow[i].flow["@id"];
+                select.appendChild(option);
+            }
+        }
+       
+    }
 }
 
 export default App;
