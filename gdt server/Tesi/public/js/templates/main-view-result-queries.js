@@ -105,7 +105,7 @@ function creaViewRowInterventionFlows(element,num){
     </tr>
     `;
 }
-
+/*
 function creaViewTableImpactCategories() {
     return `
         <table class="table table-striped table-bordered table-scrollabile"">
@@ -132,6 +132,16 @@ return `
     <td>${element.refUnit}</td>
 </tr>
 `;
+}*/
+
+import {creaViewTableTechFlow,creaViewRowTechFlow,creaViewTableTechFlowValue,creaViewRowTechFlowValue,
+    creaViewTableEnviFlowsInputOutput,creaViewRowEnviInputOutput,creaViewTableEnviFlowsInputOutputValue,
+    creaViewRowEnviInputOutputValue,creaViewTableImpactCategories,creaViewRowImpactCategories,
+    creaViewTableImpactCategoriesValue,creaViewRowImpactCategoriesValue} from "./main-view-tabelle-row.js";
+
+function isIterable(obj) {
+    // Verifica se l'oggetto ha il metodo Symbol.iterator
+    return obj !== null && typeof obj !== 'undefined' && typeof obj[Symbol.iterator] === 'function';
 }
 
 function creaTabellaTechnosphereFlows(listaTechnosphereFlows) {
@@ -140,15 +150,15 @@ function creaTabellaTechnosphereFlows(listaTechnosphereFlows) {
     const messaggio = document.getElementById("informazioniDati");
     messaggio.innerHTML='';
     messaggio.insertAdjacentHTML('beforeend', `<h5 class="alert alert-secondary" role="alert">
-    Tabella che rappresenta i techosphere flows (lista di flow e di provider)</h5>`);
+    Tabella che rappresenta i techosphere flows (lista di flow e di provider) dato l'id del calcolo</h5>`);
 
     const tabellaRisultatiRicerca = document.getElementById("risultatiRicerca");
-    tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTableTechnosphereFlows());
-    const tabellaRighe = document.getElementById("datiTabellaTechnosphereFlows");
+    tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTableTechFlow());
+    const tabellaRighe = document.getElementById("datiTabella");
     let num = 0;
     listaTechnosphereFlows.forEach(element => {
         num++;
-        const riga = creaViewRowTechnosphereFlows(element, num);
+        const riga = creaViewRowTechFlow(element, num);
         tabellaRighe.insertAdjacentHTML('beforeend', riga);
     });
 
@@ -157,18 +167,24 @@ function creaTabellaTechnosphereFlows(listaTechnosphereFlows) {
 
 function creaTabellaFinalDemand(richiestaFinale) {
     console.log("richiestaFinale");
-    console.log(richiestaFinale);
+    console.log(richiestaFinale.techFlow);
     const messaggio = document.getElementById("informazioniDati");
     messaggio.innerHTML='';
     messaggio.insertAdjacentHTML('beforeend', 
     `<h5 class="alert alert-secondary" role="alert">Tabella che rappresenta un singolo Tech Flow</h5>`);
 
     const tabellaRisultatiRicerca = document.getElementById("risultatiRicerca");
-    tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTableFinalDemand());
-    const tabellaRighe = document.getElementById("datiTabellaFinalDemand");
+    tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTableTechFlowValue());
+    const tabellaRighe = document.getElementById("datiTabella");
     
-    const riga = creaViewRowFinalDemand(richiestaFinale, 1);
-    tabellaRighe.insertAdjacentHTML('beforeend', riga);                            
+    if(!isIterable(richiestaFinale)){
+        let classeRimuovere = document.getElementById("tabella");
+        classeRimuovere.classList.remove("table-scrollabile");
+        const riga = creaViewRowTechFlowValue(richiestaFinale.techFlow, 1,richiestaFinale.amount);
+        tabellaRighe.insertAdjacentHTML('beforeend', riga); 
+    }
+
+                               
 }
 
 function creaTabellaInterventionFlows(listaInterventionFlows) {
