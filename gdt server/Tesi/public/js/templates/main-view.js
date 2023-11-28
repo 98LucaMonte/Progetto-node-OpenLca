@@ -174,15 +174,13 @@ function creaViewMainRisultatiDoppioInput(){
   return `<div class="container mt-5">
       <div class="row justify-content-center">
         <div class="col-sm-2"></div>
-        <div class="col-sm-4">
-          <p><strong>Seleziona il TechFlow</strong></p>
+        <div class="col-sm-4" id="inputTitolo01">
           <select class="form-select form-select-sm" aria-label="Small select example" id="listaInput01">
             <option selected id="selectedInput01"></option>
           </select>
           <button type="button" class="btn btn-outline-primary" id="button">Mostra</button>
         </div>
-        <div class="col-sm-4">
-          <p><strong>Seleziona l'EnviFlow</strong></p>
+        <div class="col-sm-4" id="inputTitolo02">
           <select class="form-select form-select-sm" aria-label="Small select example" id="listaInput02">
             <option selected id="selectedInput02">Open this select menu</option>
           </select>
@@ -205,8 +203,7 @@ function creaViewMainRisultatiSingoloInput(){
   return `<div class="container mt-5">
       <div class="row justify-content-center">
        
-        <div class="col-md-10">
-          <p><strong>Seleziona il TechFlow</strong></p>
+        <div class="col-md-10" id="inputTitolo">
           <select class="form-select form-select-sm" aria-label="Small select example" style="width: 30%!important;" id="listaInput01">
             <option selected id="selectedInput01"></option>
           </select>
@@ -251,8 +248,7 @@ function creaViewMainRisultatiDoppiaTabella() {
 function creaViewMainRisultatiSingoloInputDoppiaTabella() {
   return `<div class="container mt-2 mb-5">
       <div class="row justify-content-center">
-        <div class="col-md-10 mt-4">
-          <p><strong>Seleziona il TechFlow</strong></p>
+        <div class="col-md-10 mt-4" id="inputTitolo">
           <select class="form-select form-select-sm" aria-label="Default select example" style="width:30%!important;" id="listaInput01">
             <option selected id="selectedInput01"></option>
           </select>
@@ -282,15 +278,13 @@ function creaViewMainRisultatiDoppioInputDoppiaTabella() {
   return `<div class="container mt-2 mb-5">
       <div class="row justify-content-center">
         <div class="col-sm-2"></div>
-        <div class="col-sm-4">
-          <p><strong>Seleziona il TechFlow</strong></p>
+        <div class="col-sm-4"  id="inputTitolo01">
           <select class="form-select form-select-sm" aria-label="Small select example" id="listaInput01">
             <option selected id="selectedInput01"></option>
           </select>
           <button type="button" class="btn btn-outline-primary" id="button">Mostra</button>
         </div>
-        <div class="col-sm-4">
-          <p><strong>Seleziona l'EnviFlow</strong></p>
+        <div class="col-sm-4"  id="inputTitolo02">
           <select class="form-select form-select-sm" aria-label="Small select example" id="listaInput02">
             <option selected id="selectedInput02"></option>
           </select>
