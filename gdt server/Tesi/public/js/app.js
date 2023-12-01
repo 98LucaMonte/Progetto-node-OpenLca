@@ -5,7 +5,7 @@ import ApiTechnosphereFlows from "./apiTechnosphereFlows.js";
 import ApiFlowResults from "./apiFlowResults.js";
 import ApiImpactResults from "./apiImpactResults.js";
 
-import {creaViewMain, creaLateralNavbar,creaViewMainRisultati, creaViewMainRisultatiDoppioInput , creaViewMainRisultatiSingoloInput, 
+import {creaViewMain,creaModalForPDF,creaLateralNavbar,creaViewMainRisultati, creaViewMainRisultatiDoppioInput , creaViewMainRisultatiSingoloInput, 
         creaViewMainRisultatiDoppiaTabella , creaViewMainRisultatiSingoloInputDoppiaTabella, creaViewMainRisultatiDoppioInputDoppiaTabella} from './templates/main-view.js';
 
 import {creaTabellaProviderFlow,creaTabellaTechFlow,creaTabellaTechFlowValue,
@@ -14,6 +14,8 @@ import {creaTabellaProviderFlow,creaTabellaTechFlow,creaTabellaTechFlowValue,
 
 import { creaViewHeader,creaViewHeaderRisultati } from './templates/header-view.js'
 import page from '//unpkg.com/page/page.mjs';
+
+const doc = new jspdf.jsPDF();
 
 const apiCalculation = new ApiCalculation();
 const apiResultQueries = new ApiResultQueries();
@@ -26,7 +28,7 @@ class App {
     constructor(header, main, footer) {
 
         //const vps1 = 'http://109.205.180.220:3000/'; //indirizzo vps 
-        const vps1 = 'http://127.0.0.1:3000/'; // docker run -p 3000:8080 -v $HOME/openLCA-data-1.4:/app/data --rm -d gdt-server -db elcd_3_2_greendelta_v2_pet_bonus_case_study
+        const vps1 = 'http://127.0.0.1:3000/'; // docker run -p 3000:8080 -v $HOME/openLCA-data-1.4:/app/data --rm -d gdt-server -db case_study
         let idCalcolo = null;
         this.header = header;
         this.main = main;
@@ -53,13 +55,16 @@ class App {
                 messaggio.innerHTML = '';
                 messaggio.insertAdjacentHTML('beforeend', `<h3 class="alert alert-success" role="alert">Calcolo finito!!</h3>`);
 
-                setTimeout(() => {
-                    messaggio.innerHTML = '';
+                await this.creaPDF();
+
+                setTimeout(async () => {
+                    // Crea il messaggio vuoi creare un file pdf con i risultati 
+                    
+                    
                     if(idCalcolo !== undefined){
                         page.redirect('/resultQueries/technosphereFlows');
                     }
-                }, 3000);
-                
+                }, 3000);                
             });
         });
         page('/resultQueries/technosphereFlows', async () => {
@@ -936,6 +941,20 @@ class App {
         });     
         page();
 
+    }
+
+    creaPDF = async () => {
+        
+        setTimeout(async () => {
+            // Crea il messaggio vuoi creare un file pdf con i risultati 
+            const modalPdf = document.getElementById("risultatiRicerca");
+            modalPdf.innerHTML = '';
+            modalPdf.insertAdjacentHTML('beforeend',creaModalForPDF());
+            
+            doc.text("Hello world!", 10, 10);
+            doc.save("a4.pdf");
+        }, 3000);   
+        
     }
 
     /** 
