@@ -51,20 +51,38 @@ class App {
             document.getElementById('buttonCalcolaProductSystem').addEventListener('click', async event => {
                 event.preventDefault();
                 idCalcolo = await this.calcolaProductSystem(apiCalculation,vps1,idCalcolo);
-                const messaggio = document.getElementById("risultatiRicerca");
-                messaggio.innerHTML = '';
-                messaggio.insertAdjacentHTML('beforeend', `<h3 class="alert alert-success" role="alert">Calcolo finito!!</h3>`);
+                console.log("modal");
+                if(idCalcolo !== undefined){
+                
+                    const messaggio = document.getElementById("risultatiRicerca");
+                    messaggio.innerHTML = '';
+                    messaggio.insertAdjacentHTML('beforeend', `<h3 class="alert alert-success" role="alert">Calcolo finito!!</h3>`);
 
-                await this.creaPDF();
+                    const modalPdf = document.getElementById("modalPdf");
+                    modalPdf.insertAdjacentHTML('beforeend',creaModalForPDF());
+                    
+                    const myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+                    myModal.show();
+                    
+                    document.getElementById("chiudiPdf").addEventListener('click',event=> {
+                        console.log("chiudi");
+                        setTimeout(async () => {
+                            messaggio.innerHTML = '';
+                            page.redirect('/resultQueries/technosphereFlows');
+                        }, 3000); 
+                    });
 
-                setTimeout(async () => {
-                    // Crea il messaggio vuoi creare un file pdf con i risultati 
-                    
-                    
-                    if(idCalcolo !== undefined){
-                        page.redirect('/resultQueries/technosphereFlows');
-                    }
-                }, 3000);                
+                    document.getElementById("salvaPdf").addEventListener('click',event=> { 
+                        this.creaPDF(vps1,idCalcolo,apiResultQueries,apiImpactResults);
+                        console.log("salva");
+                        setTimeout(async () => {
+                            messaggio.innerHTML = '';    
+                            page.redirect('/resultQueries/technosphereFlows');
+                        }, 3000);  
+                    });
+
+                }
+              
             });
         });
         page('/resultQueries/technosphereFlows', async () => {
@@ -208,7 +226,7 @@ class App {
             this.main.innerHTML = '';
             this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInput());
-            //const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
+           
             await this.getTechFlow(apiResultQueries, vps1, idCalcolo);
 
             document.getElementById('button').addEventListener('click', async event => {
@@ -376,7 +394,7 @@ class App {
             this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInputDoppiaTabella());
            
-            //const techFlow = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
+            
             await this.getTechFlow(apiResultQueries, vps1, idCalcolo);
             document.getElementById('button').addEventListener('click', async event => {
                 const selectTechFlow = document.getElementById("listaInput01");
@@ -943,18 +961,30 @@ class App {
 
     }
 
-    creaPDF = async () => {
+    creaPDF = async (vps,idCalcolo,apiResultQueries,apiImpactResults) => {
+        console.log(idCalcolo);
+        let productSystem = await apiResultQueries.getRichiestaFinale(vps,idCalcolo);
+        let nomeProductSystem = productSystem.techFlow.provider.name;
+
+        doc.text("Risultati del calcolo di: "+nomeProductSystem, 20, 20);
         
-        setTimeout(async () => {
-            // Crea il messaggio vuoi creare un file pdf con i risultati 
-            const modalPdf = document.getElementById("risultatiRicerca");
-            modalPdf.innerHTML = '';
-            modalPdf.insertAdjacentHTML('beforeend',creaModalForPDF());
+        let listaImpact = await apiImpactResults.getTotalImpacts(vps,idCalcolo);
+
+        let listFont = doc.getFontList()
+        console.log(listFont)
+        
+        let headers = ['#','Nome', 'Quantità' ,'Unità'];
+        let data = [];
+        let num = 0;
+        listaImpact.forEach(element => {
+            num++;
+            let row = { '#': ''+num,'Nome': ''+element.impactCategory.name, 'Quantità': ''+element.amount ,'Unità':''+element.impactCategory.refUnit};
+            data.push(row);
+        });
+        doc.text("Tabella degli Impact Category", 20, 30);
+        doc.table(20, 40, data, headers);
             
-            doc.text("Hello world!", 10, 10);
-            doc.save("a4.pdf");
-        }, 3000);   
-        
+        doc.save(nomeProductSystem+".pdf");    
     }
 
     /** 

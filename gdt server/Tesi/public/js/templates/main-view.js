@@ -26,11 +26,15 @@ function creaViewMain() {
             <select class="form-select" aria-label="Default select example" id="listaImpactMethod">
             <option selected id="selectedImpactMethod"></option>
             </select>
+            
             <button type="button" class="btn btn-outline-primary" id="buttonCalcolaProductSystem">Calcola</button>
-
         </div>
 
         <div class="mt-3" id="risultatiRicerca">
+          
+        </div>
+
+        <div id="modalPdf">
           
         </div>
 
@@ -40,20 +44,18 @@ function creaViewMain() {
 }
 
 function creaModalForPDF(){
-  
-  return `<div class="modal" tabindex="-1">
-  <div class="modal-dialog">
+  return `<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Crea pdf dei risultati</h1>
       </div>
       <div class="modal-body">
-        <p>Modal body text goes here.</p>
+        Vuoi creare un pdf del Product System appena calcolato? 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="chiudiPdf">Chiudi</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="salvaPdf">Salva</button>
       </div>
     </div>
   </div>
