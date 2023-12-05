@@ -5,7 +5,7 @@ import ApiTechnosphereFlows from "./apiTechnosphereFlows.js";
 import ApiFlowResults from "./apiFlowResults.js";
 import ApiImpactResults from "./apiImpactResults.js";
 
-import {creaViewMain,creaModalForPDF,creaLateralNavbar,creaViewMainRisultati, creaViewMainRisultatiDoppioInput , creaViewMainRisultatiSingoloInput, 
+import {creaViewMain,creaModalForPDF,creaModalNuovoProductSystem,creaLateralNavbar,creaViewMainRisultati, creaViewMainRisultatiDoppioInput , creaViewMainRisultatiSingoloInput, 
         creaViewMainRisultatiDoppiaTabella , creaViewMainRisultatiSingoloInputDoppiaTabella, creaViewMainRisultatiDoppioInputDoppiaTabella} from './templates/main-view.js';
 
 import {creaTabellaProviderFlow,creaTabellaTechFlow,creaTabellaTechFlowValue,
@@ -73,7 +73,7 @@ class App {
                     });
 
                     document.getElementById("salvaPdf").addEventListener('click',event=> { 
-                        this.creaPDF(vps1,idCalcolo,apiResultQueries,apiImpactResults);
+                        this.creaPDF(vps1,idCalcolo,apiImpactResults);
                         console.log("salva");
                         setTimeout(async () => {
                             messaggio.innerHTML = '';    
@@ -84,6 +84,18 @@ class App {
                 }
               
             });
+
+            document.getElementById('buttonNuovoProductSystem').addEventListener('click',async event =>{
+                event.preventDefault();
+                const modaNuovoProduct = document.getElementById("modalPdf");
+                modaNuovoProduct.insertAdjacentHTML('beforeend',creaModalNuovoProductSystem());
+                const myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+                myModal.show();
+                await this.getLocation(vps1,apiCalculation);
+                await this.getUnit(vps1,apiCalculation);
+                await this.getFlow(vps1,apiCalculation);
+            })
+
         });
         page('/resultQueries/technosphereFlows', async () => {
             this.header.innerHTML = '';
@@ -412,7 +424,7 @@ class App {
                     if (listaFlowIntesitiesOf.length != 0) {
                         console.log(listaFlowIntesitiesOf);
                         let msg = "Lista di Envi Flow Value dato l'id del Product System appena calcolato e l'id del Tech Flow selezionato";
-                        creaTabellaEnviFlowsInputOutputValue(listaFlowIntesitiesOf);
+                        creaTabellaEnviFlowsInputOutputValue(listaFlowIntesitiesOf,msg);
                     }
                 }  
             });
@@ -961,29 +973,98 @@ class App {
 
     }
 
-    creaPDF = async (vps,idCalcolo,apiResultQueries,apiImpactResults) => {
-        console.log(idCalcolo);
-        let productSystem = await apiResultQueries.getRichiestaFinale(vps,idCalcolo);
-        let nomeProductSystem = productSystem.techFlow.provider.name;
+    getLocation = async (vps,apiCalculation)=>{
+        const placeholder = document.getElementById("selectedLocation");
+        let listaLocation = await apiCalculation.getAll(vps,"location");
+        console.log("listaLocation");
+        console.log(listaLocation);
 
+        if (listaLocation.length == 0) {
+            placeholder.innerHTML = "Non ci sono Location selezionabili";
+        } else {
+            const selectLocation = document.getElementById("listaLocation");
+            placeholder.innerHTML = "Seleziona una Location";
+            for (let i = 0; i < listaLocation.length; i++) {
+                let option = document.createElement("option");
+                option.value = listaLocation[i].name;
+                option.text = listaLocation[i].name;
+                option.id = listaLocation[i]["@id"];
+                selectLocation.appendChild(option);
+            }
+        }
+    }
+    
+    getUnit = async (vps,apiCalculation)=>{
+        const placeholder = document.getElementById("selectedUnit");
+        let listaUnit = await apiCalculation.getAll(vps,"unit-group");
+        console.log("listaUnit");
+        console.log(listaUnit);
+
+        if (listaUnit.length == 0) {
+            placeholder.innerHTML = "Non ci sono Unit selezionabili";
+        } else {
+            const selectLocation = document.getElementById("listaUnit");
+            placeholder.innerHTML = "Seleziona una unit";
+            for (let i = 0; i < listaUnit.length ; i++) {
+                let option = document.createElement("option");
+                option.value = listaUnit[i].name;
+                option.text = listaUnit[i].name;
+                option.id = listaUnit[i]["@id"];
+                selectLocation.appendChild(option);
+            }
+        }
+    }
+    
+    getFlow = async (vps,apiCalculation)=>{
+       const placeholder = document.getElementById("selectedFlow");
+        let listaFlow = await apiCalculation.getAll(vps,"flow");
+        console.log("listaFlow");
+        console.log(listaFlow);
+
+        if (listaFlow.length == 0) {
+            placeholder.innerHTML = "Non ci sono Flow selezionabili";
+        } else {
+            const selectFlow = document.getElementById("listaFlow");
+            placeholder.innerHTML = "Seleziona un flow";
+            for (let i = 0; i < listaFlow.length; i++) {
+                let option = document.createElement("option");
+                option.value = listaFlow[i].name;
+                option.text = listaFlow[i].name;
+                option.id = listaFlow[i]["@id"];
+                selectFlow.appendChild(option);
+            }
+        } 
+    }
+
+    creaPDF = async (vps,idCalcolo,apiImpactResults) => {
+     
+        //Prendo il nome del Product System per dare il nome al file e al titolo del file
+        const selectProductSystem = document.getElementById("listaProductSystem");
+        const selectedOptionProductSystem = selectProductSystem.options[selectProductSystem.selectedIndex];
+        const nomeProductSystem = selectedOptionProductSystem.text;
+        
+        //Titolo del PDF
         doc.text("Risultati del calcolo di: "+nomeProductSystem, 20, 20);
         
+        //Realizzo la tabella degli Impact category dell'impact Method selezionato.
         let listaImpact = await apiImpactResults.getTotalImpacts(vps,idCalcolo);
 
-        let listFont = doc.getFontList()
-        console.log(listFont)
-        
-        let headers = ['#','Nome', 'Quantità' ,'Unità'];
-        let data = [];
+        let headersImpact = ['#','Nome', 'Quantità' ,'Unità'];
+        let dataImpact = [];
         let num = 0;
         listaImpact.forEach(element => {
             num++;
             let row = { '#': ''+num,'Nome': ''+element.impactCategory.name, 'Quantità': ''+element.amount ,'Unità':''+element.impactCategory.refUnit};
-            data.push(row);
+            dataImpact.push(row);
         });
+        //Titolo della tabella degli Impact category
         doc.text("Tabella degli Impact Category", 20, 30);
-        doc.table(20, 40, data, headers);
-            
+        //Inserimento tabella
+        doc.table(20, 40, dataImpact, headersImpact);
+    
+        doc.addPage();
+        
+        //Download del file PDF
         doc.save(nomeProductSystem+".pdf");    
     }
 
@@ -1068,17 +1149,18 @@ class App {
     * @returns {String} - Stringa che contiene l'id del calcolo del product system.
     */
     calcolaProductSystem = async (apiCalculation,vps) => {
-
+        
         let idCalcolo = undefined;
         //Prendo l'id del product system selezionato
         const selectProductSystem = document.getElementById("listaProductSystem");
         const selectedOptionProductSystem = selectProductSystem.options[selectProductSystem.selectedIndex];
         const idProductSystem = selectedOptionProductSystem.id;
+        selectProductSystem.disabled =true;
         //Prendo l'id dell'impact method selezionato
         const selectImpactMethod = document.getElementById("listaImpactMethod");
         const selectedOptionImpactMethod = selectImpactMethod.options[selectImpactMethod.selectedIndex];
         const optionIdImpactMethod = selectedOptionImpactMethod.id;
-
+        selectImpactMethod.disabled = true;
         //Se non è stato selezionato un tra product system o impact method non si può eseguire il calcolo del product system
         if (idProductSystem === "selectedProductSystem" || optionIdImpactMethod === "selectedImpactMethod") {
             const messaggioErrore = document.getElementById("risultatiRicerca");

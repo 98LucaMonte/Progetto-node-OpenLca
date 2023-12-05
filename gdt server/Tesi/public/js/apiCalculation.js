@@ -130,6 +130,64 @@ class ApiCalculation {
             console.error('Errore durante la connessione:', error);
         }
     }
+
+    /**Questo metodo serve per calcolare le caratteristiche di impatto di un Product system.
+     *
+     * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
+     * @param {String} idProductSystem - Identificativo del Product system che si vuole calcolare.
+     * @param {String} idImpactMethod - Identificativo del'Impact method che si vuole usare per effettuare il calcolo.
+     * @param {String} idNewSet - Identificativo del newSets.
+     * @returns {Json} - Json che contiene informazioni sul nuovo product system.
+     */
+    nuovoProductSystem = async (vps, idProductSystem, idImpactMethod, idNewSet) => {
+        try {
+            let url = vps + "data/create-system";
+            console.log(url);
+
+            let response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    
+                        "process": {
+                          "@id": "process123"
+                        },
+                        "config": {
+                          "param1": "value1",
+                          "param2": "value2"
+                        }
+                      
+                })
+            });
+
+            if (response.ok) {
+                //La richiesta ha avuto successo
+                const responseData = await response.json();
+                return responseData;
+            } else {
+                //Gestisco l'errore se la richiesta non ha avuto successo
+                console.error('Errore nella risposta HTTP:', response.status, response.statusText);
+                return response;
+            }
+        } catch (error) {
+            console.error('Errore durante la connessione:', error);
+        }
+    }
+
+    getAll = async(vps,type) =>{
+        try {
+            let url = vps + "data/"+type+"/";
+            console.log(url);
+                
+            let resp = await fetch(url);
+            let v = await resp.json();
+            return v;
+        } catch (error) {
+            console.error('Errore durante la connessione:', error);
+        }
+    }
 }
 
 export default ApiCalculation;

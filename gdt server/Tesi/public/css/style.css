@@ -16,7 +16,15 @@
   overflow-y: scroll;
 }
 
+.text-justify{
+  text-align: justify;
+}
+
 @media (max-width: 576px) {
+
+  .order-element2 {
+    order: 2;
+}
 
   .order-element1 {
       order: 1;

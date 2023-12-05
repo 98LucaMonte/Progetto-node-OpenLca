@@ -34,134 +34,87 @@
   <header id="header">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
-        <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling"
-          aria-controls="offcanvasScrolling">
-          <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-info-circle"
-            viewBox="0 0 16 16">
-            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-            <path
-              d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
-          </svg>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
         </button>
-        <h3 style="margin-right: 80%;">Titolo Pagina</h3>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+          <a class="navbar-brand" href="#">Hidden brand</a>
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Chi siamo</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Contattaci</a>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
   </header>
 
   <main id="main">
 
-    <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Informazioni sul Product System</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body">
-        <div class="list-group list-group-flush">
-          <a href="/" class="list-group-item list-group-item-action">Home</a>
+      <div class="container container-fluid mt-5 mb-5">
+    
+        <div class="row  d-flex align-items-center">
+  
+          <h2>Benvenuto <br>Seleziona il Product System e l'Impact Method su cui vuoi eseguire il calcolo.</h2>
           
-          <li class="list-group-item list-group-item-action dropdown">
-            <a class="nav-link dropdown-toggle " role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Result Queries
-            </a>
-            <ul class="dropdown-menu">
-              <a href="/resultQueries/technosphereFlows" class="dropdown-item">5.5 Technosphere Flows</a>
-              <li><hr class="dropdown-divider"></li>
-              <a href="/resultQueries/finalDemand" class="dropdown-item">5.5.1 The final Demand</a>
-              <li><hr class="dropdown-divider"></li>
-              <a href="/resultQueries/interventionFlows" class="dropdown-item">5.6 Intervention Flows</a>
-              <li><hr class="dropdown-divider"></li>
-              <a href="/resultQueries/impactCategories" class="dropdown-item">5.7 impact Categories</a>
-            </ul>
-          </li>
+          <div class="col-sm-5 order-element0 mt-5">
+              
+              <p class="text-justify" style="font-size:20px">Il Product System descrive l'intero processo di produzione e commercializzazione di un prodotto.</p>
+  
+              <p class="text-start"> <strong>Seleziona il Product System</strong></p>
+              <select class="form-select" aria-label="Default select example" id="listaProductSystem">
+              <option selected id="selectedProductSystem"></option>
+              </select>
+          </div>
+  
+          <div class="col-sm-5 order-element1 mt-5">
+              
+              <p class="text-justify" style="font-size:20px">L'Impact Method è un metodo di valutazione dell'impatto da applicare al Product System.</p>
+  
+              <p class="text-start"> <strong>Seleziona l'Impact Method </strong></p>
+              <select class="form-select" aria-label="Default select example" id="listaImpactMethod">
+                <option selected id="selectedImpactMethod"></option>
+              </select>
+              
+          </div>
 
-          <li class="list-group-item list-group-item-action dropdown">
-            <a class="nav-link dropdown-toggle " role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Technosphere Flow
-            </a>
-            <ul class="dropdown-menu">
-              <a href="/technosphereFlows/totalRequirements" class="dropdown-item">5.5.2 Total Requirements</a>
-              <li><hr class="dropdown-divider"></li>
-              <a href="/technosphereFlows/totalRequirementsOfFlows" class="dropdown-item">Total Requirements Of Flows</a>
-              <li><hr class="dropdown-divider"></li>
-              <a href="/technosphereFlows/scalingFactors" class="dropdown-item">5.5.4 Scaling factors</a>
-              <li><hr class="dropdown-divider"></li>
-              <a href="/technosphereFlows/scaledTechFlowsOf" class="dropdown-item">Scaled Requirements</a>
-              <li><hr class="dropdown-divider"></li>
-              <a href="/technosphereFlows/unscaledTechFlowsOf" class="dropdown-item">Unscaled Requirements</a>
-            </ul>
-          </li>
-             
-          <li class="list-group-item list-group-item-action dropdown">
-            <a class="nav-link dropdown-toggle " role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Impact Results
-            </a>
-            <ul class="dropdown-menu">
-              <a href="/impactResults/totalImpacts" class="dropdown-item">Total Impacts</a> 
-              <li><hr class="dropdown-divider"></li> 
-              <a href="/impactResults/totalImpactsNormalized" class="dropdown-item">Total Impacts Normalized</a>   
-              <li><hr class="dropdown-divider"></li>      
-              <a href="/impactResults/totalImpactsWeighted" class="dropdown-item">Total Impacts Weighted</a>    
-              <li><hr class="dropdown-divider"></li>     
-              <a href="/impactResults/totalImpactValueOf" class="dropdown-item">Total Impacts Value of</a>    
-              <li><hr class="dropdown-divider"></li>     
-              <a href="/impactResults/impactContributionsOf" class="dropdown-item">Impact Contributions Of</a> 
-              <li><hr class="dropdown-divider"></li>        
-              <a href="/impactResults/directImpactsOf" class="dropdown-item">Direct ImpactsOf</a>        
-              <li><hr class="dropdown-divider"></li> 
-              <a href="/impactResults/directImpactOfImpactCategoryTechFlow" class="dropdown-item">Direct Impact Of ImpactCategory TechFlow</a> 
-              <li><hr class="dropdown-divider"></li>        
-              <a href="/impactResults/impactIntensitiesOf" class="dropdown-item">Impact Intensities Of</a>        
-              <li><hr class="dropdown-divider"></li> 
-              <a href="/impactResults/directImpactIntensityOfImpactCategoryTechFlow" class="dropdown-item">Direct Impact Intensity Of ImpactCategory TechFlow</a>  
-              <li><hr class="dropdown-divider"></li>       
-              <a href="/impactResults/totalImpactsOf" class="dropdown-item">Total Impacts Of</a> 
-              <li><hr class="dropdown-divider"></li>        
-              <a href="/impactResults/totalImpactOfImpactCategoryTechFlow" class="dropdown-item">Total Impact Of ImpactCategory TechFlow</a>
-              <li><hr class="dropdown-divider"></li>         
-              <a href="/impactResults/impactFactorsOf" class="dropdown-item">Impact Factors Of</a>        
-              <li><hr class="dropdown-divider"></li> 
-              <a href="/impactResults/impactFactorsOfImpactCategoryEnviFlow" class="dropdown-item">Impact Factors Of ImpactCategory EnviFlow</a>  
-              <li><hr class="dropdown-divider"></li>       
-              <a href="/impactResults/flowImpactsOf" class="dropdown-item">Flow Impacts Of</a>        
-              <li><hr class="dropdown-divider"></li> 
-              <a href="/impactResults/flowImpactOfImpactCategoryEnviFlow" class="dropdown-item">Flow Impact Of ImpactCategory EnviFlow</a> 
-              <li><hr class="dropdown-divider"></li>                  
-            </ul>
-          </li>
-
-          <li class="list-group-item list-group-item-action dropdown">
-            <a class="nav-link dropdown-toggle " role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Flow Results
-            </a>
-            <ul class="dropdown-menu">
-              <a href="/flowResults/inventoryResult"  class="dropdown-item">5.6.1 Inventory Result</a>
-              <li><hr class="dropdown-divider"></li>
-              <a href="/flowResults/totalFlowValueOf"  class="dropdown-item">Total Flow Value Of</a>
-              <li><hr class="dropdown-divider"></li>
-              <a href="/flowResults/flowContributionsOf"  class="dropdown-item">Flow Contributions Of</a>
-              <li><hr class="dropdown-divider"></li>
-              <a href="/flowResults/directInterventionsOf"  class="dropdown-item">Direct Interventions Of</a>
-              <li><hr class="dropdown-divider"></li>
-              <a href="/flowResults/directInterventionsOfEnviFlowTechFlow"  class="dropdown-item">Direct Interventions Of EnviFlow TechFlow</a>
-              <li><hr class="dropdown-divider"></li>
-              <a href="/flowResults/flowIntensitiesOf"  class="dropdown-item">Flow IntensitiesOf</a>        
-              <li><hr class="dropdown-divider"></li>
-              <a href="/flowResults/flowIntensityOfEnviFlowTechFlow"  class="dropdown-item">Flow Intensity Of EnviFlow TechFlow</a>        
-              <li><hr class="dropdown-divider"></li>
-              <a href="/flowResults/totalInterventionsOf"  class="dropdown-item">Total Interventions Of</a>        
-              <li><hr class="dropdown-divider"></li>
-              <a href="/flowResults/totalInterventionOfEnviFlowTechFlow"  class="dropdown-item">Total Intervention Of EnviFlow TechFlow</a>        
-              <li><hr class="dropdown-divider"></li>
-              <a href="/flowResults/upstreamInterventionsOf"  class="dropdown-item">Upstream Interventions Of</a>        
-            </ul>
-          </li>
-      
+          <div class="col-sm-2 order-element2 mt-5">
+            <button type="button" class="btn btn-primary" id="buttonCalcolaProductSystem" >Calcola</button>
+          </div>
+                          
+        
+  
+          <div class="mt-3" id="risultatiRicerca">
+            
+          </div>
+  
+          <div id="modalPdf">
+            
+          </div>
+  
         </div>
+
+        <div class="row">
+          <div class="col-sm-6 order-element0 mt-3">
+            <p class="text-justify">
+              Con il nostro innovativo sistema, puoi creare il tuo personalissimo sistema di prodotti, simile a quanto offerto da OpenLCA.
+              La flessibilità del nostro strumento ti consente di progettare un sistema su misura per le tue esigenze specifiche,
+              consentendoti di gestire e analizzare le informazioni relative ai prodotti in modo efficiente.
+            </p>
+            <button type="button" class="btn btn-primary">Crea Product System</button>
+          </div>
+          <div class="col-sm-6 order-element1 mt-3">
+
+          </div>  
+        </div> 
       </div>
-    </div>
-    <div id="main01">
-      
-    </div>
+  
     
     
 

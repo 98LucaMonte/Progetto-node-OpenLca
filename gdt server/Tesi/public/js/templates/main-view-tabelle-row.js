@@ -513,10 +513,12 @@ return `
 }
 
 function creaTabellaImpactCategoryValue(lista,msg){
+    
     const messaggio = document.getElementById("informazioniDati");
     messaggio.innerHTML='';
     messaggio.insertAdjacentHTML('beforeend', 
     `<h5 class="alert alert-secondary" role="alert">${msg}</h5>`);
+    
     const tabellaRisultatiRicerca = document.getElementById("risultatiRicerca");
     tabellaRisultatiRicerca.innerHTML = '';
     tabellaRisultatiRicerca.insertAdjacentHTML('beforeend', creaViewTableImpactCategoriesValue());
@@ -540,6 +542,26 @@ function creaTabellaImpactCategoryValue(lista,msg){
         tabellaRighe.insertAdjacentHTML('beforeend', riga);
     }
    
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+            label: '# of Votes',
+            data: [12, 19, 3, 5, 2, 3],
+            borderWidth: 1
+        }]
+        },
+        options: {
+        scales: {
+            y: {
+            beginAtZero: true
+            }
+        }
+        }
+    });
 }
 
 export {creaTabellaProviderFlow,creaTabellaTechFlow,creaTabellaTechFlowValue,

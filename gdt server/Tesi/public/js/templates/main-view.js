@@ -39,6 +39,19 @@ function creaViewMain() {
         </div>
 
       </div>
+      <div class="row">
+          <div class="col-sm-6 order-element0 mt-3">
+            <p class="text-justify">
+              Con il nostro innovativo sistema, puoi creare il tuo personalissimo sistema di prodotti, simile a quanto offerto da OpenLCA.
+              La flessibilità del nostro strumento ti consente di progettare un sistema su misura per le tue esigenze specifiche,
+              consentendoti di gestire e analizzare le informazioni relative ai prodotti in modo efficiente.
+            </p>
+            <button type="button" class="btn btn-outline-primary" id="buttonNuovoProductSystem">Crea Product System</button>
+          </div>
+          <div class="col-sm-6 order-element1 mt-3">
+
+          </div>  
+        </div> 
     </div>
     `;
 }
@@ -56,6 +69,105 @@ function creaModalForPDF(){
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="chiudiPdf">Chiudi</button>
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="salvaPdf">Salva</button>
+      </div>
+    </div>
+  </div>
+</div>`;
+}
+/* 
+function creaModalNuovoProductSystem(){
+  return `<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Crea un nuovo Product System</h1>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-6">
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label"><strong>Nome Product</strong></label>
+              <input type="text" class="form-control" id="nomeProduct" placeholder="Inserisci nome product" >
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label"><strong>Descrizione</strong></label>
+              <textarea type="text" class="form-control" id="descrizioneProduct" placeholder="Inserisci descrizione"></textarea>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label"><strong>Location</strong></label>
+              <select class="form-select" aria-label="Default select example" id="listaLocation" style="width:85%!important;">
+                <option selected id="selectedLocation">Inserisci la location</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label"><strong>Unit</strong></label>
+              <select class="form-select" aria-label="Default select example" id="listaUnit" style="width:85%!important;">
+                <option selected id="selectedUnit">Inserisci l'Unità</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label"><strong>Flow</strong></label>
+              <select class="form-select" aria-label="Default select example" id="listaFlow" style="width:85%!important;">
+                <option selected id="selectedFlow">Inserisci il Flow</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="chiudiPdf">Chiudi</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="salvaPdf">Crea</button>
+      </div>
+    </div>
+  </div>
+</div>`;
+}*/
+
+function creaModalNuovoProductSystem(){
+  return `<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Crea un nuovo Product System</h1>
+      </div>
+      <div class="modal-body">
+        <form class="row g-3">
+          <div class="col-md-6">
+            <label for="exampleFormControlInput1" class="form-label"><strong>Nome Product</strong></label>
+            <input type="text" class="form-control" id="nomeProduct" placeholder="Inserisci nome product" >
+          </div>
+          <div class="col-md-6">
+            <label for="exampleFormControlInput1" class="form-label"><strong>Descrizione</strong></label>
+            <textarea type="text" class="form-control" id="descrizioneProduct" placeholder="Inserisci descrizione"></textarea>
+          </div>
+          <div class="col-md-4">
+            <label for="exampleFormControlInput1" class="form-label"><strong>Flow</strong></label>
+            <select class="form-select" aria-label="Default select example" id="listaFlow" style="width:85%!important;">
+              <option selected id="selectedFlow">Inserisci il Flow</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label for="exampleFormControlInput1" class="form-label"><strong>Unit</strong></label>
+            <select class="form-select" aria-label="Default select example" id="listaUnit" style="width:85%!important;">
+              <option selected id="selectedUnit">Inserisci l'Unità</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label for="exampleFormControlInput1" class="form-label"><strong>Location</strong></label>
+            <select class="form-select" aria-label="Default select example" id="listaLocation" style="width:85%!important;">
+              <option selected id="selectedLocation">Inserisci la location</option>
+            </select>
+          </div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary">Crea il tuo flow</button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="chiudiPdf">Chiudi</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="salvaPdf">Crea</button>
       </div>
     </div>
   </div>
@@ -180,13 +292,20 @@ function creaLateralNavbar(){
 
 function creaViewMainRisultati() {
     return `
-    <div class="container mt-5">
+    <div class="container mt-5 mb-5">
       <div class="row justify-content-center">
         <div class="col-md-10">
           <div id="informazioniDati"> </div>
           <div class="table-responsive div-scrollabile" id="risultatiRicerca">
           
           </div>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-md-10 mt-4">
+          
+          <canvas id="myChart"></canvas>
+          
         </div>
       </div>
     </div>
@@ -333,5 +452,5 @@ function creaViewMainRisultatiDoppioInputDoppiaTabella() {
   `;
 }
 
-export { creaViewMain, creaModalForPDF,creaLateralNavbar,creaViewMainRisultati, creaViewMainRisultatiDoppioInput , creaViewMainRisultatiSingoloInput, 
+export { creaViewMain, creaModalForPDF,creaModalNuovoProductSystem,creaLateralNavbar,creaViewMainRisultati, creaViewMainRisultatiDoppioInput , creaViewMainRisultatiSingoloInput, 
          creaViewMainRisultatiDoppiaTabella , creaViewMainRisultatiSingoloInputDoppiaTabella, creaViewMainRisultatiDoppioInputDoppiaTabella};
