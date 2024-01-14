@@ -139,27 +139,26 @@ class ApiCalculation {
      * @param {String} idNewSet - Identificativo del newSets.
      * @returns {Json} - Json che contiene informazioni sul nuovo product system.
      */
-    nuovoProductSystem = async (vps, idProductSystem, idImpactMethod, idNewSet) => {
+    nuovoProductSystem = async (vps, idProcess) => {
         try {
             let url = vps + "data/create-system";
             console.log(url);
+            console.log(idProcess);
+            let json = {
+                "process": {
+                    "@id": idProcess
+                }
+            }
+            if(typeof json === 'object'){
+                console.log("oggetto")
+            }
 
             let response = await fetch(url, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({
-                    
-                        "process": {
-                          "@id": "process123"
-                        },
-                        "config": {
-                          "param1": "value1",
-                          "param2": "value2"
-                        }
-                      
-                })
+                body: JSON.stringify(json)
             });
 
             if (response.ok) {
@@ -168,6 +167,7 @@ class ApiCalculation {
                 return responseData;
             } else {
                 //Gestisco l'errore se la richiesta non ha avuto successo
+                console.log(response)
                 console.error('Errore nella risposta HTTP:', response.status, response.statusText);
                 return response;
             }
@@ -175,7 +175,7 @@ class ApiCalculation {
             console.error('Errore durante la connessione:', error);
         }
     }
-
+    
     getAll = async(vps,type) =>{
         try {
             let url = vps + "data/"+type+"/";
@@ -183,6 +183,28 @@ class ApiCalculation {
                 
             let resp = await fetch(url);
             let v = await resp.json();
+            return v;
+        } catch (error) {
+            console.error('Errore durante la connessione:', error);
+        }
+    }
+
+
+    putNuovoElement = async(vps,type,json) =>{
+        try {
+            let url = vps + "data/"+type+"/";
+            console.log(url);
+            
+            
+            let response = await fetch(url, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(json)
+            });
+
+            let v = await response.json();
             return v;
         } catch (error) {
             console.error('Errore durante la connessione:', error);

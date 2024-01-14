@@ -1,0 +1,153 @@
+html, body {
+    height: 100%;
+    margin: 0;
+  }
+  
+.main-style {
+height: 50%; 
+}
+
+.text-color-size {
+    color: black !important;
+    font-size: 16px !important;
+    border: #fff !important;
+    margin-top: 2%;
+}
+
+.img-style{
+    border-radius: 10px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+.input-style {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 10px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    color: black;
+}
+
+.button-style{
+    background-color: rgb(50, 50, 50);
+    border-radius: 10px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 1); 
+}
+
+.row-messaggio {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+.messaggio-style {
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 1); 
+    background-color: #def0fc;
+    display: none;
+    z-index: 1006;
+    padding: 1rem;
+    position: absolute;
+}
+
+@media (max-width: 766px) {
+    .messaggio-style {
+        justify-content: center;
+        align-items: center;
+        width: 75%!important;
+        left: 15%!important;
+    }
+}
+
+.messaggio-style p{
+    font-size: 20px;
+}
+
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+.spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.footer-style {
+    background-color: #000;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 30%;
+    margin-top: 50%;
+}
+
+@media (max-width: 766px) {
+    .footer-style{
+        margin-top: 30%;
+    }
+
+    p{
+        font-size: 20px;
+    }
+    a{
+        font-size: 20px;
+    }
+    h5{
+        font-size: 24px;
+    }
+
+  }
+
+  @media (min-width: 1200px) {
+    .footer-style{
+        margin-top: 20%;
+    }
+
+  }
+
+  .off-canvas {
+    z-index: 1; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0,1); 
+  }
+
+  .crea-product-system-style {
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 1); 
+    background-color: white;    
+    display: none;
+    z-index: 1006;
+    padding: 1rem;
+    position: absolute;
+}
+
+.crea-product-system-style .input-style{
+    width:200%;
+}
+
+.crea-product-system-style .input-style-error{
+    width:200%;
+}
+
+.card-footer{
+    margin-top: 2%;
+}
+  
