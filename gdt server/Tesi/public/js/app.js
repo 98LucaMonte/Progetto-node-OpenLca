@@ -57,13 +57,13 @@ class App {
             //Prendo gli impact method disponibili dal db
             await getImpactMethod(apiCalculation, vps1);
 
-            document.getElementById('creaProductSystem').addEventListener('click',(event) =>{
+            document.getElementById('creaProductSystem').addEventListener('click',async (event) =>{
                 event.preventDefault();
                 const modalNuovoProductSystem = document.getElementById("modal");
                 modalNuovoProductSystem.insertAdjacentHTML('beforeend',creaModalNuovoProductSystem());
                 const myModal = new bootstrap.Modal(document.getElementById('creaProductSystemMain'));
                 myModal.show();
-                let idProductSystem = creaProductSystem(vps1,apiCalculation,[]);
+                let idProductSystem = await creaProductSystem(vps1,apiCalculation,[]);
                 console.log("id del product system appena creato "+ idProductSystem);
             });
 

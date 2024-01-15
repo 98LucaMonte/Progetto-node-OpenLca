@@ -223,8 +223,11 @@ async function creaProductSystemFlowOutput(vps,apiCalculation,arrayInput) {
             modalNuovoProductSystem.insertAdjacentHTML('beforeend',creaModalNuovoProductFine());
             const myModal = new bootstrap.Modal(document.getElementById('creaProductSystemFine'));
             myModal.show();
-            let idProductSystem = await creaProductSystemFine(vps,apiCalculation,arrayInput);
-            return idProductSystem;
+            let idProcess = await creaProductSystemFine(vps,apiCalculation,arrayInput);
+            console.log(idProcess);
+            await avanzamentoBarra(100);
+            let productSystem = await apiCalculation.nuovoProductSystem(vps,idProcess);
+            console.log(productSystem);
         });
     
     });
@@ -300,70 +303,66 @@ async function creaFlowOutput(){
 
 }
 
-async function creaProductSystemFine(vps,apiCalculation,arrayInput){
-     
-    let data = new Date();
-    let dataFormattata = data.toISOString();
-    let arrayFlowInput = arrayInput[3];
-    let arrayFlowOutput = arrayInput[4];
-    let exchanges = [];
-
-    for(let i=0;i<arrayFlowInput.length;i++){
-        if (typeof arrayFlowInput[i] === 'string'){
-            exchanges.push(creaExchanges(arrayFlowInput[i],true));
+async function creaProductSystemFine(vps, apiCalculation, arrayInput) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let data = new Date();
+        let dataFormattata = data.toISOString();
+        let arrayFlowInput = arrayInput[3];
+        let arrayFlowOutput = arrayInput[4];
+        let exchanges = [];
+  
+        for (let i = 0; i < arrayFlowInput.length; i++) {
+          if (typeof arrayFlowInput[i] === 'string') {
+            exchanges.push(creaExchanges(arrayFlowInput[i], true));
+          } else {
+            let nuovoFlow = await apiCalculation.putNuovoElement(vps, "flow", arrayFlowInput[i]);
+            exchanges.push(creaExchangesNuovoFlow(arrayFlowInput[i], true, nuovoFlow));
+          }
         }
-        else{
-            let nuovoFlow = await apiCalculation.putNuovoElement(vps,"flow",arrayFlowInput[i]);
-            console.log(nuovoFlow);
-            exchanges.push(creaExchangesNuovoFlow(arrayFlowInput[i],true,nuovoFlow));
+  
+        await avanzamentoBarra("25");
+  
+        for (let i = 0; i < arrayFlowOutput.length; i++) {
+          if (typeof arrayFlowOutput[i] === 'string') {
+            exchanges.push(creaExchanges(arrayFlowOutput[i], false));
+          } else {
+            let nuovoFlow = await apiCalculation.putNuovoElement(vps, "flow", arrayFlowOutput[i]);
+            exchanges.push(creaExchangesNuovoFlow(arrayFlowOutput[i], false, nuovoFlow));
+          }
         }
-    }
-
-    await avanzamentoBarra("25");
-
-    for(let i=0;i<arrayFlowOutput.length;i++){
-        if (typeof arrayFlowOutput[i] === 'string'){
-            exchanges.push(creaExchanges(arrayFlowOutput[i],false));
-        }
-        else{
-            let nuovoFlow = await apiCalculation.putNuovoElement(vps,"flow",arrayFlowOutput[i]);
-            console.log(nuovoFlow);
-            exchanges.push(creaExchangesNuovoFlow(arrayFlowOutput[i],false,nuovoFlow));
-        }
-    }
-
-    await avanzamentoBarra("50");
-
-
-    let json = {
-        "@type": "Process",
-        "name": arrayInput[0],
-        "description": arrayInput[1],
-        "processType": "UNIT_PROCESS",
-        "location": {
-          "@type": "Location",
-          "@id": arrayInput[2]
-        },
-        "processDocumentation": {
-          "copyright": false,
-          "creationDate": dataFormattata
-        },
-        "exchanges": [exchanges]
-    }
-      
-    console.log(exchanges);
-
-    let idProcess = await apiCalculation.putNuovoElement(vps,"process",json);
-    await avanzamentoBarra("75");
-    console.log(idProcess)
-    let idProductSystem = await apiCalculation.nuovoProductSystem(vps,idProcess["@id"]);
-    console.log(idProductSystem)
-
-    await avanzamentoBarra("100");
-
-    return idProductSystem;
-
-}
+  
+        await avanzamentoBarra("50");
+  
+        let json = {
+          "@type": "Process",
+          "name": arrayInput[0],
+          "description": arrayInput[1],
+          "processType": "UNIT_PROCESS",
+          "location": {
+            "@type": "Location",
+            "@id": arrayInput[2]
+          },
+          "processDocumentation": {
+            "copyright": false,
+            "creationDate": dataFormattata
+          },
+          "exchanges": exchanges
+        };
+  
+        console.log(exchanges);
+  
+        let idProcess = await apiCalculation.putNuovoElement(vps, "process", json);
+        await avanzamentoBarra("75");
+        console.log(idProcess["@id"]);
+  
+        resolve(idProcess["@id"]);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+  
 
 function creaExchangesNuovoFlow(element,type,flow){
     return {

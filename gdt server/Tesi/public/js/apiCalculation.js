@@ -131,34 +131,21 @@ class ApiCalculation {
         }
     }
 
-    /**Questo metodo serve per calcolare le caratteristiche di impatto di un Product system.
-     *
-     * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
-     * @param {String} idProductSystem - Identificativo del Product system che si vuole calcolare.
-     * @param {String} idImpactMethod - Identificativo del'Impact method che si vuole usare per effettuare il calcolo.
-     * @param {String} idNewSet - Identificativo del newSets.
-     * @returns {Json} - Json che contiene informazioni sul nuovo product system.
-     */
     nuovoProductSystem = async (vps, idProcess) => {
         try {
             let url = vps + "data/create-system";
             console.log(url);
-            console.log(idProcess);
-            let json = {
-                "process": {
-                    "@id": idProcess
-                }
-            }
-            if(typeof json === 'object'){
-                console.log("oggetto")
-            }
-
+            
             let response = await fetch(url, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(json)
+                body: JSON.stringify({
+                    "process": {
+                        "@id": idProcess
+                    }
+                })
             });
 
             if (response.ok) {
@@ -167,11 +154,11 @@ class ApiCalculation {
                 return responseData;
             } else {
                 //Gestisco l'errore se la richiesta non ha avuto successo
-                console.log(response)
                 console.error('Errore nella risposta HTTP:', response.status, response.statusText);
                 return response;
             }
         } catch (error) {
+            console.log("sono qui")
             console.error('Errore durante la connessione:', error);
         }
     }
