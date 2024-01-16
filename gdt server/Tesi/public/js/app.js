@@ -5,9 +5,9 @@ import ApiTechnosphereFlows from "./backend/src/restclient/apiTechnosphereFlows.
 import ApiFlowResults from "./backend/src/restclient/apiFlowResults.js";
 import ApiImpactResults from "./backend/src/restclient/apiImpactResults.js";
 
-import {creaProductSystem} from "./frontend/src/logic/creaProductSystem.js";
+import {ProductSystem} from "./frontend/src/logic/productSystem.js";
 
-import {creaPDF,calcolaProductSystem} from "./frontend/src/logic/calcolaProductSystem.js"
+import {CalcolaProductSystem} from "./frontend/src/logic/calcolaProductSystem.js"
 
 import {creaModalNuovoProductSystem}from "./frontend/src/templates/modal-view.js";
 
@@ -31,6 +31,8 @@ const apiResultQueries = new ApiResultQueries();
 const apiTechnosphereFlows = new ApiTechnosphereFlows();
 const apiFlowResults = new ApiFlowResults();
 const apiImpactResults = new ApiImpactResults();
+const productSystem = new ProductSystem();
+const calcolaProductSystem = new CalcolaProductSystem();
 
 class App {
 
@@ -63,13 +65,14 @@ class App {
                 modalNuovoProductSystem.insertAdjacentHTML('beforeend',creaModalNuovoProductSystem());
                 const myModal = new bootstrap.Modal(document.getElementById('creaProductSystemMain'));
                 myModal.show();
-                let idProductSystem = await creaProductSystem(vps1,apiCalculation,[]);
-                console.log("id del product system appena creato "+ idProductSystem);
+                let result = await productSystem.creaModalInfoProductSystem(vps1,apiCalculation,[]);
+                location.reload();
+                console.log("id del product system appena creato "+ result["@id"]);
             });
 
             document.getElementById('buttonCalcolaProductSystem').addEventListener('click', async event => {
                 event.preventDefault();
-                idCalcolo = await calcolaProductSystem(apiCalculation,vps1,idCalcolo);
+                idCalcolo = await calcolaProductSystem.calcola(apiCalculation,vps1);
                 console.log("modal");
                 if(idCalcolo !== undefined){
                 
