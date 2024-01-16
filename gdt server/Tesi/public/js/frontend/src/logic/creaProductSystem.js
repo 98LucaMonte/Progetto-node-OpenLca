@@ -1,6 +1,6 @@
 import  {   creaModalInserisciInput,creaModalInserisciOutput,
             getFlow,creaModalNuovoFlowInput,creaModalNuovoFlowOutput,
-            creaModalConfermaNuovoProductSystem,creaModalNuovoProductFine}from "./templates/modal-view.js";
+            creaModalConfermaNuovoProductSystem,creaModalNuovoProductFine}from "../templates/modal-view.js";
 
 async function getAll(vps,apiCalculation,type){
     const placeholder = document.getElementById(`selected${type}`);
