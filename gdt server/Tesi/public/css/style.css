@@ -34,3 +34,17 @@
       order: 0;
   }
 }
+
+.input-style {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 10px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  color: black;
+}
+
+.div-scrollabile-flow{
+  height: 260px; 
+  overflow-y: auto;
+}

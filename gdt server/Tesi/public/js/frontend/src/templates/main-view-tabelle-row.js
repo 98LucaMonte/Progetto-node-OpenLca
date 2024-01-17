@@ -564,6 +564,219 @@ function creaTabellaImpactCategoryValue(lista,msg){
     });
 }
 
+async function getTechFlow(apiResultQueries, vps,idCalcolo) {
+
+    document.getElementById("inputTitolo").insertAdjacentHTML('afterbegin',`<p><strong>Seleziona il TechFlow</strong></p>`);
+    const placeholder = document.getElementById("selectedInput01");
+    let listaTechFlow = await apiResultQueries.getTechnosphereFlows(vps, idCalcolo);
+    console.log("listaTechFlow");
+    console.log(listaTechFlow);
+
+    if (listaTechFlow.length == 0) {
+        placeholder.innerHTML = "Non ci sono Tech Flow selezionabili";
+    } else {
+        const select = document.getElementById("listaInput01");
+        placeholder.innerHTML = "Seleziona un Tech Flow";
+        for (let i = 0; i < listaTechFlow.length; i++) {
+            let option = document.createElement("option");
+            option.value = listaTechFlow[i].provider.name+" "+listaTechFlow[i].flow.name;
+            option.text = listaTechFlow[i].provider.name+" "+listaTechFlow[i].flow.name;
+            option.id = listaTechFlow[i].provider["@id"]+"::"+listaTechFlow[i].flow["@id"];
+            select.appendChild(option);
+        }
+    }
+   
+}
+
+async function getEnviFlow(apiFlowResults, vps,idCalcolo){
+
+    document.getElementById("inputTitolo").insertAdjacentHTML('afterbegin',`<p><strong>Seleziona l'EnviFlow</strong></p>`);
+    const placeholder = document.getElementById("selectedInput01");
+    let listaEnviFlow = await apiFlowResults.getInventoryResult(vps, idCalcolo);
+    console.log("listaEnviFlow");
+    console.log(listaEnviFlow);
+
+    if (listaEnviFlow.length == 0) {
+        placeholder.innerHTML = "Non ci sono Envi Flow selezionabili";
+    } else {
+        const select = document.getElementById("listaInput01");
+        placeholder.innerHTML = "Seleziona un Envi Flow";
+        for (let i = 0; i < listaEnviFlow.length; i++) {
+            let option = document.createElement("option");
+            option.value = listaEnviFlow[i].enviFlow.flow.name;
+            option.text = listaEnviFlow[i].enviFlow.flow.name;
+            option.id = listaEnviFlow[i].enviFlow.flow["@id"];
+            select.appendChild(option);
+        }
+    }
+   
+}
+
+async function getTechFlowEnviFlow(apiResultQueries,apiFlowResults, vps,idCalcolo){
+
+    document.getElementById("inputTitolo01").insertAdjacentHTML('afterbegin',`<p><strong>Seleziona il TechFlow</strong></p>`);
+    document.getElementById("inputTitolo02").insertAdjacentHTML('afterbegin',`<p><strong>Seleziona l'EnviFlow</strong></p>`);
+
+    const placeholder1 = document.getElementById("selectedInput01");
+    let listaTechFlow = await apiResultQueries.getTechnosphereFlows(vps, idCalcolo);
+    console.log("listaTechFlow");
+    console.log(listaTechFlow);
+
+    if (listaTechFlow.length == 0) {
+        placeholder1.innerHTML = "Non ci sono Tech Flow selezionabili";
+    } else {
+        const select = document.getElementById("listaInput01");
+        placeholder1.innerHTML = "Seleziona un Tech Flow";
+        for (let i = 0; i < listaTechFlow.length; i++) {
+            let option = document.createElement("option");
+            option.value = listaTechFlow[i].provider.name+" "+listaTechFlow[i].flow.name;
+            option.text = listaTechFlow[i].provider.name+" "+listaTechFlow[i].flow.name;
+            option.id = listaTechFlow[i].provider["@id"]+"::"+listaTechFlow[i].flow["@id"];
+            select.appendChild(option);
+        }
+    }
+
+
+    const placeholder = document.getElementById("selectedInput02");
+    let listaEnviFlow = await apiFlowResults.getInventoryResult(vps, idCalcolo);
+    console.log("listaEnviFlow");
+    console.log(listaEnviFlow);
+
+    if (listaEnviFlow.length == 0) {
+        placeholder.innerHTML = "Non ci sono Envi Flow selezionabili";
+    } else {
+        const select = document.getElementById("listaInput02");
+        placeholder.innerHTML = "Seleziona un Envi Flow";
+        for (let i = 0; i < listaEnviFlow.length; i++) {
+            let option = document.createElement("option");
+            option.value = listaEnviFlow[i].enviFlow.flow.name;
+            option.text = listaEnviFlow[i].enviFlow.flow.name;
+            option.id = listaEnviFlow[i].enviFlow.flow["@id"]+"::";
+            select.appendChild(option);
+        }
+    }
+   
+}
+
+async function getImpactCategory(apiResultQueries, vps,idCalcolo){
+
+    document.getElementById("inputTitolo").insertAdjacentHTML('afterbegin',`<p><strong>Seleziona l'Impact Category</strong></p>`);
+    const placeholder = document.getElementById("selectedInput01");
+    let listaImpactCategory= await apiResultQueries.getImpactCategories(vps,idCalcolo);
+    console.log("listaImpactCategory");
+    console.log(listaImpactCategory);
+
+    if (listaImpactCategory.length == 0) {
+        placeholder.innerHTML = "Non ci sono Impact Category selezionabili";
+    } else {
+        const select = document.getElementById("listaInput01");
+        placeholder.innerHTML = "Seleziona un Impact Category";
+        for (let i = 0; i < listaImpactCategory.length; i++) {
+            let option = document.createElement("option");
+            option.value = listaImpactCategory[i].name;
+            option.text = listaImpactCategory[i].name;
+            option.id = listaImpactCategory[i]["@id"];
+            select.appendChild(option);
+        }
+    }
+   
+}
+
+async function getImpactCategoryEnviFlow(apiResultQueries,apiFlowResults, vps,idCalcolo) {
+
+    document.getElementById("inputTitolo01").insertAdjacentHTML('afterbegin',`<p><strong>Seleziona l'Impact Category</strong></p>`);
+    document.getElementById("inputTitolo02").insertAdjacentHTML('afterbegin',`<p><strong>Seleziona l'EnviFlow</strong></p>`);
+
+    const placeholder1 = document.getElementById("selectedInput01");
+    let listaImpactCategory= await apiResultQueries.getImpactCategories(vps,idCalcolo);
+    console.log("listaImpactCategory");
+    console.log(listaImpactCategory);
+
+    if (listaImpactCategory.length == 0) {
+        placeholder1.innerHTML = "Non ci sono Impact Category selezionabili";
+    } else {
+        const select = document.getElementById("listaInput01");
+        placeholder1.innerHTML = "Seleziona un Impact Category";
+        for (let i = 0; i < listaImpactCategory.length; i++) {
+            let option = document.createElement("option");
+            option.value = listaImpactCategory[i].name;
+            option.text = listaImpactCategory[i].name;
+            option.id = listaImpactCategory[i]["@id"];
+            select.appendChild(option);
+        }
+    }
+
+
+    const placeholder = document.getElementById("selectedInput02");
+    let listaEnviFlow = await apiFlowResults.getInventoryResult(vps, idCalcolo);
+    console.log("listaEnviFlow");
+    console.log(listaEnviFlow);
+
+    if (listaEnviFlow.length == 0) {
+        placeholder.innerHTML = "Non ci sono Envi Flow selezionabili";
+    } else {
+        const select = document.getElementById("listaInput02");
+        placeholder.innerHTML = "Seleziona un Envi Flow";
+        for (let i = 0; i < listaEnviFlow.length; i++) {
+            let option = document.createElement("option");
+            option.value = listaEnviFlow[i].enviFlow.flow.name;
+            option.text = listaEnviFlow[i].enviFlow.flow.name;
+            option.id = listaEnviFlow[i].enviFlow.flow["@id"]+"::";
+            select.appendChild(option);
+        }
+    }
+   
+}
+
+async function getImpactCategoryTechFlow(apiResultQueries,vps,idCalcolo) {
+
+    document.getElementById("inputTitolo01").insertAdjacentHTML('afterbegin',`<p><strong>Seleziona l'Impact Category</strong></p>`);
+    document.getElementById("inputTitolo02").insertAdjacentHTML('afterbegin',`<p><strong>Seleziona il TechFlow</strong></p>`);
+
+    const placeholder1 = document.getElementById("selectedInput01");
+    let listaImpactCategory= await apiResultQueries.getImpactCategories(vps,idCalcolo);
+    console.log("listaImpactCategory");
+    console.log(listaImpactCategory);
+
+    if (listaImpactCategory.length == 0) {
+        placeholder1.innerHTML = "Non ci sono Impact Category selezionabili";
+    } else {
+        const select = document.getElementById("listaInput01");
+        placeholder1.innerHTML = "Seleziona un Impact Category";
+        for (let i = 0; i < listaImpactCategory.length; i++) {
+            let option = document.createElement("option");
+            option.value = listaImpactCategory[i].name;
+            option.text = listaImpactCategory[i].name;
+            option.id = listaImpactCategory[i]["@id"];
+            select.appendChild(option);
+        }
+    }
+
+
+    const placeholder = document.getElementById("selectedInput02");
+    let listaTechFlow = await apiResultQueries.getTechnosphereFlows(vps, idCalcolo);
+    console.log("listaTechFlow");
+    console.log(listaTechFlow);
+
+    if (listaTechFlow.length == 0) {
+        placeholder.innerHTML = "Non ci sono Tech Flow selezionabili";
+    } else {
+        const select = document.getElementById("listaInput02");
+        placeholder.innerHTML = "Seleziona un Tech Flow";
+        for (let i = 0; i < listaTechFlow.length; i++) {
+            let option = document.createElement("option");
+            option.value = listaTechFlow[i].provider.name+" "+listaTechFlow[i].flow.name;
+            option.text = listaTechFlow[i].provider.name+" "+listaTechFlow[i].flow.name;
+            option.id = listaTechFlow[i].provider["@id"]+"::"+listaTechFlow[i].flow["@id"];
+            select.appendChild(option);
+        }
+    }
+   
+}
+
+
+
 export {creaTabellaProviderFlow,creaTabellaTechFlow,creaTabellaTechFlowValue,
         creaTabellaEnviFlowsInputOutput,creaTabellaEnviFlowsInputOutputValue,
-        creaTabellaImpactCategory,creaTabellaImpactCategoryValue}
+        creaTabellaImpactCategory,creaTabellaImpactCategoryValue,getTechFlow,
+        getEnviFlow,getTechFlowEnviFlow,getImpactCategory,getImpactCategoryEnviFlow,getImpactCategoryTechFlow};

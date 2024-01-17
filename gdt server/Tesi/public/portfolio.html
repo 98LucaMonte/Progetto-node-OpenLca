@@ -1,0 +1,224 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DEMO OpenLCA</title>
+  <link rel="stylesheet" href="https://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.min.css">
+  <link rel="stylesheet" href="./css/portfolio.css">
+
+</head>
+
+<body>
+  <main>
+    <div class="off-canvas-wrapper">
+      <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+  
+        <div class="off-canvas position-left reveal-for-large" id="my-info" data-off-canvas data-position="left" aria-hidden="true">
+          <div class="row column">
+            <br>
+            <img class="thumbnail img-style" src="./img/OpenLCA logo.jpg">
+            <h4>DEMO OpenLCA</h4>
+            <ul class="vertical menu">
+              <li><a class="text-color-size" href="#0">Home</a></li>
+              <li><a class="text-color-size" href="#1" data-open="creaProductSystem">Crea Product System</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="off-canvas-content" data-off-canvas-content>
+          <div class="title-bar hide-for-large">
+            <div class="title-bar-left">
+              <button class="menu-icon" type="button" data-open="my-info"></button>
+              <span class="title-bar-title"><strong>DEMO OpenLCA</strong></span>
+            </div>
+          </div>
+          <div class="callout primary">
+            <div class="row column">
+              <h1>Inserire titolo della pagina</h1>
+              <p class="lead">
+                Piattaforma di Analisi e Creazione di Sistemi di Prodotto.
+              </p>
+            </div>
+          </div>
+          <div class="grid-x grid-margin-x">
+          
+            <div class="row">
+              <div class="columns medium-5">
+                <h5><strong>Seleziona Product System</strong></h5>
+                <p>Il Product System descrive l'intero processo di produzione e commercializzazione di un prodotto.</p>
+                <select class="input-style">
+                  <option value="showboat">Showboat</option>
+                  <option value="redwing">Redwing</option>
+                  <option value="narcho">Narcho</option>
+                  <option value="hardball">Hardball</option>
+                </select>
+              </div>
+              <div class="columns medium-2"></div>
+              <div class="columns medium-5">
+                <h5><strong>Seleziona Impact Method</strong></h5>
+                <p>L'Impact Method descrive un metodo di valutazione dell'impatto da applicare al Product System.</p>
+                <select class="input-style">
+                  <option value="showboat">Showboat</option>
+                  <option value="redwing">Redwing</option>
+                  <option value="narcho">Narcho</option>
+                  <option value="hardball">Hardball</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="columns medium-3 end">
+                <button class="button button-style" data-open="calcoloProduct">Calcola</button>
+              </div>
+            </div>
+            <div class="messaggio-style" id="calcoloProduct" data-reveal data-close-on-click="false">
+                <div class="card">
+                  <div class="card-divider">
+                    <p>Sto eseguendo il calcolo...</p>
+                  </div>
+                  <div class="card-section">
+                    <div class="spinner-container">
+                      <div class="spinner"></div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+            <div class="crea-product-system-style" id="creaProductSystem" data-reveal>
+              <div class="card">
+                <div class="card-divider card-header">
+                  <p style="font-size: 20px;"><strong>Crea un nuovo Product System</strong></p>
+                  <p>Per prima cosa inserisci il nome del Product System <br>e la descrizione.</p>
+                </div>
+                <div class="card-section card-main">
+                  <form data-abide>
+                    <div class="grid-x grid-margin-x">
+                      
+                      <div class="row">
+                        <div class="columns medium-5 end">
+                          <p>
+                            <strong>Nome</strong>
+                            <input class="input-style" id="example4Input" aria-describedby="example4Error" type="text" required>
+                            <span id="example4Error" class="form-error input-style-error">Questo campo è richiesto!!!</span>
+                          </p>
+                        </div>
+                      </div>
+      
+                      <div class="row">
+                        <div class="columns medium-5 end">
+                          <p>
+                            <strong>Descrizione</strong>
+                            <input class="input-style" id="example4Input" type="text">
+                          </p>
+                        </div>
+                      </div>
+      
+                      <div class="row card-footer">
+                        <div class="button-group align-spaced card-footer">
+                          <div class="columns medium-5">
+                            <fieldset>
+                              <button class="button button-style" type="reset" value="Reset">Reset</button>
+                            </fieldset>
+                          </div>
+                          <div class="columns medium-5 card-footer">
+                            <fieldset>
+                              <button class="button button-style" type="submit" value="Submit" data-open="creaProductSystem1">Avanti</button>
+                            </fieldset>
+                          </div>
+                        </div>
+                       
+                      </div>
+      
+                    </div>
+                    
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <div class="crea-product-system-style" id="creaProductSystem1" data-reveal>
+              <div class="card">
+                <div class="card-divider card-header">
+                  <p style="font-size: 20px;"><strong>Crea un nuovo Product System</strong></p>
+                  <p>Secondo Passo: Inserire input del product System. <br>
+                  Puoi inserire input già presenti oppure crearne di nuovi.</p>
+                </div>
+                <div class="card-section card-main">
+                  <form data-abide>
+                    <div class="grid-x grid-margin-x">
+                      
+                      <div class="row">
+                        <div class="columns medium-6">
+                          <h5><strong>Seleziona Input</strong></h5>
+                          <select class="input-style">
+                            <option value="showboat">Showboat</option>
+                            <option value="redwing">Redwing</option>
+                            <option value="narcho">Narcho</option>
+                            <option value="hardball">Hardball</option>
+                          </select>
+                        </div>
+                        <div class="columns medium-5">
+                          <h5><strong>Seleziona Input</strong></h5>
+                          <select class="input-style">
+                            <option value="showboat">Showboat</option>
+                            <option value="redwing">Redwing</option>
+                            <option value="narcho">Narcho</option>
+                            <option value="hardball">Hardball</option>
+                          </select>
+                        </div>
+
+                      </div>
+      
+                      <div class="row card-footer">
+                        <div class="button-group align-spaced card-footer">
+                          <div class="columns medium-5">
+                            <fieldset>
+                              <button class="button button-style" type="reset" value="Reset">Reset</button>
+                            </fieldset>
+                          </div>
+                          <div class="columns medium-5 card-footer">
+                            <fieldset>
+                              <button class="button button-style" type="submit" value="Submit" data-open="creaProductSystem1">Avanti</button>
+                            </fieldset>
+                          </div>
+                        </div>
+                       
+                      </div>
+      
+                    </div>
+                    
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            
+            
+          </div>
+
+          <div class="row footer-style">
+            <div class="columns medium-6">
+              <a>
+                <img class="img-style" src="./img/OpenLCA logo.jpg" alt="logo">
+              </a>
+              <h4>Contatti</h4>
+              <p>Email: info@tuaazienda.com</p>
+              <p>Telefono: +39 012 345 6789</p>
+              <p>Via della Società, 123</p>  
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="https://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.js"></script>
+  <script>
+    $(document).foundation();
+  </script>
+</body>
+
+</html>
