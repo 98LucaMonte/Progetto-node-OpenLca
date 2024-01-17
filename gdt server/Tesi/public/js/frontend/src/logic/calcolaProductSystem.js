@@ -1,4 +1,3 @@
-import jspdf from 'jspdf';
 const doc = new jspdf.jsPDF();
 
 
