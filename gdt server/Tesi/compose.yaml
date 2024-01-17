@@ -17,7 +17,7 @@ services:
       - "3000:8080"
     volumes:
       - C:\Users\lucam\openLCA-data-1.4:/app/data
-    command: -db elcd_3_2_greendelta_v2_pet_bonus_case_study
+    command: -db case_study
     
 
 
