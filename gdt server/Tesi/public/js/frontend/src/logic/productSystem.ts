@@ -1,30 +1,48 @@
+import ApiCalculation from "../../../backend/src/restclient/apiCalculation.js";
 import  {   creaModalInserisciInput,creaModalInserisciOutput,
             getFlow,creaModalNuovoFlowInput,creaModalNuovoFlowOutput,
             creaModalConfermaNuovoProductSystem,creaModalNuovoProductFine}from "../templates/modal-view.js";
 
 class ProductSystem {
 
-    creaModalInfoProductSystem = async (vps,apiCalculation,arrayInput) => {
+    creaModalInfoProductSystem = async (vps:string,apiCalculation:ApiCalculation) => {
 
         return new Promise(async (resolve, reject) => {
             try{
+                let arrayInput: string[];
                 this.getAll(vps,apiCalculation,"location");
-    
-                document.getElementById("creaProductSystemMain").addEventListener('change', event =>{
-                    event.preventDefault();
-                    const selectLocation = document.getElementById("listalocation");
-                    const selectedOptionLocation = selectLocation.options[selectLocation.selectedIndex];
-                    const idLocation = selectedOptionLocation.id;
-                    if(document.getElementById("nomeProductSystem").value === "" || 
-                       document.getElementById("descrizioneProductSystem").value === "" || idLocation === ""){
-                        document.querySelector('.nuovoInput').disabled = true;
-                    }
-                    else{
-                        document.querySelector('.nuovoInput').disabled = false;
-                    }
-                });
+                
+                let modalElement: HTMLElement | null = document.getElementById("creaProductSystemMain") as HTMLElement | null;
+
+                if(modalElement){
+                    modalElement.addEventListener('change', event =>{
+                        event.preventDefault();
+                        const selectLocation: HTMLSelectElement | null = document.getElementById("listalocation") as HTMLSelectElement | null;
+                        if(selectLocation){
+                            let selectedOptionLocation = selectLocation.options[selectLocation.selectedIndex];
+                            let idLocation = selectedOptionLocation.id;
+                            let textProductSystem: HTMLInputElement | null = document.getElementById("nomeProductSystem") as HTMLInputElement | null;
+                            let textDescrizione: HTMLInputElement | null = document.getElementById("descrizioneProductSystem") as HTMLInputElement | null;
+                            let buttonNewInput: HTMLButtonElement | null = document.getElementById(".nuovoInput") as HTMLButtonElement | null;
+                            if(textProductSystem != null && textDescrizione != null && buttonNewInput != null){
+                                if( textProductSystem.value === "" ||  textDescrizione.value === "" || idLocation === ""){
+                                    buttonNewInput.disabled = true;
+                                }
+                                else{
+                                    buttonNewInput.disabled = false;
+                                }
+                            }
+                            
+                        }
+                        
+                    });
+                }
             
-                document.querySelector('.nuovoInput').addEventListener('click',async (event) =>{
+                let buttonNewInput: HTMLButtonElement | null = document.getElementById(".nuovoInput") as HTMLButtonElement | null;
+
+                //da qui
+                if(buttonNewInput){
+                    buttonNewInput.addEventListener('click',async (event) =>{
                     event.preventDefault();
                     let nomeProductSystem = document.getElementById("nomeProductSystem").value;
             
@@ -50,7 +68,8 @@ class ProductSystem {
                         resolve(idProductSystem);
                     }, 1500);
                     
-                });
+                    });
+                }
             }
             catch{
                 reject(error)

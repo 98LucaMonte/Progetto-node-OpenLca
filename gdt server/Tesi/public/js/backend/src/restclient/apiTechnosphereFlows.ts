@@ -8,7 +8,7 @@ class ApiTechnosphereFlows {
      * @param {String} idCalcolo - Identificativo del calcolo di un product system.
      * @returns {Json} - Json che contiene informazioni sui flussi della tecnosfera.
      */
-    getTotalRequirements = async (vps,idCalcolo) => {
+    getTotalRequirements = async (vps:string,idCalcolo:string) => {
         try {
             let url = vps + "result/"+idCalcolo+"/total-requirements";
             console.log(url);
@@ -28,12 +28,9 @@ class ApiTechnosphereFlows {
      * @param {String} idCalcolo - Identificativo del calcolo di un product system.
      * @returns {Json} - Json che contiene informazioni sui flussi della tecnosfera.
      */
-    getTotalRequirementsOfFlows = async (vps, idCalcolo, techFlow) => {
+    getTotalRequirementsOfFlows = async (vps:string, idCalcolo:string, techFlow:string) => {
         try {
             
-            //let urlTechFlow = techFlow.provider["@id"]+"::"+techFlow.flow["@id"];
-            //console.log(urlTechFlow);
-
             let url = vps + "result/" + idCalcolo + "/total-requirements-of/" + techFlow;
             console.log(url);
             let resp = await fetch(url);
@@ -52,7 +49,7 @@ class ApiTechnosphereFlows {
      * @param {String} idCalcolo - Identificativo del calcolo di un product system.
      * @returns {Json} - Json che contiene informazioni sui flussi della tecnosfera.
      */
-    getScalingFactors = async (vps,idCalcolo) => {
+    getScalingFactors = async (vps:string,idCalcolo:string) => {
         try {
             let url = vps + "result/"+idCalcolo+"/scaling-factors";
             console.log(url);
@@ -70,10 +67,8 @@ class ApiTechnosphereFlows {
      * @param {String} idCalcolo - Identificativo del calcolo di un product system.
      * @returns {Json} - Json che contiene informazioni sui flussi della tecnosfera.
      */
-    getScaledTechFlowsOf= async (vps,idCalcolo,techFlow) => {
+    getScaledTechFlowsOf= async (vps:string,idCalcolo:string,techFlow:string) => {
         try {
-            //let urlTechFlow = techFlow.provider["@id"]+"::"+techFlow.flow["@id"];
-            //console.log(urlTechFlow);
             let url = vps + "result/" + idCalcolo + "/scaled-tech-flows-of/" + techFlow;
             console.log(url);
             let resp = await fetch(url);
@@ -90,10 +85,8 @@ class ApiTechnosphereFlows {
      * @param {String} idCalcolo - Identificativo del calcolo di un product system.
      * @returns {Json} - Json che contiene informazioni sui flussi della tecnosfera.
      */
-    getUnscaledTechFlowsOf= async (vps,idCalcolo,techFlow) => {
+    getUnscaledTechFlowsOf= async (vps:string,idCalcolo:string,techFlow:string) => {
         try {
-            //let urlTechFlow = techFlow.provider["@id"]+"::"+techFlow.flow["@id"];
-            //console.log(urlTechFlow);
             let url = vps + "result/" + idCalcolo + "/unscaled-tech-flows-of/" + techFlow;
             console.log(url);
             let resp = await fetch(url);

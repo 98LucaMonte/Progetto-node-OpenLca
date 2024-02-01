@@ -7,7 +7,7 @@ class ApiImpactResults {
      * @param {String} idCalcolo - Identificativo del calcolo di un product system.
      * @returns {Json} - Json che contiene informazioni sui flussi del Product system calcolato.
      */
-    getTotalImpacts = async (vps,idCalcolo) => {
+    getTotalImpacts = async (vps:string,idCalcolo:string) => {
         try {
             let url = vps + "result/"+idCalcolo+"/total-impacts";
             console.log(url);
@@ -19,7 +19,7 @@ class ApiImpactResults {
         }
     }
 
-    getTotalImpactsNormalized = async (vps,idCalcolo) => {
+    getTotalImpactsNormalized = async (vps:string,idCalcolo:string) => {
         try {
             let url = vps + "result/"+idCalcolo+"/total-impacts/normalized";
             console.log(url);
@@ -31,7 +31,7 @@ class ApiImpactResults {
         }
     }
 
-    getTotalImpactsWeighted = async (vps,idCalcolo) => {
+    getTotalImpactsWeighted = async (vps:string,idCalcolo:string) => {
         try {
             let url = vps + "result/"+idCalcolo+"/total-impacts/weighted/";
             console.log(url);
@@ -43,7 +43,7 @@ class ApiImpactResults {
         }
     }
 
-    getTotalImpactValueOf = async (vps,idCalcolo,idImpactCategory) => {
+    getTotalImpactValueOf = async (vps:string,idCalcolo:string,idImpactCategory:string) => {
         try {                
             let url = vps + "result/"+idCalcolo+"/total-impact-value-of/"+idImpactCategory;
             console.log(url);
@@ -55,7 +55,7 @@ class ApiImpactResults {
         }
     }
 
-    getImpactContributionsOf= async (vps,idCalcolo,idImpactCategory) => {
+    getImpactContributionsOf= async (vps:string,idCalcolo:string,idImpactCategory:string) => {
         try {
 
             let url = vps + "result/"+idCalcolo+"/impact-contributions-of/"+idImpactCategory;
@@ -68,7 +68,7 @@ class ApiImpactResults {
         }
     }
 
-    getDirectImpactsOf = async (vps,idCalcolo,techFlow) => {
+    getDirectImpactsOf = async (vps:string,idCalcolo:string,techFlow:string) => {
         try {
            
             let url = vps + "result/"+idCalcolo+"/direct-impacts-of/"+techFlow;
@@ -81,9 +81,9 @@ class ApiImpactResults {
         }
     }
 
-    getDirectImpactOfImpactCategoryTechFlow = async (vps,idCalcolo,techFlow,idImpactCategory) => {
+    getDirectImpactOfImpactCategoryTechFlow = async (vps:string,idCalcolo:string,techFlow:string,idImpactCategory:string) => {
         try {
-            //let urlTechFlow = techFlow.provider["@id"]+"::"+techFlow.flow["@id"];
+            
             let url = vps + "result/"+idCalcolo+"/direct-impact-of/"+idImpactCategory+"/"+techFlow;
             console.log(url);
             let response = await fetch(url);
@@ -94,7 +94,7 @@ class ApiImpactResults {
         }
     }
 
-    getImpactIntensitiesOf = async (vps,idCalcolo,techFlow) => {
+    getImpactIntensitiesOf = async (vps:string,idCalcolo:string,techFlow:string) => {
         try {
             
             let url = vps + "result/"+idCalcolo+"/impact-intensities-of/"+techFlow;
@@ -107,9 +107,9 @@ class ApiImpactResults {
         }
     }
 
-    getDirectImpactIntensityOfImpactCategoryTechFlow= async (vps,idCalcolo,techFlow,idImpactCategory) => {
+    getDirectImpactIntensityOfImpactCategoryTechFlow= async (vps:string,idCalcolo:string,techFlow:string,idImpactCategory:string) => {
         try {
-            //let urlTechFlow = techFlow.provider["@id"]+"::"+techFlow.flow["@id"];
+            
             let url = vps + "result/"+idCalcolo+"/impact-intensity-of/"+idImpactCategory+"/"+techFlow;
             console.log(url);
             let response = await fetch(url);
@@ -120,7 +120,7 @@ class ApiImpactResults {
         }
     }
 
-    getTotalImpactsOf = async (vps,idCalcolo,techFlow) => {
+    getTotalImpactsOf = async (vps:string,idCalcolo:string,techFlow:string) => {
         try {
 
             let url = vps + "result/"+idCalcolo+"/total-impacts-of/"+techFlow;
@@ -133,9 +133,9 @@ class ApiImpactResults {
         }
     }
 
-    getTotalImpactOfImpactCategoryTechFlow = async (vps,idCalcolo,techFlow,idImpactCategory) => {
+    getTotalImpactOfImpactCategoryTechFlow = async (vps:string,idCalcolo:string,techFlow:string,idImpactCategory:string) => {
         try {
-            //let urlTechFlow = techFlow.provider["@id"]+"::"+techFlow.flow["@id"];
+           
             let url = vps + "result/"+idCalcolo+"/total-impact-of/"+idImpactCategory+"/"+techFlow;
             console.log(url);
             let response = await fetch(url);
@@ -146,7 +146,7 @@ class ApiImpactResults {
         }
     }
 
-    getImpactFactorsOf = async (vps,idCalcolo,idImpactCategory) => {
+    getImpactFactorsOf = async (vps:string,idCalcolo:string,idImpactCategory:string) => {
         try {                
             let url = vps + "result/"+idCalcolo+"/impact-factors-of/"+idImpactCategory;
             console.log(url);
@@ -158,9 +158,9 @@ class ApiImpactResults {
         }
     }
 
-    getImpactFactorsOfImpactCategoryEnviFlow = async (vps,idCalcolo,idImpactCategory,element) => {
+    getImpactFactorsOfImpactCategoryEnviFlow = async (vps:string,idCalcolo:string,idImpactCategory:string,element:string) => {
         try { 
-            //let enviFlowUrl = element.enviFlow.flow["@id"]+"::";               
+                       
             let url = vps + "result/"+idCalcolo+"/impact-factor-of/"+idImpactCategory+"/"+element;
             console.log(url);
             let response = await fetch(url);
@@ -171,7 +171,7 @@ class ApiImpactResults {
         }
     }
 
-    getFlowImpactsOf = async (vps,idCalcolo,idImpactCategory) => {
+    getFlowImpactsOf = async (vps:string,idCalcolo:string,idImpactCategory:string) => {
         try {                
             let url = vps + "result/"+idCalcolo+"/flow-impacts-of/"+idImpactCategory;
             console.log(url);
@@ -183,9 +183,9 @@ class ApiImpactResults {
         }
     }
 
-    getFlowImpactOfImpactCategoryEnviFlow = async (vps,idCalcolo,idImpactCategory,element) => {
+    getFlowImpactOfImpactCategoryEnviFlow = async (vps:string,idCalcolo:string,idImpactCategory:string,element:string) => {
         try { 
-            //let enviFlowUrl = element.enviFlow.flow["@id"]+"::";               
+                         
             let url = vps + "result/"+idCalcolo+"/flow-impact-of/"+idImpactCategory+"/"+element;
             console.log(url);
             let response = await fetch(url);

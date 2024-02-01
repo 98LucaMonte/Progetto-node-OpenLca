@@ -11,7 +11,7 @@ class ApiCalculation {
      * @param {String} idCalcolo - Identificativo del calcolo di un product system.
      * @returns {Json} - Json che contiene informazioni sui flussi della tecnosfera.
      */
-    getRichiestaFinale = async (vps,idCalcolo) => {
+    getRichiestaFinale = async (vps:string,idCalcolo:string) => {
         try {
             let url = vps + "result/"+idCalcolo+"/demand";
             console.log(url);
@@ -34,7 +34,7 @@ class ApiCalculation {
      * @param {String} idCalcolo - Identificativo del calcolo di un product system.
      * @returns {Json} - Json che contiene informazioni sui flussi della tecnosfera.
      */
-    getTechnosphereFlows = async (vps,idCalcolo) => {
+    getTechnosphereFlows = async (vps:string,idCalcolo:string) => {
         try {
             let url = vps + "result/"+idCalcolo+"/tech-flows";
             console.log(url);
@@ -56,7 +56,7 @@ class ApiCalculation {
      * @param {String} idCalcolo - Identificativo del calcolo di un product system.
      * @returns {Json} - Json che contiene informazioni sui flussi della tecnosfera.
      */
-    getInterventionFlows = async (vps,idCalcolo) => {
+    getInterventionFlows = async (vps:string,idCalcolo:string) => {
         try {
             let url = vps + "result/"+idCalcolo+"/envi-flows";
             console.log(url);
@@ -78,7 +78,7 @@ class ApiCalculation {
      * @param {String} idCalcolo - Identificativo del calcolo di un product system.
      * @returns {Json} - Json che contiene informazioni sui flussi della tecnosfera.
      */
-    getImpactCategories = async (vps,idCalcolo) => {
+    getImpactCategories = async (vps:string,idCalcolo:string) => {
         try {
             let url = vps + "result/"+idCalcolo+"/impact-categories";
             console.log(url);

@@ -5,7 +5,7 @@ class ApiCalculation {
      * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
      * @returns {Json} - Json che contiene informazioni sulla versione del db.
      */
-    version = async (vps) => {
+    version = async (vps:string) => {
         try {
             // Esegui una richiesta verso il tuo server VPS
             const response = await fetch(vps + "api/version");
@@ -27,7 +27,7 @@ class ApiCalculation {
      * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
      * @returns {Json} - Json che contiene i product system.
      */
-    getProductSystem = async (vps) => {
+    getProductSystem = async (vps:string) => {
         try {
             let url = vps + "data/product-system/all";
             console.log(url);
@@ -44,7 +44,7 @@ class ApiCalculation {
      * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
      * @returns {Json} - Json che contiene gli impact method.
      */
-    getImpactMethod = async (vps) => {
+    getImpactMethod = async (vps:string) => {
         try {
             let url = vps + "data/impact-method/all";
             console.log(url);
@@ -64,7 +64,7 @@ class ApiCalculation {
      * @param {String} idNewSet - Identificativo del newSets.
      * @returns {Json} - Json che contiene informazioni sul calcolo del product system (come ad esempio l'id del calcolo).
      */
-    calcolaProductSystem = async (vps, idProductSystem, idImpactMethod, idNewSet) => {
+    calcolaProductSystem = async (vps:string, idProductSystem:string, idImpactMethod:string, idNewSet:string) => {
         try {
             let url = vps + "result/calculate";
             console.log(url);
@@ -110,28 +110,21 @@ class ApiCalculation {
      * @param {String} idCalcolo - Identificativo del calcolo appena effettuato.
      * @returns {Json} - Json che contiene informazioni sullo stato del calcolo.
      */
-    getStatoCalcolo = async (vps,idCalcolo) => {
+    getStatoCalcolo = async (vps:string,idCalcolo:string)=> {
         try {
             let url = vps + "result/"+idCalcolo+"/state";
             console.log(url);
             
             console.log("Stiamo calcolando...");
-            await new Promise((resolve) => {
-                setTimeout(() => {
-                    resolve();
-                }, 3000);
-            });
-
-            
             let resp = await fetch(url);
             let v = await resp.json();
-            return v;
+            return v.isReady;
         } catch (error) {
             console.error('Errore durante la connessione:', error);
         }
     }
 
-    nuovoProductSystem = async (vps, idProcess) => {
+    nuovoProductSystem = async (vps:string, idProcess:string) => {
         try {
             let url = vps + "data/create-system";
             console.log(url);
@@ -163,7 +156,7 @@ class ApiCalculation {
         }
     }
     
-    getAll = async(vps,type) =>{
+    getAll = async(vps:string,type:string) =>{
         try {
             let url = vps + "data/"+type+"/";
             console.log(url);
@@ -177,7 +170,7 @@ class ApiCalculation {
     }
 
 
-    putNuovoElement = async(vps,type,json) =>{
+    putNuovoElement = async(vps:string,type:string,json:object) =>{
         try {
             let url = vps + "data/"+type+"/";
             console.log(url);
