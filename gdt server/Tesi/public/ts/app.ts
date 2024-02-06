@@ -1,4 +1,3 @@
-"use strict;"
 import ApiCalculation from "./backend/src/restclient/apiCalculation";
 import ApiResultQueries from "./backend/src/restclient/apiResultQueries";
 import ApiTechnosphereFlows from "./backend/src/restclient/apiTechnosphereFlows";
@@ -24,7 +23,10 @@ import {creaTabellaProviderFlow,creaTabellaTechFlow,creaTabellaTechFlowValue,
         getImpactCategoryEnviFlow,getImpactCategoryTechFlow} from './frontend/src/templates/main-view-tabelle-row';
 
 import { creaViewHeader,creaViewHeaderRisultati } from './frontend/src/templates/header-view';
+// @ts-ignore
 import page from '//unpkg.com/page/page.mjs';
+// @ts-ignore
+import bootstrap from "bootstrap";
 
 const apiCalculation = new ApiCalculation();
 const apiResultQueries = new ApiResultQueries();
@@ -36,83 +38,104 @@ const calcolaProductSystem = new CalcolaProductSystem();
 
 class App {
 
-    constructor(header, main, footer) {
+    constructor(header:HTMLElement, main:HTMLElement, footer:HTMLElement) {
 
         //const vps1 = 'http://109.205.180.220:3000/'; //indirizzo vps 
         const vps1 = 'http://127.0.0.1:3000/'; // docker run -p 3000:8080 -v $HOME/openLCA-data-1.4:/app/data --rm -d gdt-server -db case_study
-        let idCalcolo = null;
-        this.header = header;
-        this.main = main;
-        this.footer = footer;
-
+        let idCalcolo:string;
+        
         //Inizio pagina di presentazione
         page('/', async () => {
-            this.header.innerHTML = '';
-            this.main.innerHTML = '';
-            this.footer.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend', creaViewHeader());
-            this.main.insertAdjacentHTML('beforeend', creaViewMain());
-            idCalcolo = null;
-
+            header.innerHTML = '';
+            main.innerHTML = '';
+            footer.innerHTML = '';
+            header.insertAdjacentHTML('beforeend', creaViewHeader());
+            main.insertAdjacentHTML('beforeend', creaViewMain());
+            
             //Prendo i product system disponibili dal db
             await getProductSystem(apiCalculation, vps1);
             //Prendo gli impact method disponibili dal db
             await getImpactMethod(apiCalculation, vps1);
 
-            document.getElementById('creaProductSystem').addEventListener('click',async (event) =>{
-                event.preventDefault();
-                const modalNuovoProductSystem = document.getElementById("modal");
-                modalNuovoProductSystem.insertAdjacentHTML('beforeend',creaModalNuovoProductSystem());
-                const myModal = new bootstrap.Modal(document.getElementById('creaProductSystemMain'));
-                myModal.show();
-                let result = await productSystem.creaModalInfoProductSystem(vps1,apiCalculation);
-                location.reload();
-                console.log("id del product system appena creato "+ result["@id"]);
-            });
+            let buttonCreaProductSystem:HTMLButtonElement | null = document.getElementById('creaProductSystem') as HTMLButtonElement | null;
 
-            document.getElementById('buttonCalcolaProductSystem').addEventListener('click', async event => {
-                event.preventDefault();
-                idCalcolo = await calcolaProductSystem.calcola(apiCalculation,vps1);
-                console.log("modal");
-                if(idCalcolo !== undefined){
-                
-                    const messaggio = document.getElementById("risultatiRicerca");
-                    messaggio.innerHTML = '';
-                    messaggio.insertAdjacentHTML('beforeend', `<h3 class="alert alert-success" role="alert">Calcolo finito!!</h3>`);
+            if(buttonCreaProductSystem){
+                buttonCreaProductSystem.addEventListener('click',async (event) =>{
+                    event.preventDefault();
+                    let modalNuovoProductSystem = document.getElementById("modal");
+                    if(modalNuovoProductSystem){
+                        modalNuovoProductSystem.insertAdjacentHTML('beforeend',creaModalNuovoProductSystem());
+                        let myModal = new bootstrap.Modal(document.getElementById('creaProductSystemMain'));
+                        myModal.show();
+                        let result:any = await productSystem.creaModalInfoProductSystem(vps1,apiCalculation);
+                        location.reload();
+                        console.log("id del product system appena creato "+ result["@id"]);
+                    }
+                    
+                });
+            }
+            
+            let buttonCalcolaProductSystem:HTMLButtonElement | null = document.getElementById('buttonCalcolaProductSystem') as HTMLButtonElement | null;
 
-                    const modalPdf = document.getElementById("modal");
-                    modalPdf.insertAdjacentHTML('beforeend',creaModalForPDF());
+            if(buttonCalcolaProductSystem){
+                buttonCalcolaProductSystem.addEventListener('click', async event => {
+                    event.preventDefault();
+                    idCalcolo = await calcolaProductSystem.calcola(apiCalculation,vps1);
+                    if(idCalcolo !== undefined){
                     
-                    const myModal = new bootstrap.Modal(document.getElementById('modalPdf'));
-                    myModal.show();
-                    
-                    document.getElementById("chiudiPdf").addEventListener('click',event=> {
-                        console.log("chiudi");
-                        setTimeout(async () => {
+                        let messaggio:HTMLDivElement | null = document.getElementById("risultatiRicerca")as HTMLDivElement | null;
+                        if(messaggio){
                             messaggio.innerHTML = '';
-                            page.redirect('/resultQueries/technosphereFlows');
-                        }, 3000); 
-                    });
+                            messaggio.insertAdjacentHTML('beforeend', `<h3 class="alert alert-success" role="alert">Calcolo finito!!</h3>`);    
+                        }
+                       
+                        let modalPdf:HTMLDivElement | null= document.getElementById("modal")as HTMLDivElement | null;
+                        if(modalPdf){
+                            modalPdf.insertAdjacentHTML('beforeend',creaModalForPDF());
+                            let myModal = new bootstrap.Modal(document.getElementById('modalPdf'));
+                            myModal.show();
+                        }
 
-                    document.getElementById("salvaPdf").addEventListener('click',event=> { 
-                        creaPDF(vps1,idCalcolo,apiImpactResults);
-                        console.log("salva");
-                        setTimeout(async () => {
-                            messaggio.innerHTML = '';    
-                            page.redirect('/resultQueries/technosphereFlows');
-                        }, 3000);  
-                    });
+                        let buttonNonCreaPdf:HTMLButtonElement | null =  document.getElementById("chiudiPdf") as HTMLButtonElement | null;
 
-                }
-              
-            });
+                        if(buttonNonCreaPdf){
+                            buttonNonCreaPdf.addEventListener('click',event=> {
+                                console.log("chiudi");
+                                setTimeout(async () => {
+                                    if(messaggio){
+                                        messaggio.innerHTML = '';
+                                    }
+                                    page.redirect('/resultQueries/technosphereFlows');
+                                }, 3000); 
+                            });
+                        }
+                        
+                        let buttonCreaPdf:HTMLButtonElement | null =  document.getElementById("salvaPdf") as HTMLButtonElement | null;
 
+                        if(buttonCreaPdf){
+                            buttonCreaPdf.addEventListener('click',event=> { 
+                                //creaPDF(vps1,idCalcolo,apiImpactResults);
+                                console.log("salva");
+                                setTimeout(async () => {
+                                    if(messaggio){
+                                        messaggio.innerHTML = '';    
+                                    }
+                                    page.redirect('/resultQueries/technosphereFlows');
+                                }, 3000);  
+                            });
+                        }
+                        
+                    }
+                  
+                });
+            }
+            
         });
         page('/resultQueries/technosphereFlows', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultati());
             const listaTechnosphereFlows = await apiResultQueries.getTechnosphereFlows(vps1, idCalcolo);
             if (listaTechnosphereFlows.length != 0) {
@@ -121,10 +144,10 @@ class App {
             }
         });
         page('/resultQueries/finalDemand', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultati());
             const richiestaFinale = await apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
             console.log(richiestaFinale);
@@ -134,10 +157,10 @@ class App {
             }
         });
         page('/resultQueries/interventionFlows', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiDoppiaTabella());
             const listaInterventionFlows = await apiResultQueries.getInterventionFlows(vps1, idCalcolo);
             if (listaInterventionFlows.length != 0) {
@@ -147,10 +170,10 @@ class App {
             
         });
         page('/resultQueries/impactCategories', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultati());
             const listaImpactCategories = await apiResultQueries.getImpactCategories(vps1,idCalcolo);
             if (listaImpactCategories.length != 0) {
@@ -160,10 +183,10 @@ class App {
             
         });
         page('/technosphereFlows/totalRequirements', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultati());
             const listaTotalRequirements = await apiTechnosphereFlows.getTotalRequirements(vps1, idCalcolo);
             if (listaTotalRequirements.length != 0) {
@@ -172,10 +195,10 @@ class App {
             }
         });
         page('/technosphereFlows/totalRequirementsOfFlows', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInput());
             //Prendo i tech flow disponibili dal db
             await getTechFlow(apiResultQueries, vps1, idCalcolo);
@@ -202,10 +225,10 @@ class App {
 
         });
         page('/technosphereFlows/scalingFactors', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultati());
             const listaScalingFactors = await apiTechnosphereFlows.getScalingFactors(vps1, idCalcolo);
             if (listaScalingFactors.length != 0) {
@@ -214,10 +237,10 @@ class App {
             }
         });
         page('/technosphereFlows/scaledTechFlowsOf', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInput());
             //Prendo i tech flow disponibili dal db
             await getTechFlow(apiResultQueries, vps1, idCalcolo);
@@ -244,10 +267,10 @@ class App {
             
         });
         page('/technosphereFlows/unscaledTechFlowsOf', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInput());
            
             await getTechFlow(apiResultQueries, vps1, idCalcolo);
@@ -274,10 +297,10 @@ class App {
             
         });
         page('/flowResults/inventoryResult', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiDoppiaTabella());
             const listaInventoryResult = await apiFlowResults.getInventoryResult(vps1, idCalcolo);
             if (listaInventoryResult.length != 0) {
@@ -287,10 +310,10 @@ class App {
             
         });
         page('/flowResults/totalFlowValueOf', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInputDoppiaTabella());
             await getEnviFlow(apiFlowResults,vps1,idCalcolo);
 
@@ -317,10 +340,10 @@ class App {
   
         });
         page('/flowResults/flowContributionsOf', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInput());
             
             await getEnviFlow(apiFlowResults,vps1,idCalcolo);
@@ -347,10 +370,10 @@ class App {
             });
         });
         page('/flowResults/directInterventionsOf', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInputDoppiaTabella());
            
             await getTechFlow(apiResultQueries, vps1, idCalcolo);
@@ -377,10 +400,10 @@ class App {
 
         });
         page('/flowResults/directInterventionsOfEnviFlowTechFlow', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiDoppioInputDoppiaTabella());
            
             await getTechFlowEnviFlow(apiResultQueries,apiFlowResults,vps1,idCalcolo);
@@ -411,10 +434,10 @@ class App {
             });
         });    
         page('/flowResults/flowIntensitiesOf', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInputDoppiaTabella());
            
             
@@ -442,10 +465,10 @@ class App {
             
         });  
         page('/flowResults/flowIntensityOfEnviFlowTechFlow', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiDoppioInputDoppiaTabella());
            
             await getTechFlowEnviFlow(apiResultQueries,apiFlowResults,vps1,idCalcolo);
@@ -476,10 +499,10 @@ class App {
             });
         });   
         page('/flowResults/totalInterventionsOf', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInputDoppiaTabella());
             await getTechFlow(apiResultQueries,vps1,idCalcolo);
             document.getElementById('button').addEventListener('click', async event => {
@@ -505,10 +528,10 @@ class App {
             });
         });
         page('/flowResults/totalInterventionOfEnviFlowTechFlow', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiDoppioInputDoppiaTabella());
            
             await getTechFlowEnviFlow(apiResultQueries,apiFlowResults,vps1,idCalcolo);
@@ -539,10 +562,10 @@ class App {
         }); 
         /*Not found url 
         page('/flowResults/upstreamInterventionsOf', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInput());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInput());
             await getEnviFlow(apiFlowResults,vps1,idCalcolo);
             document.getElementById('button').addEventListener('click', async event => {
                 
@@ -565,10 +588,10 @@ class App {
             });
         });*/   
         page('/impactResults/totalImpacts', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultati());
             const listaTotalImpacts = await apiImpactResults.getTotalImpacts(vps1,idCalcolo);
             if(listaTotalImpacts.length != 0){
@@ -578,10 +601,10 @@ class App {
             }
         });
         page('/impactResults/totalImpactsNormalized', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultati());
             const listaTotalImpactsNormalized = await apiImpactResults.getTotalImpactsNormalized(vps1,idCalcolo);
             if(listaTotalImpactsNormalized.length != 0){
@@ -591,10 +614,10 @@ class App {
             }
         }); 
         page('/impactResults/totalImpactsWeighted', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultati());
             const listaTotalImpactsWeighted = await apiImpactResults.getTotalImpactsWeighted(vps1,idCalcolo);
             if(listaTotalImpactsWeighted.length != 0){
@@ -604,10 +627,10 @@ class App {
             }
         }); 
         page('/impactResults/totalImpactValueOf', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInput());
             await getImpactCategory(apiResultQueries,vps1,idCalcolo);
             document.getElementById('button').addEventListener('click', async event => {
@@ -633,10 +656,10 @@ class App {
             });
         }); 
         page('/impactResults/impactContributionsOf', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInput());
             await getImpactCategory(apiResultQueries,vps1,idCalcolo);
             document.getElementById('button').addEventListener('click', async event => {
@@ -662,10 +685,10 @@ class App {
             });
         }); 
         page('/impactResults/directImpactsOf', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInput());
             await getTechFlow(apiResultQueries,vps1,idCalcolo);
             document.getElementById('button').addEventListener('click', async event => {
@@ -691,10 +714,10 @@ class App {
             });
         }); 
         page('/impactResults/directImpactOfImpactCategoryTechFlow', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiDoppioInput());
            
             await getImpactCategoryTechFlow(apiResultQueries,vps1,idCalcolo);
@@ -727,10 +750,10 @@ class App {
 
         }); 
         page('/impactResults/impactIntensitiesOf', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInput());
             await getTechFlow(apiResultQueries,vps1,idCalcolo);
             document.getElementById('button').addEventListener('click', async event => {
@@ -756,10 +779,10 @@ class App {
             });
         }); 
         page('/impactResults/directImpactIntensityOfImpactCategoryTechFlow', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiDoppioInput());
            
             await getImpactCategoryTechFlow(apiResultQueries,vps1,idCalcolo);
@@ -791,10 +814,10 @@ class App {
             });
         }); 
         page('/impactResults/totalImpactsOf', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInput());
             await getTechFlow(apiResultQueries,vps1,idCalcolo);
             document.getElementById('button').addEventListener('click', async event => {
@@ -820,10 +843,10 @@ class App {
             });
         });
         page('/impactResults/totalImpactOfImpactCategoryTechFlow', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiDoppioInput());
            
             await getImpactCategoryTechFlow(apiResultQueries,vps1,idCalcolo);
@@ -855,10 +878,10 @@ class App {
             });
         }); 
         page('/impactResults/impactFactorsOf', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInputDoppiaTabella());
             await getImpactCategory(apiResultQueries,vps1,idCalcolo);
             document.getElementById('button').addEventListener('click', async event => {
@@ -884,10 +907,10 @@ class App {
             });
         }); 
         page('/impactResults/impactFactorsOfImpactCategoryEnviFlow', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiDoppioInputDoppiaTabella());
            
             await getImpactCategoryEnviFlow(apiResultQueries,apiFlowResults,vps1,idCalcolo);
@@ -918,10 +941,10 @@ class App {
             });
         });
         page('/impactResults/flowImpactsOf', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiSingoloInputDoppiaTabella());
             await getImpactCategory(apiResultQueries,vps1,idCalcolo);
             document.getElementById('button').addEventListener('click', async event => {
@@ -947,10 +970,10 @@ class App {
             });
         });  
         page('/impactResults/flowImpactOfImpactCategoryEnviFlow', async () => {
-            this.header.innerHTML = '';
-            this.header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
-            this.main.innerHTML = '';
-            this.main.insertAdjacentHTML('beforeend', creaLateralNavbar());
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend',creaViewHeaderRisultati());           
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
             document.getElementById("main01").insertAdjacentHTML('beforeend',creaViewMainRisultatiDoppioInputDoppiaTabella());
            
             await getImpactCategoryEnviFlow(apiResultQueries,apiFlowResults,vps1,idCalcolo);

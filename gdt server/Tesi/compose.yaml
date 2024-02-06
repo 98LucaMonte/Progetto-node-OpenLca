@@ -19,6 +19,3 @@ services:
       - C:\Users\lucam\openLCA-data-1.4:/app/data
     command: -db case_study
     
-
-
-

@@ -1,5 +1,12 @@
-"use-strict";
-
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 function creaViewMain() {
     return `
     <div class="container container-fluid mt-5">
@@ -55,80 +62,80 @@ function creaViewMain() {
     </div>
     `;
 }
-
-/** 
-    * In questo metodo raccolgo dal db tutti i Product system che sono disponibili e li inserisco all'interno 
-    * della select usata per selezionare il product system che si vuole calcolare andando a impostare l'id, 
+/**
+    * In questo metodo raccolgo dal db tutti i Product system che sono disponibili e li inserisco all'interno
+    * della select usata per selezionare il product system che si vuole calcolare andando a impostare l'id,
     * il value e il text che andranno a formare l'option che verà aggiunto alla select.
-    * 
+    *
     * @param {Api} apiCalculation - Oggetto che permette il richiamo delle apiCalculation.
     * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
     */
-async function getProductSystem(apiCalculation, vps){
-
-  const placeholder = document.getElementById("selectedProductSystem");
-  let listaProductSystem = await apiCalculation.getProductSystem(vps);
-  console.log("ProductSystem");
-  console.log(listaProductSystem);
-
-  if (listaProductSystem.length == 0) {
-      placeholder.innerHTML = "Non ci sono Product System selezionabili";
-  } else {
-      const selectProductSystem = document.getElementById("listaProductSystem");
-      placeholder.innerHTML = "Seleziona un Product System";
-      for (let i = 0; i < listaProductSystem.length; i++) {
-          let option = document.createElement("option");
-          option.value = listaProductSystem[i].name;
-          option.text = listaProductSystem[i].name;
-          option.id = listaProductSystem[i]["@id"];
-          selectProductSystem.appendChild(option);
-      }
-  }
-
+function getProductSystem(apiCalculation, vps) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const placeholder = document.getElementById("selectedProductSystem");
+        let listaProductSystem = yield apiCalculation.getProductSystem(vps);
+        console.log("ProductSystem");
+        console.log(listaProductSystem);
+        if (placeholder) {
+            if (listaProductSystem.length == 0) {
+                placeholder.innerHTML = "Non ci sono Product System selezionabili";
+            }
+            else {
+                let selectProductSystem = document.getElementById("listaProductSystem");
+                placeholder.innerHTML = "Seleziona un Product System";
+                for (let i = 0; i < listaProductSystem.length; i++) {
+                    let option = document.createElement("option");
+                    if (selectProductSystem) {
+                        option.value = listaProductSystem[i].name;
+                        option.text = listaProductSystem[i].name;
+                        option.id = listaProductSystem[i]["@id"];
+                        selectProductSystem.appendChild(option);
+                    }
+                }
+            }
+        }
+    });
 }
-
-/** 
-* In questo metodo raccolgo dal db tutti gli impact method che sono disponibili e li inserisco all'interno 
-* della select usata per selezionare l'impact method che si vuole utilizzare andando a impostare l'id, 
-* il value e il text che andranno a formare l'option che verà aggiunto alla select. Inoltre, si imposta 
+/**
+* In questo metodo raccolgo dal db tutti gli impact method che sono disponibili e li inserisco all'interno
+* della select usata per selezionare l'impact method che si vuole utilizzare andando a impostare l'id,
+* il value e il text che andranno a formare l'option che verà aggiunto alla select. Inoltre, si imposta
 * anche l'id del nwSets necessario per fare il calcolo del product system.
 * Se non ci sono impact method si inserisce nel placeholder Non ci sono Impact method selezionabili.
 *
 * @param {Api} apiCalculation - Oggetto che permette il richiamo delle apiCalculation.
 * @param {String} vps - Indirizzo della vps del db a cui ci colleghiamo.
 */
-async function getImpactMethod(apiCalculation, vps){
-
-  const placeholder = document.getElementById("selectedImpactMethod");
-  let listaImpactMethod = await apiCalculation.getImpactMethod(vps);
-  console.log("impact-method");
-  console.log(listaImpactMethod);
-
-  if (listaImpactMethod.length == 0) {
-      placeholder.innerHTML = "Non ci sono Impact method selezionabili";
-  } else {
-
-      const selectImpactMethod = document.getElementById("listaImpactMethod");
-      placeholder.innerHTML = "Seleziona un Impact Method";
-
-      for (let i = 0; i < listaImpactMethod.length; i++) {
-
-          let option = document.createElement("option");
-
-          if (listaImpactMethod[i].hasOwnProperty("nwSets")) {
-              option.value = listaImpactMethod[i].name;
-              option.text = listaImpactMethod[i].name;
-              option.id = listaImpactMethod[i]["@id"] + "/" + listaImpactMethod[i].nwSets[0]["@id"];
-              selectImpactMethod.appendChild(option);
-          }
-
-      }
-  }
-
+function getImpactMethod(apiCalculation, vps) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const placeholder = document.getElementById("selectedImpactMethod");
+        let listaImpactMethod = yield apiCalculation.getImpactMethod(vps);
+        console.log("impact-method");
+        console.log(listaImpactMethod);
+        if (placeholder) {
+            if (listaImpactMethod.length == 0) {
+                placeholder.innerHTML = "Non ci sono Impact method selezionabili";
+            }
+            else {
+                const selectImpactMethod = document.getElementById("listaImpactMethod");
+                placeholder.innerHTML = "Seleziona un Impact Method";
+                for (let i = 0; i < listaImpactMethod.length; i++) {
+                    let option = document.createElement("option");
+                    if (listaImpactMethod[i].hasOwnProperty("nwSets")) {
+                        if (selectImpactMethod) {
+                            option.value = listaImpactMethod[i].name;
+                            option.text = listaImpactMethod[i].name;
+                            option.id = listaImpactMethod[i]["@id"] + "/" + listaImpactMethod[i].nwSets[0]["@id"];
+                            selectImpactMethod.appendChild(option);
+                        }
+                    }
+                }
+            }
+        }
+    });
 }
-
-function creaModalForPDF(){
-  return `<div class="modal fade" id="modalPdf" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+function creaModalForPDF() {
+    return `<div class="modal fade" id="modalPdf" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -145,9 +152,8 @@ function creaModalForPDF(){
   </div>
 </div>`;
 }
-
-function creaLateralNavbar(){
-  return `
+function creaLateralNavbar() {
+    return `
   <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
       <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Informazioni sul Product System</h5>
@@ -261,7 +267,6 @@ function creaLateralNavbar(){
     </div>
   `;
 }
-
 function creaViewMainRisultati() {
     return `
     <div class="container mt-5 mb-5">
@@ -283,9 +288,8 @@ function creaViewMainRisultati() {
     </div>
     `;
 }
-
-function creaViewMainRisultatiDoppioInput(){
-  return `<div class="container mt-5">
+function creaViewMainRisultatiDoppioInput() {
+    return `<div class="container mt-5">
       <div class="row justify-content-center">
         <div class="col-sm-2"></div>
         <div class="col-sm-4" id="inputTitolo01">
@@ -312,9 +316,8 @@ function creaViewMainRisultatiDoppioInput(){
     </div>
     `;
 }
-
-function creaViewMainRisultatiSingoloInput(){
-  return `<div class="container mt-5">
+function creaViewMainRisultatiSingoloInput() {
+    return `<div class="container mt-5">
       <div class="row justify-content-center">
        
         <div class="col-md-10" id="inputTitolo">
@@ -336,9 +339,8 @@ function creaViewMainRisultatiSingoloInput(){
     </div>
   `;
 }
-
 function creaViewMainRisultatiDoppiaTabella() {
-  return `<div class="container mt-2 mb-5">
+    return `<div class="container mt-2 mb-5">
       <div class="row justify-content-center">
         
         <div class="col-md-10 mt-4">
@@ -358,9 +360,8 @@ function creaViewMainRisultatiDoppiaTabella() {
     </div>
   `;
 }
-
 function creaViewMainRisultatiSingoloInputDoppiaTabella() {
-  return `<div class="container mt-2 mb-5">
+    return `<div class="container mt-2 mb-5">
       <div class="row justify-content-center">
         <div class="col-md-10 mt-4" id="inputTitolo">
           <select class="form-select form-select-sm" aria-label="Default select example" style="width:30%!important;" id="listaInput01">
@@ -387,9 +388,8 @@ function creaViewMainRisultatiSingoloInputDoppiaTabella() {
     </div>
   `;
 }
-
 function creaViewMainRisultatiDoppioInputDoppiaTabella() {
-  return `<div class="container mt-2 mb-5">
+    return `<div class="container mt-2 mb-5">
       <div class="row justify-content-center">
         <div class="col-sm-2"></div>
         <div class="col-sm-4"  id="inputTitolo01">
@@ -423,7 +423,4 @@ function creaViewMainRisultatiDoppioInputDoppiaTabella() {
     </div>
   `;
 }
-
-export { creaViewMain, getProductSystem, getImpactMethod, creaModalForPDF,
-         creaLateralNavbar,creaViewMainRisultati, creaViewMainRisultatiDoppioInput , creaViewMainRisultatiSingoloInput, 
-         creaViewMainRisultatiDoppiaTabella , creaViewMainRisultatiSingoloInputDoppiaTabella, creaViewMainRisultatiDoppioInputDoppiaTabella};
+export { creaViewMain, getProductSystem, getImpactMethod, creaModalForPDF, creaLateralNavbar, creaViewMainRisultati, creaViewMainRisultatiDoppioInput, creaViewMainRisultatiSingoloInput, creaViewMainRisultatiDoppiaTabella, creaViewMainRisultatiSingoloInputDoppiaTabella, creaViewMainRisultatiDoppioInputDoppiaTabella };

@@ -1,5 +1,13 @@
-
-function creaModalNuovoProductSystem(){
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+function creaModalNuovoProductSystem() {
     return `
     <div class="modal fade" id="creaProductSystemMain" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog">
@@ -40,9 +48,8 @@ function creaModalNuovoProductSystem(){
 
         `;
 }
-
-function creaModalInserisciInput(){
-  return `
+function creaModalInserisciInput() {
+    return `
   <div class="modal fade" id="creaProductSystemInput" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -74,9 +81,8 @@ function creaModalInserisciInput(){
         
       `;
 }
-
-function creaModalInserisciOutput(){
-  return `
+function creaModalInserisciOutput() {
+    return `
   <div class="modal fade" id="creaProductSystemOutput" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -108,9 +114,8 @@ function creaModalInserisciOutput(){
         
       `;
 }
-
-function creaAccordionElement(num,category,nome){
-  return `<div class="accordion-item input-style">
+function creaAccordionElement(num, category, nome) {
+    return `<div class="accordion-item input-style">
     <h2 class="accordion-header">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse${num}${nome}" aria-expanded="false" aria-controls="flush-collapseOne">
         ${category}
@@ -126,9 +131,8 @@ function creaAccordionElement(num,category,nome){
   </div>
   `;
 }
-
 function creaFlowElement(element) {
-  return `<li class="list-group-item">
+    return `<li class="list-group-item">
     <div class="row">
       <div class="col-sm-6">
         <p>${element.name} {${element.refUnit}}</p>
@@ -139,9 +143,8 @@ function creaFlowElement(element) {
     </div>
   </li>`;
 }
-
-function creaModalNuovoFlowInput(){
-  return `
+function creaModalNuovoFlowInput() {
+    return `
 
   <div class="modal fade" id="creaFlowInput" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog">
@@ -223,9 +226,8 @@ function creaModalNuovoFlowInput(){
 
   `;
 }
-
-function creaModalNuovoFlowOutput(){
-  return `
+function creaModalNuovoFlowOutput() {
+    return `
   <div class="modal fade" id="creaFlowOutput" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -299,9 +301,8 @@ function creaModalNuovoFlowOutput(){
 
   `;
 }
-
-function creaModalConfermaNuovoProductSystem(){
-  return `
+function creaModalConfermaNuovoProductSystem() {
+    return `
   <div class="modal fade" id="confermaCreaProductSystem" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -322,9 +323,8 @@ function creaModalConfermaNuovoProductSystem(){
  
       `;
 }
-
-function creaModalNuovoProductFine(){
-  return `
+function creaModalNuovoProductFine() {
+    return `
   <div class="modal fade" id="creaProductSystemFine" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -342,59 +342,55 @@ function creaModalNuovoProductFine(){
         </div>
       `;
 }
-
-async function getFlow(vps,apiCalculation,nome){
-  let listaFlow = await apiCalculation.getAll(vps,"flow");
-  let risultato = ordinaEDividiPerCategoria(listaFlow);
-  let num = 0;
-  let categorie = Object.keys(risultato);
-  categorie.forEach(function(categoria) {
-      num++;
-      //lista di flow di una certa categoria
-      let listaFlowByCategoria = risultato[categoria];
-      
-      if(listaFlowByCategoria[0].hasOwnProperty('category')){
-          document.getElementById(`accordionFlushExample${nome}`).insertAdjacentHTML('beforeend',creaAccordionElement(num,listaFlowByCategoria[0].category,nome));
-          for(let element of listaFlowByCategoria){
-              document.getElementById(`listaFlow${num}`).insertAdjacentHTML('beforeend',creaFlowElement(element));
-          }     
-      }
-  });
+function getFlow(vps, apiCalculation, nome) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let listaFlow = yield apiCalculation.getAll(vps, "flow");
+        let risultato = ordinaEDividiPerCategoria(listaFlow);
+        let num = 0;
+        let categorie = Object.keys(risultato);
+        categorie.forEach(function (categoria) {
+            num++;
+            //lista di flow di una certa categoria
+            let listaFlowByCategoria = risultato[categoria];
+            if (listaFlowByCategoria[0].hasOwnProperty('category')) {
+                let divAccordionFlow = document.getElementById(`accordionFlushExample${nome}`);
+                if (divAccordionFlow) {
+                    divAccordionFlow.insertAdjacentHTML('beforeend', creaAccordionElement(num, listaFlowByCategoria[0].category, nome));
+                    for (let element of listaFlowByCategoria) {
+                        let UlElementFlow = document.getElementById(`listaFlow${num}`);
+                        if (UlElementFlow) {
+                            UlElementFlow.insertAdjacentHTML('beforeend', creaFlowElement(element));
+                        }
+                    }
+                }
+            }
+        });
+    });
 }
-
 function ordinaEDividiPerCategoria(array) {
-  // Verifica se ogni oggetto ha la proprietà 'category' prima di ordinare
-  array.sort(function (a, b) {
-    let categoriaA = (a.category || '').toString().toLowerCase();
-    let categoriaB = (b.category || '').toString().toLowerCase();
-
-    if (categoriaA < categoriaB) {
-      return -1;
-    }
-    if (categoriaA > categoriaB) {
-      return 1;
-    }
-    return 0;
-  });
-
-  // Raggruppa gli elementi per categoria utilizzando reduce
-  let raggruppatoPerCategoria = array.reduce(function (acc, elemento) {
-    let categoria = (elemento.category || '').toString();
-
-    // Se la categoria non esiste nel risultato, creala
-    if (!acc[categoria]) {
-      acc[categoria] = [];
-    }
-
-    // Aggiungi l'elemento alla categoria corrispondente
-    acc[categoria].push(elemento);
-
-    return acc;
-  }, {});
-
-  return raggruppatoPerCategoria;
+    // Verifica se ogni oggetto ha la proprietà 'category' prima di ordinare
+    array.sort(function (a, b) {
+        let categoriaA = (a.category || '').toString().toLowerCase();
+        let categoriaB = (b.category || '').toString().toLowerCase();
+        if (categoriaA < categoriaB) {
+            return -1;
+        }
+        if (categoriaA > categoriaB) {
+            return 1;
+        }
+        return 0;
+    });
+    // Raggruppa gli elementi per categoria utilizzando reduce
+    let raggruppatoPerCategoria = array.reduce(function (acc, elemento) {
+        let categoria = (elemento.category || '').toString();
+        // Se la categoria non esiste nel risultato, creala
+        if (!acc[categoria]) {
+            acc[categoria] = [];
+        }
+        // Aggiungi l'elemento alla categoria corrispondente
+        acc[categoria].push(elemento);
+        return acc;
+    }, {});
+    return raggruppatoPerCategoria;
 }
-
-export{creaModalNuovoProductSystem,creaModalInserisciInput,creaModalInserisciOutput,
-      getFlow,creaModalNuovoFlowInput,creaModalNuovoFlowOutput,
-      creaModalConfermaNuovoProductSystem,creaModalNuovoProductFine};
+export { creaModalNuovoProductSystem, creaModalInserisciInput, creaModalInserisciOutput, getFlow, creaModalNuovoFlowInput, creaModalNuovoFlowOutput, creaModalConfermaNuovoProductSystem, creaModalNuovoProductFine };
