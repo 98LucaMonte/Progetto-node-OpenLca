@@ -1,3 +1,4 @@
+"use strict";
 //const doc = new jspdf.jsPDF();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -8,6 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CalcolaProductSystem = void 0;
 class CalcolaProductSystem {
     constructor() {
         /*creaPDF = async (vps,idCalcolo,apiImpactResults) =>{
@@ -140,4 +143,4 @@ class CalcolaProductSystem {
         });
     }
 }
-export { CalcolaProductSystem };
+exports.CalcolaProductSystem = CalcolaProductSystem;

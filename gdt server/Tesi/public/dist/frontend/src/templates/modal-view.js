@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,6 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.creaModalNuovoProductFine = exports.creaModalConfermaNuovoProductSystem = exports.creaModalNuovoFlowOutput = exports.creaModalNuovoFlowInput = exports.getFlow = exports.creaModalInserisciOutput = exports.creaModalInserisciInput = exports.creaModalNuovoProductSystem = void 0;
 function creaModalNuovoProductSystem() {
     return `
     <div class="modal fade" id="creaProductSystemMain" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -48,6 +51,7 @@ function creaModalNuovoProductSystem() {
 
         `;
 }
+exports.creaModalNuovoProductSystem = creaModalNuovoProductSystem;
 function creaModalInserisciInput() {
     return `
   <div class="modal fade" id="creaProductSystemInput" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -81,6 +85,7 @@ function creaModalInserisciInput() {
         
       `;
 }
+exports.creaModalInserisciInput = creaModalInserisciInput;
 function creaModalInserisciOutput() {
     return `
   <div class="modal fade" id="creaProductSystemOutput" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -114,6 +119,7 @@ function creaModalInserisciOutput() {
         
       `;
 }
+exports.creaModalInserisciOutput = creaModalInserisciOutput;
 function creaAccordionElement(num, category, nome) {
     return `<div class="accordion-item input-style">
     <h2 class="accordion-header">
@@ -226,6 +232,7 @@ function creaModalNuovoFlowInput() {
 
   `;
 }
+exports.creaModalNuovoFlowInput = creaModalNuovoFlowInput;
 function creaModalNuovoFlowOutput() {
     return `
   <div class="modal fade" id="creaFlowOutput" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -301,6 +308,7 @@ function creaModalNuovoFlowOutput() {
 
   `;
 }
+exports.creaModalNuovoFlowOutput = creaModalNuovoFlowOutput;
 function creaModalConfermaNuovoProductSystem() {
     return `
   <div class="modal fade" id="confermaCreaProductSystem" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -323,6 +331,7 @@ function creaModalConfermaNuovoProductSystem() {
  
       `;
 }
+exports.creaModalConfermaNuovoProductSystem = creaModalConfermaNuovoProductSystem;
 function creaModalNuovoProductFine() {
     return `
   <div class="modal fade" id="creaProductSystemFine" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -342,6 +351,7 @@ function creaModalNuovoProductFine() {
         </div>
       `;
 }
+exports.creaModalNuovoProductFine = creaModalNuovoProductFine;
 function getFlow(vps, apiCalculation, nome) {
     return __awaiter(this, void 0, void 0, function* () {
         let listaFlow = yield apiCalculation.getAll(vps, "flow");
@@ -367,6 +377,7 @@ function getFlow(vps, apiCalculation, nome) {
         });
     });
 }
+exports.getFlow = getFlow;
 function ordinaEDividiPerCategoria(array) {
     // Verifica se ogni oggetto ha la proprietà 'category' prima di ordinare
     array.sort(function (a, b) {
@@ -393,4 +404,3 @@ function ordinaEDividiPerCategoria(array) {
     }, {});
     return raggruppatoPerCategoria;
 }
-export { creaModalNuovoProductSystem, creaModalInserisciInput, creaModalInserisciOutput, getFlow, creaModalNuovoFlowInput, creaModalNuovoFlowOutput, creaModalConfermaNuovoProductSystem, creaModalNuovoProductFine };

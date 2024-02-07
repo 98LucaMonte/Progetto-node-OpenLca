@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,52 +8,56 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import ApiCalculation from "./backend/src/restclient/apiCalculation";
-import ApiResultQueries from "./backend/src/restclient/apiResultQueries";
-import ApiTechnosphereFlows from "./backend/src/restclient/apiTechnosphereFlows";
-import ApiFlowResults from "./backend/src/restclient/apiFlowResults.js";
-import ApiImpactResults from "./backend/src/restclient/apiImpactResults.js";
-import { ProductSystem } from "./frontend/src/logic/productSystem";
-import { CalcolaProductSystem } from "./frontend/src/logic/calcolaProductSystem";
-import { creaModalNuovoProductSystem } from "./frontend/src/templates/modal-view";
-import { creaViewMain, getProductSystem, getImpactMethod, creaModalForPDF, creaLateralNavbar, creaViewMainRisultati, creaViewMainRisultatiDoppioInput, creaViewMainRisultatiSingoloInput, creaViewMainRisultatiDoppiaTabella, creaViewMainRisultatiSingoloInputDoppiaTabella, creaViewMainRisultatiDoppioInputDoppiaTabella } from './frontend/src/templates/main-view';
-import { creaTabellaProviderFlow, creaTabellaTechFlowValue, creaTabellaEnviFlowsInputOutput, creaTabellaEnviFlowsInputOutputValue, creaTabellaImpactCategory, creaTabellaImpactCategoryValue, getTechFlow, getEnviFlow, getTechFlowEnviFlow, getImpactCategory, getImpactCategoryEnviFlow, getImpactCategoryTechFlow } from './frontend/src/templates/main-view-tabelle-row';
-import { creaViewHeader, creaViewHeaderRisultati } from './frontend/src/templates/header-view';
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const apiCalculation_js_1 = __importDefault(require("./backend/src/restclient/apiCalculation.js"));
+const apiResultQueries_js_1 = __importDefault(require("./backend/src/restclient/apiResultQueries.js"));
+const apiTechnosphereFlows_js_1 = __importDefault(require("./backend/src/restclient/apiTechnosphereFlows.js"));
+const apiFlowResults_js_1 = __importDefault(require("./backend/src/restclient/apiFlowResults.js"));
+const apiImpactResults_js_1 = __importDefault(require("./backend/src/restclient/apiImpactResults.js"));
+const productSystem_js_1 = require("./frontend/src/logic/productSystem.js");
+const calcolaProductSystem_js_1 = require("./frontend/src/logic/calcolaProductSystem.js");
+const modal_view_js_1 = require("./frontend/src/templates/modal-view.js");
+const main_view_js_1 = require("./frontend/src/templates/main-view.js");
+const main_view_tabelle_row_js_1 = require("./frontend/src/templates/main-view-tabelle-row.js");
+const header_view_js_1 = require("./frontend/src/templates/header-view.js");
 // @ts-ignore
-import page from '//unpkg.com/page/page.mjs';
+const page_mjs_1 = __importDefault(require("//unpkg.com/page/page.mjs"));
 // @ts-ignore
-import bootstrap from "bootstrap";
-const apiCalculation = new ApiCalculation();
-const apiResultQueries = new ApiResultQueries();
-const apiTechnosphereFlows = new ApiTechnosphereFlows();
-const apiFlowResults = new ApiFlowResults();
-const apiImpactResults = new ApiImpactResults();
-const productSystem = new ProductSystem();
-const calcolaProductSystem = new CalcolaProductSystem();
+const bootstrap_1 = __importDefault(require("bootstrap"));
+const apiCalculation = new apiCalculation_js_1.default();
+const apiResultQueries = new apiResultQueries_js_1.default();
+const apiTechnosphereFlows = new apiTechnosphereFlows_js_1.default();
+const apiFlowResults = new apiFlowResults_js_1.default();
+const apiImpactResults = new apiImpactResults_js_1.default();
+const productSystem = new productSystem_js_1.ProductSystem();
+const calcolaProductSystem = new calcolaProductSystem_js_1.CalcolaProductSystem();
 class App {
     constructor(header, main, footer) {
         //const vps1 = 'http://109.205.180.220:3000/'; //indirizzo vps 
         const vps1 = 'http://127.0.0.1:3000/'; // docker run -p 3000:8080 -v $HOME/openLCA-data-1.4:/app/data --rm -d gdt-server -db case_study
         let idCalcolo;
         //Inizio pagina di presentazione
-        page('/', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
             main.innerHTML = '';
             footer.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeader());
-            main.insertAdjacentHTML('beforeend', creaViewMain());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeader)());
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMain)());
             //Prendo i product system disponibili dal db
-            yield getProductSystem(apiCalculation, vps1);
+            yield (0, main_view_js_1.getProductSystem)(apiCalculation, vps1);
             //Prendo gli impact method disponibili dal db
-            yield getImpactMethod(apiCalculation, vps1);
+            yield (0, main_view_js_1.getImpactMethod)(apiCalculation, vps1);
             let buttonCreaProductSystem = document.getElementById('creaProductSystem');
             if (buttonCreaProductSystem) {
                 buttonCreaProductSystem.addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
                     event.preventDefault();
                     let modalNuovoProductSystem = document.getElementById("modal");
                     if (modalNuovoProductSystem) {
-                        modalNuovoProductSystem.insertAdjacentHTML('beforeend', creaModalNuovoProductSystem());
-                        let myModal = new bootstrap.Modal(document.getElementById('creaProductSystemMain'));
+                        modalNuovoProductSystem.insertAdjacentHTML('beforeend', (0, modal_view_js_1.creaModalNuovoProductSystem)());
+                        let myModal = new bootstrap_1.default.Modal(document.getElementById('creaProductSystemMain'));
                         myModal.show();
                         let result = yield productSystem.creaModalInfoProductSystem(vps1, apiCalculation);
                         location.reload();
@@ -73,8 +78,8 @@ class App {
                         }
                         let modalPdf = document.getElementById("modal");
                         if (modalPdf) {
-                            modalPdf.insertAdjacentHTML('beforeend', creaModalForPDF());
-                            let myModal = new bootstrap.Modal(document.getElementById('modalPdf'));
+                            modalPdf.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaModalForPDF)());
+                            let myModal = new bootstrap_1.default.Modal(document.getElementById('modalPdf'));
                             myModal.show();
                         }
                         let buttonNonCreaPdf = document.getElementById("chiudiPdf");
@@ -85,7 +90,7 @@ class App {
                                     if (messaggio) {
                                         messaggio.innerHTML = '';
                                     }
-                                    page.redirect('/resultQueries/technosphereFlows');
+                                    page_mjs_1.default.redirect('/resultQueries/technosphereFlows');
                                 }), 3000);
                             });
                         }
@@ -98,7 +103,7 @@ class App {
                                     if (messaggio) {
                                         messaggio.innerHTML = '';
                                     }
-                                    page.redirect('/resultQueries/technosphereFlows');
+                                    page_mjs_1.default.redirect('/resultQueries/technosphereFlows');
                                 }), 3000);
                             });
                         }
@@ -106,259 +111,342 @@ class App {
                 }));
             }
         }));
-        page('/resultQueries/technosphereFlows', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/resultQueries/technosphereFlows', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultati());
-            const listaTechnosphereFlows = yield apiResultQueries.getTechnosphereFlows(vps1, idCalcolo);
-            if (listaTechnosphereFlows.length != 0) {
-                let msg = "Lista di provider e di TechFlow dato l'id del Product System appena calcolato";
-                creaTabellaProviderFlow(listaTechnosphereFlows, msg);
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            let divMainResult = document.getElementById("main01");
+            if (divMainResult) {
+                divMainResult.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultati)());
+                const listaTechnosphereFlows = yield apiResultQueries.getTechnosphereFlows(vps1, idCalcolo);
+                if (listaTechnosphereFlows.length != 0) {
+                    let msg = "Lista di provider e di TechFlow dato l'id del Product System appena calcolato";
+                    (0, main_view_tabelle_row_js_1.creaTabellaProviderFlow)(listaTechnosphereFlows, msg);
+                }
             }
         }));
-        page('/resultQueries/finalDemand', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/resultQueries/finalDemand', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultati());
-            const richiestaFinale = yield apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
-            console.log(richiestaFinale);
-            if (richiestaFinale.length != 0) {
-                let msg = "Tech Flow con quantità dato l'id del Product System appena calcolato";
-                creaTabellaTechFlowValue(richiestaFinale, msg);
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            let divMainResult = document.getElementById("main01");
+            if (divMainResult) {
+                divMainResult.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultati)());
+                const richiestaFinale = yield apiResultQueries.getRichiestaFinale(vps1, idCalcolo);
+                if (richiestaFinale.length != 0) {
+                    let msg = "Tech Flow con quantità dato l'id del Product System appena calcolato";
+                    (0, main_view_tabelle_row_js_1.creaTabellaTechFlowValue)(richiestaFinale, msg);
+                }
             }
         }));
-        page('/resultQueries/interventionFlows', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/resultQueries/interventionFlows', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppiaTabella());
-            const listaInterventionFlows = yield apiResultQueries.getInterventionFlows(vps1, idCalcolo);
-            if (listaInterventionFlows.length != 0) {
-                let msg = "Lista di Envi Flow Value dato l'id del Product System appena calcolato";
-                creaTabellaEnviFlowsInputOutput(listaInterventionFlows, msg);
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            let divMainResult = document.getElementById("main01");
+            if (divMainResult) {
+                divMainResult.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultatiDoppiaTabella)());
+                const listaInterventionFlows = yield apiResultQueries.getInterventionFlows(vps1, idCalcolo);
+                if (listaInterventionFlows.length != 0) {
+                    let msg = "Lista di Envi Flow Value dato l'id del Product System appena calcolato";
+                    (0, main_view_tabelle_row_js_1.creaTabellaEnviFlowsInputOutput)(listaInterventionFlows, msg);
+                }
             }
         }));
-        page('/resultQueries/impactCategories', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/resultQueries/impactCategories', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultati());
-            const listaImpactCategories = yield apiResultQueries.getImpactCategories(vps1, idCalcolo);
-            if (listaImpactCategories.length != 0) {
-                let msg = "Lista di Impact Category dato l'id del Product System appena calcolato";
-                creaTabellaImpactCategory(listaImpactCategories, msg);
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            let divMainResult = document.getElementById("main01");
+            if (divMainResult) {
+                divMainResult.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultati)());
+                const listaImpactCategories = yield apiResultQueries.getImpactCategories(vps1, idCalcolo);
+                if (listaImpactCategories.length != 0) {
+                    let msg = "Lista di Impact Category dato l'id del Product System appena calcolato";
+                    (0, main_view_tabelle_row_js_1.creaTabellaImpactCategory)(listaImpactCategories, msg);
+                }
             }
         }));
-        page('/technosphereFlows/totalRequirements', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/technosphereFlows/totalRequirements', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultati());
-            const listaTotalRequirements = yield apiTechnosphereFlows.getTotalRequirements(vps1, idCalcolo);
-            if (listaTotalRequirements.length != 0) {
-                let msg = "Lista di Tech Flow Value dato l'id del Product System appena calcolato";
-                creaTabellaTechFlowValue(listaTotalRequirements, msg);
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            let divMainResult = document.getElementById("main01");
+            if (divMainResult) {
+                divMainResult.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultati)());
+                const listaTotalRequirements = yield apiTechnosphereFlows.getTotalRequirements(vps1, idCalcolo);
+                if (listaTotalRequirements.length != 0) {
+                    let msg = "Lista di Tech Flow Value dato l'id del Product System appena calcolato";
+                    (0, main_view_tabelle_row_js_1.creaTabellaTechFlowValue)(listaTotalRequirements, msg);
+                }
             }
         }));
-        page('/technosphereFlows/totalRequirementsOfFlows', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/technosphereFlows/totalRequirementsOfFlows', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInput());
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            let divMainResult = document.getElementById("main01");
+            if (divMainResult) {
+                divMainResult.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultatiSingoloInput)());
+            }
             //Prendo i tech flow disponibili dal db
-            yield getTechFlow(apiResultQueries, vps1, idCalcolo);
-            document.getElementById('button').addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
-                const selectTechFlow = document.getElementById("listaInput01");
-                const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
-                const idTechFlow = selectedOptionTechFlow.id;
-                console.log(idTechFlow);
-                if (idTechFlow === "selectedInput01") {
-                    const messaggio = document.getElementById("informazioniDati");
-                    messaggio.innerHTML = '';
-                    messaggio.insertAdjacentHTML('beforeend', `<h3 class="alert alert-danger" role="alert">Seleziona un tech flow.</h3>`);
-                }
-                else {
-                    const listatotalRequirementsOfFlows = yield apiTechnosphereFlows.getTotalRequirementsOfFlows(vps1, idCalcolo, idTechFlow);
-                    if (listatotalRequirementsOfFlows.length != 0) {
-                        let msg = "Lista di Tech Flow Value dato l'id del Product System appena calcolato e l'id del Tech Flow selezionato";
-                        creaTabellaTechFlowValue(listatotalRequirementsOfFlows, msg);
+            yield (0, main_view_tabelle_row_js_1.getTechFlow)(apiResultQueries, vps1, idCalcolo);
+            let buttonMostraRisultati = document.getElementById('button');
+            if (buttonMostraRisultati) {
+                buttonMostraRisultati.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+                    let selectTechFlow = document.getElementById("listaInput01");
+                    let selectedOptionTechFlow;
+                    let idTechFlow = "selectedInput01";
+                    if (selectTechFlow) {
+                        selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
+                        idTechFlow = selectedOptionTechFlow.id;
                     }
-                }
-            }));
-        }));
-        page('/technosphereFlows/scalingFactors', () => __awaiter(this, void 0, void 0, function* () {
-            header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
-            main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultati());
-            const listaScalingFactors = yield apiTechnosphereFlows.getScalingFactors(vps1, idCalcolo);
-            if (listaScalingFactors.length != 0) {
-                let msg = "Lista di Tech Flow Value dato l'id del Product System appena calcolato";
-                creaTabellaTechFlowValue(listaScalingFactors, msg);
+                    if (idTechFlow === "selectedInput01") {
+                        let messaggio = document.getElementById("informazioniDati");
+                        if (messaggio) {
+                            messaggio.innerHTML = '';
+                            messaggio.insertAdjacentHTML('beforeend', `<h3 class="alert alert-danger" role="alert">Seleziona un tech flow.</h3>`);
+                        }
+                    }
+                    else {
+                        let listatotalRequirementsOfFlows = yield apiTechnosphereFlows.getTotalRequirementsOfFlows(vps1, idCalcolo, idTechFlow);
+                        if (listatotalRequirementsOfFlows.length != 0) {
+                            let msg = "Lista di Tech Flow Value dato l'id del Product System appena calcolato e l'id del Tech Flow selezionato";
+                            (0, main_view_tabelle_row_js_1.creaTabellaTechFlowValue)(listatotalRequirementsOfFlows, msg);
+                        }
+                    }
+                }));
             }
         }));
-        page('/technosphereFlows/scaledTechFlowsOf', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/technosphereFlows/scalingFactors', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInput());
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            let divMainResult = document.getElementById("main01");
+            if (divMainResult) {
+                divMainResult.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultati)());
+                let listaScalingFactors = yield apiTechnosphereFlows.getScalingFactors(vps1, idCalcolo);
+                if (listaScalingFactors.length != 0) {
+                    let msg = "Lista di Tech Flow Value dato l'id del Product System appena calcolato";
+                    (0, main_view_tabelle_row_js_1.creaTabellaTechFlowValue)(listaScalingFactors, msg);
+                }
+            }
+        }));
+        (0, page_mjs_1.default)('/technosphereFlows/scaledTechFlowsOf', () => __awaiter(this, void 0, void 0, function* () {
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            let divMainResult = document.getElementById("main01");
+            if (divMainResult) {
+                divMainResult.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultatiSingoloInput)());
+            }
             //Prendo i tech flow disponibili dal db
-            yield getTechFlow(apiResultQueries, vps1, idCalcolo);
-            document.getElementById('button').addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
-                const selectTechFlow = document.getElementById("listaInput01");
-                const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
-                const idTechFlow = selectedOptionTechFlow.id;
-                console.log(idTechFlow);
-                if (idTechFlow === "selectedInput01") {
-                    const messaggio = document.getElementById("informazioniDati");
-                    messaggio.innerHTML = '';
-                    messaggio.insertAdjacentHTML('beforeend', `<h3 class="alert alert-danger" role="alert">Seleziona un tech flow.</h3>`);
-                }
-                else {
-                    const listaScaledTechFlowsOf = yield apiTechnosphereFlows.getScaledTechFlowsOf(vps1, idCalcolo, idTechFlow);
-                    if (listaScaledTechFlowsOf.length != 0) {
-                        let msg = "Lista di Tech Flow Value dato l'id del Product System appena calcolato e l'id del Tech Flow selezionato";
-                        creaTabellaTechFlowValue(listaScaledTechFlowsOf, msg);
+            yield (0, main_view_tabelle_row_js_1.getTechFlow)(apiResultQueries, vps1, idCalcolo);
+            let buttonMostraRisultati = document.getElementById('button');
+            if (buttonMostraRisultati) {
+                buttonMostraRisultati.addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
+                    let selectTechFlow = document.getElementById("listaInput01");
+                    let selectedOptionTechFlow;
+                    let idTechFlow = "selectedInput01";
+                    if (selectTechFlow) {
+                        selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
+                        idTechFlow = selectedOptionTechFlow.id;
                     }
-                }
-            }));
-        }));
-        page('/technosphereFlows/unscaledTechFlowsOf', () => __awaiter(this, void 0, void 0, function* () {
-            header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
-            main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInput());
-            yield getTechFlow(apiResultQueries, vps1, idCalcolo);
-            document.getElementById('button').addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
-                const selectTechFlow = document.getElementById("listaInput01");
-                const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
-                const idTechFlow = selectedOptionTechFlow.id;
-                console.log(idTechFlow);
-                if (idTechFlow === "selectedInput01") {
-                    const messaggio = document.getElementById("informazioniDati");
-                    messaggio.innerHTML = '';
-                    messaggio.insertAdjacentHTML('beforeend', `<h3 class="alert alert-danger" role="alert">Seleziona un tech flow.</h3>`);
-                }
-                else {
-                    const listaUnscaledTechFlowsOf = yield apiTechnosphereFlows.getUnscaledTechFlowsOf(vps1, idCalcolo, idTechFlow);
-                    if (listaUnscaledTechFlowsOf.length != 0) {
-                        let msg = "Lista di Tech Flow Value dato l'id del Product System appena calcolato e l'id del Tech Flow selezionato";
-                        creaTabellaTechFlowValue(listaUnscaledTechFlowsOf, msg);
+                    if (idTechFlow === "selectedInput01") {
+                        let messaggio = document.getElementById("informazioniDati");
+                        if (messaggio) {
+                            messaggio.innerHTML = '';
+                            messaggio.insertAdjacentHTML('beforeend', `<h3 class="alert alert-danger" role="alert">Seleziona un tech flow.</h3>`);
+                        }
                     }
-                }
-            }));
+                    else {
+                        let listaScaledTechFlowsOf = yield apiTechnosphereFlows.getScaledTechFlowsOf(vps1, idCalcolo, idTechFlow);
+                        if (listaScaledTechFlowsOf.length != 0) {
+                            let msg = "Lista di Tech Flow Value dato l'id del Product System appena calcolato e l'id del Tech Flow selezionato";
+                            (0, main_view_tabelle_row_js_1.creaTabellaTechFlowValue)(listaScaledTechFlowsOf, msg);
+                        }
+                    }
+                }));
+            }
         }));
-        page('/flowResults/inventoryResult', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/technosphereFlows/unscaledTechFlowsOf', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppiaTabella());
-            const listaInventoryResult = yield apiFlowResults.getInventoryResult(vps1, idCalcolo);
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            let divMainResult = document.getElementById("main01");
+            if (divMainResult) {
+                divMainResult.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultatiSingoloInput)());
+            }
+            yield (0, main_view_tabelle_row_js_1.getTechFlow)(apiResultQueries, vps1, idCalcolo);
+            let buttonMostraRisultati = document.getElementById('button');
+            if (buttonMostraRisultati) {
+                buttonMostraRisultati.addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
+                    let selectTechFlow = document.getElementById("listaInput01");
+                    let selectedOptionTechFlow;
+                    let idTechFlow = "selectedInput01";
+                    if (selectTechFlow) {
+                        selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
+                        idTechFlow = selectedOptionTechFlow.id;
+                    }
+                    if (idTechFlow === "selectedInput01") {
+                        let messaggio = document.getElementById("informazioniDati");
+                        if (messaggio) {
+                            messaggio.innerHTML = '';
+                            messaggio.insertAdjacentHTML('beforeend', `<h3 class="alert alert-danger" role="alert">Seleziona un tech flow.</h3>`);
+                        }
+                    }
+                    else {
+                        let listaUnscaledTechFlowsOf = yield apiTechnosphereFlows.getUnscaledTechFlowsOf(vps1, idCalcolo, idTechFlow);
+                        if (listaUnscaledTechFlowsOf.length != 0) {
+                            let msg = "Lista di Tech Flow Value dato l'id del Product System appena calcolato e l'id del Tech Flow selezionato";
+                            (0, main_view_tabelle_row_js_1.creaTabellaTechFlowValue)(listaUnscaledTechFlowsOf, msg);
+                        }
+                    }
+                }));
+            }
+        }));
+        (0, page_mjs_1.default)('/flowResults/inventoryResult', () => __awaiter(this, void 0, void 0, function* () {
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            let divMainResult = document.getElementById("main01");
+            if (divMainResult) {
+                divMainResult.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultatiDoppiaTabella)());
+            }
+            let listaInventoryResult = yield apiFlowResults.getInventoryResult(vps1, idCalcolo);
             if (listaInventoryResult.length != 0) {
                 let msg = "Lista di Envi Flow Value dato l'id del Product System appena calcolato";
-                creaTabellaEnviFlowsInputOutputValue(listaInventoryResult, msg);
+                (0, main_view_tabelle_row_js_1.creaTabellaEnviFlowsInputOutputValue)(listaInventoryResult, msg);
             }
         }));
-        page('/flowResults/totalFlowValueOf', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/flowResults/totalFlowValueOf', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInputDoppiaTabella());
-            yield getEnviFlow(apiFlowResults, vps1, idCalcolo);
-            document.getElementById('button').addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
-                const selectEnviFlow = document.getElementById("listaInput01");
-                const selectedOptionEnviFlow = selectEnviFlow.options[selectEnviFlow.selectedIndex];
-                const idEnviFlow = selectedOptionEnviFlow.id;
-                console.log(idEnviFlow);
-                if (idEnviFlow === "selectedInput01") {
-                    const messaggio = document.getElementById("informazioniDati");
-                    messaggio.innerHTML = '';
-                    messaggio.insertAdjacentHTML('beforeend', `<h3 class="alert alert-danger" role="alert">Seleziona un envi flow.</h3>`);
-                }
-                else {
-                    const listaEnviFlow = yield apiFlowResults.getTotalFlowValueOf(vps1, idCalcolo, idEnviFlow);
-                    console.log(listaEnviFlow);
-                    if (listaEnviFlow.length != 0) {
-                        let msg = "Lista di Envi Flow Value dato l'id del Product System appena calcolato e l'id dell'Envi Flow selezionato";
-                        creaTabellaEnviFlowsInputOutputValue(listaEnviFlow);
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            let divMainResult = document.getElementById("main01");
+            if (divMainResult) {
+                divMainResult.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultatiSingoloInputDoppiaTabella)());
+            }
+            yield (0, main_view_tabelle_row_js_1.getEnviFlow)(apiFlowResults, vps1, idCalcolo);
+            let buttonMostraRisultati = document.getElementById('button');
+            if (buttonMostraRisultati) {
+                buttonMostraRisultati.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+                    let selectEnviFlow = document.getElementById("listaInput01");
+                    let selectedOptionEnviFlow;
+                    let idEnviFlow = "selectedInput01";
+                    if (selectEnviFlow) {
+                        selectedOptionEnviFlow = selectEnviFlow.options[selectEnviFlow.selectedIndex];
+                        idEnviFlow = selectedOptionEnviFlow.id;
                     }
-                }
-            }));
-        }));
-        page('/flowResults/flowContributionsOf', () => __awaiter(this, void 0, void 0, function* () {
-            header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
-            main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInput());
-            yield getEnviFlow(apiFlowResults, vps1, idCalcolo);
-            document.getElementById('button').addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
-                const selectEnviFlow = document.getElementById("listaInput01");
-                const selectedOptionEnviFlow = selectEnviFlow.options[selectEnviFlow.selectedIndex];
-                const idEnviFlow = selectedOptionEnviFlow.id;
-                console.log(idEnviFlow);
-                if (idEnviFlow === "selectedInput01") {
-                    const messaggio = document.getElementById("informazioniDati");
-                    messaggio.innerHTML = '';
-                    messaggio.insertAdjacentHTML('beforeend', `<h3 class="alert alert-danger" role="alert">Seleziona un envi flow.</h3>`);
-                }
-                else {
-                    const listaEnviFlow = yield apiFlowResults.getFlowContributionsOf(vps1, idCalcolo, idEnviFlow);
-                    console.log(listaEnviFlow);
-                    if (listaEnviFlow.length != 0) {
-                        let msg = "Lista di Tech Flow Value dato l'id del Product System appena calcolato e l'id dell'Envi Flow selezionato";
-                        creaTabellaTechFlowValue(listaEnviFlow, msg);
+                    if (idEnviFlow === "selectedInput01") {
+                        let messaggio = document.getElementById("informazioniDati");
+                        if (messaggio) {
+                            messaggio.innerHTML = '';
+                            messaggio.insertAdjacentHTML('beforeend', `<h3 class="alert alert-danger" role="alert">Seleziona un envi flow.</h3>`);
+                        }
                     }
-                }
-            }));
-        }));
-        page('/flowResults/directInterventionsOf', () => __awaiter(this, void 0, void 0, function* () {
-            header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
-            main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInputDoppiaTabella());
-            yield getTechFlow(apiResultQueries, vps1, idCalcolo);
-            document.getElementById('button').addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
-                const selectTechFlow = document.getElementById("listaInput01");
-                const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
-                const idTechFlow = selectedOptionTechFlow.id;
-                console.log(idTechFlow);
-                if (idTechFlow === "selectedInput01") {
-                    const messaggio = document.getElementById("informazioniDati");
-                    messaggio.innerHTML = '';
-                    messaggio.insertAdjacentHTML('beforeend', `<h3 class="alert alert-danger" role="alert">Seleziona un tech flow.</h3>`);
-                }
-                else {
-                    const listaDirectInterventionsOf = yield apiFlowResults.getDirectInterventionsOf(vps1, idCalcolo, idTechFlow);
-                    console.log(listaDirectInterventionsOf);
-                    if (listaDirectInterventionsOf.length != 0) {
-                        let msg = "Lista di Envi Flow Value dato l'id del Product System appena calcolato e l'id del Tech Flow selezionato";
-                        creaTabellaEnviFlowsInputOutputValue(listaDirectInterventionsOf, msg);
+                    else {
+                        const listaEnviFlow = yield apiFlowResults.getTotalFlowValueOf(vps1, idCalcolo, idEnviFlow);
+                        if (listaEnviFlow.length != 0) {
+                            let msg = "Lista di Envi Flow Value dato l'id del Product System appena calcolato e l'id dell'Envi Flow selezionato";
+                            (0, main_view_tabelle_row_js_1.creaTabellaEnviFlowsInputOutputValue)(listaEnviFlow, msg);
+                        }
                     }
-                }
-            }));
+                }));
+            }
         }));
-        page('/flowResults/directInterventionsOfEnviFlowTechFlow', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/flowResults/flowContributionsOf', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppioInputDoppiaTabella());
-            yield getTechFlowEnviFlow(apiResultQueries, apiFlowResults, vps1, idCalcolo);
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            let divMainResult = document.getElementById("main01");
+            if (divMainResult) {
+                divMainResult.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultatiSingoloInput)());
+            }
+            yield (0, main_view_tabelle_row_js_1.getEnviFlow)(apiFlowResults, vps1, idCalcolo);
+            let buttonMostraRisultati = document.getElementById('button');
+            if (buttonMostraRisultati) {
+                buttonMostraRisultati.addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
+                    let selectEnviFlow = document.getElementById("listaInput01");
+                    let selectedOptionEnviFlow;
+                    let idEnviFlow = "selectedInput01";
+                    if (selectEnviFlow) {
+                        selectedOptionEnviFlow = selectEnviFlow.options[selectEnviFlow.selectedIndex];
+                        idEnviFlow = selectedOptionEnviFlow.id;
+                    }
+                    if (idEnviFlow === "selectedInput01") {
+                        let messaggio = document.getElementById("informazioniDati");
+                        if (messaggio) {
+                            messaggio.innerHTML = '';
+                            messaggio.insertAdjacentHTML('beforeend', `<h3 class="alert alert-danger" role="alert">Seleziona un envi flow.</h3>`);
+                        }
+                    }
+                    else {
+                        let listaEnviFlow = yield apiFlowResults.getFlowContributionsOf(vps1, idCalcolo, idEnviFlow);
+                        if (listaEnviFlow.length != 0) {
+                            let msg = "Lista di Tech Flow Value dato l'id del Product System appena calcolato e l'id dell'Envi Flow selezionato";
+                            (0, main_view_tabelle_row_js_1.creaTabellaTechFlowValue)(listaEnviFlow, msg);
+                        }
+                    }
+                }));
+            }
+        }));
+        (0, page_mjs_1.default)('/flowResults/directInterventionsOf', () => __awaiter(this, void 0, void 0, function* () {
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            let divMainResult = document.getElementById("main01");
+            if (divMainResult) {
+                divMainResult.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultatiSingoloInputDoppiaTabella)());
+            }
+            yield (0, main_view_tabelle_row_js_1.getTechFlow)(apiResultQueries, vps1, idCalcolo);
+            let buttonMostraRisultati = document.getElementById('button');
+            if (buttonMostraRisultati) {
+                buttonMostraRisultati.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+                    let selectTechFlow = document.getElementById("listaInput01");
+                    let selectedOptionTechFlow;
+                    let idTechFlow = "selectedInput01";
+                    if (selectTechFlow) {
+                        selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
+                        idTechFlow = selectedOptionTechFlow.id;
+                    }
+                    if (idTechFlow === "selectedInput01") {
+                        let messaggio = document.getElementById("informazioniDati");
+                        if (messaggio) {
+                            messaggio.innerHTML = '';
+                            messaggio.insertAdjacentHTML('beforeend', `<h3 class="alert alert-danger" role="alert">Seleziona un tech flow.</h3>`);
+                        }
+                    }
+                    else {
+                        let listaDirectInterventionsOf = yield apiFlowResults.getDirectInterventionsOf(vps1, idCalcolo, idTechFlow);
+                        if (listaDirectInterventionsOf.length != 0) {
+                            let msg = "Lista di Envi Flow Value dato l'id del Product System appena calcolato e l'id del Tech Flow selezionato";
+                            (0, main_view_tabelle_row_js_1.creaTabellaEnviFlowsInputOutputValue)(listaDirectInterventionsOf, msg);
+                        }
+                    }
+                }));
+            }
+        }));
+        (0, page_mjs_1.default)('/flowResults/directInterventionsOfEnviFlowTechFlow', () => __awaiter(this, void 0, void 0, function* () {
+            header.innerHTML = '';
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
+            main.innerHTML = '';
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            document.getElementById("main01").insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultatiDoppioInputDoppiaTabella)());
+            yield (0, main_view_tabelle_row_js_1.getTechFlowEnviFlow)(apiResultQueries, apiFlowResults, vps1, idCalcolo);
             document.getElementById('button').addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
                 const selectTechFlow = document.getElementById("listaInput01");
                 const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
@@ -377,18 +465,18 @@ class App {
                     if (enviFlowValue.length != 0) {
                         console.log(enviFlowValue);
                         let msg = "Lista di Envi Flow Value dato l'id del Product System appena calcolato,l'id dell'Envi Flow selezionato e l'id del Tech Flow selezionato";
-                        creaTabellaEnviFlowsInputOutputValue(enviFlowValue, msg);
+                        (0, main_view_tabelle_row_js_1.creaTabellaEnviFlowsInputOutputValue)(enviFlowValue, msg);
                     }
                 }
             }));
         }));
-        page('/flowResults/flowIntensitiesOf', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/flowResults/flowIntensitiesOf', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInputDoppiaTabella());
-            yield getTechFlow(apiResultQueries, vps1, idCalcolo);
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            document.getElementById("main01").insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultatiSingoloInputDoppiaTabella)());
+            yield (0, main_view_tabelle_row_js_1.getTechFlow)(apiResultQueries, vps1, idCalcolo);
             document.getElementById('button').addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
                 const selectTechFlow = document.getElementById("listaInput01");
                 const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
@@ -404,18 +492,18 @@ class App {
                     if (listaFlowIntesitiesOf.length != 0) {
                         console.log(listaFlowIntesitiesOf);
                         let msg = "Lista di Envi Flow Value dato l'id del Product System appena calcolato e l'id del Tech Flow selezionato";
-                        creaTabellaEnviFlowsInputOutputValue(listaFlowIntesitiesOf, msg);
+                        (0, main_view_tabelle_row_js_1.creaTabellaEnviFlowsInputOutputValue)(listaFlowIntesitiesOf, msg);
                     }
                 }
             }));
         }));
-        page('/flowResults/flowIntensityOfEnviFlowTechFlow', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/flowResults/flowIntensityOfEnviFlowTechFlow', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppioInputDoppiaTabella());
-            yield getTechFlowEnviFlow(apiResultQueries, apiFlowResults, vps1, idCalcolo);
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            document.getElementById("main01").insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultatiDoppioInputDoppiaTabella)());
+            yield (0, main_view_tabelle_row_js_1.getTechFlowEnviFlow)(apiResultQueries, apiFlowResults, vps1, idCalcolo);
             document.getElementById('button').addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
                 const selectTechFlow = document.getElementById("listaInput01");
                 const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
@@ -434,18 +522,18 @@ class App {
                     console.log(listaFlowIntesitiesOfEnviFlowTechFlow);
                     if (listaFlowIntesitiesOfEnviFlowTechFlow.length != 0) {
                         let msg = "Lista di Envi Flow Value dato l'id del Product System appena calcolato,l'id dell'Envi Flow selezionato e l'id del Tech Flow selezionato";
-                        creaTabellaEnviFlowsInputOutputValue(listaFlowIntesitiesOfEnviFlowTechFlow, msg);
+                        (0, main_view_tabelle_row_js_1.creaTabellaEnviFlowsInputOutputValue)(listaFlowIntesitiesOfEnviFlowTechFlow, msg);
                     }
                 }
             }));
         }));
-        page('/flowResults/totalInterventionsOf', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/flowResults/totalInterventionsOf', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInputDoppiaTabella());
-            yield getTechFlow(apiResultQueries, vps1, idCalcolo);
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            document.getElementById("main01").insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultatiSingoloInputDoppiaTabella)());
+            yield (0, main_view_tabelle_row_js_1.getTechFlow)(apiResultQueries, vps1, idCalcolo);
             document.getElementById('button').addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
                 const selectTechFlow = document.getElementById("listaInput01");
                 const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
@@ -461,18 +549,18 @@ class App {
                     console.log(listaTotalInterventionsOf);
                     if (listaTotalInterventionsOf.length != 0) {
                         let msg = "Lista di Envi Flow Value dato l'id del Product System appena calcolato e l'id del Tech Flow selezionato";
-                        creaTabellaEnviFlowsInputOutputValue(listaTotalInterventionsOf, msg);
+                        (0, main_view_tabelle_row_js_1.creaTabellaEnviFlowsInputOutputValue)(listaTotalInterventionsOf, msg);
                     }
                 }
             }));
         }));
-        page('/flowResults/totalInterventionOfEnviFlowTechFlow', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/flowResults/totalInterventionOfEnviFlowTechFlow', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppioInputDoppiaTabella());
-            yield getTechFlowEnviFlow(apiResultQueries, apiFlowResults, vps1, idCalcolo);
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            document.getElementById("main01").insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultatiDoppioInputDoppiaTabella)());
+            yield (0, main_view_tabelle_row_js_1.getTechFlowEnviFlow)(apiResultQueries, apiFlowResults, vps1, idCalcolo);
             document.getElementById('button').addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
                 const selectTechFlow = document.getElementById("listaInput01");
                 const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
@@ -491,7 +579,7 @@ class App {
                     console.log(listaTotalInterventionOfEnviFlowTechFlow);
                     if (listaTotalInterventionOfEnviFlowTechFlow.length != 0) {
                         let msg = "Lista di Envi Flow Value dato l'id del Product System appena calcolato, l'id dell'Envi Flow e l'id del Tech Flow selezionato";
-                        creaTabellaEnviFlowsInputOutputValue(listaTotalInterventionOfEnviFlowTechFlow, msg);
+                        (0, main_view_tabelle_row_js_1.creaTabellaEnviFlowsInputOutputValue)(listaTotalInterventionOfEnviFlowTechFlow, msg);
                     }
                 }
             }));
@@ -523,52 +611,52 @@ class App {
                 }
             });
         });*/
-        page('/impactResults/totalImpacts', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/impactResults/totalImpacts', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultati());
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            document.getElementById("main01").insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultati)());
             const listaTotalImpacts = yield apiImpactResults.getTotalImpacts(vps1, idCalcolo);
             if (listaTotalImpacts.length != 0) {
                 console.log(listaTotalImpacts);
                 let msg = "Lista di Impact Category value dato l'id del Product System appena calcolato";
-                creaTabellaImpactCategoryValue(listaTotalImpacts, msg);
+                (0, main_view_tabelle_row_js_1.creaTabellaImpactCategoryValue)(listaTotalImpacts, msg);
             }
         }));
-        page('/impactResults/totalImpactsNormalized', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/impactResults/totalImpactsNormalized', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultati());
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            document.getElementById("main01").insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultati)());
             const listaTotalImpactsNormalized = yield apiImpactResults.getTotalImpactsNormalized(vps1, idCalcolo);
             if (listaTotalImpactsNormalized.length != 0) {
                 console.log(listaTotalImpactsNormalized);
                 let msg = "Lista di Impact Category value dato l'id del Product System appena calcolato";
-                creaTabellaImpactCategoryValue(listaTotalImpactsNormalized, msg);
+                (0, main_view_tabelle_row_js_1.creaTabellaImpactCategoryValue)(listaTotalImpactsNormalized, msg);
             }
         }));
-        page('/impactResults/totalImpactsWeighted', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/impactResults/totalImpactsWeighted', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultati());
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            document.getElementById("main01").insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultati)());
             const listaTotalImpactsWeighted = yield apiImpactResults.getTotalImpactsWeighted(vps1, idCalcolo);
             if (listaTotalImpactsWeighted.length != 0) {
                 console.log(listaTotalImpactsWeighted);
                 let msg = "Lista di Impact Category value dato l'id del Product System appena calcolato";
-                creaTabellaImpactCategoryValue(listaTotalImpactsWeighted, msg);
+                (0, main_view_tabelle_row_js_1.creaTabellaImpactCategoryValue)(listaTotalImpactsWeighted, msg);
             }
         }));
-        page('/impactResults/totalImpactValueOf', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/impactResults/totalImpactValueOf', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInput());
-            yield getImpactCategory(apiResultQueries, vps1, idCalcolo);
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            document.getElementById("main01").insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultatiSingoloInput)());
+            yield (0, main_view_tabelle_row_js_1.getImpactCategory)(apiResultQueries, vps1, idCalcolo);
             document.getElementById('button').addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
                 const selectImpactCategory = document.getElementById("listaInput01");
                 const selectedOptionImpactCategory = selectImpactCategory.options[selectImpactCategory.selectedIndex];
@@ -584,18 +672,18 @@ class App {
                     if (listaImpactCategory.length != 0) {
                         console.log(listaImpactCategory);
                         let msg = "Lista di Impact Category value dato l'id del Product System appena calcolato e l'id dell'impact category selezionato";
-                        creaTabellaImpactCategoryValue(listaImpactCategory, msg);
+                        (0, main_view_tabelle_row_js_1.creaTabellaImpactCategoryValue)(listaImpactCategory, msg);
                     }
                 }
             }));
         }));
-        page('/impactResults/impactContributionsOf', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/impactResults/impactContributionsOf', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInput());
-            yield getImpactCategory(apiResultQueries, vps1, idCalcolo);
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            document.getElementById("main01").insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultatiSingoloInput)());
+            yield (0, main_view_tabelle_row_js_1.getImpactCategory)(apiResultQueries, vps1, idCalcolo);
             document.getElementById('button').addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
                 const selectImpactCategory = document.getElementById("listaInput01");
                 const selectedOptionImpactCategory = selectImpactCategory.options[selectImpactCategory.selectedIndex];
@@ -611,18 +699,18 @@ class App {
                     if (listaImpactContributionsOf.length != 0) {
                         console.log(listaImpactContributionsOf);
                         let msg = "Lista di Tech Flow value dato l'id del Product System appena calcolato e l'id dell'impact category selezionato";
-                        creaTabellaTechFlowValue(listaImpactContributionsOf, msg);
+                        (0, main_view_tabelle_row_js_1.creaTabellaTechFlowValue)(listaImpactContributionsOf, msg);
                     }
                 }
             }));
         }));
-        page('/impactResults/directImpactsOf', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/impactResults/directImpactsOf', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInput());
-            yield getTechFlow(apiResultQueries, vps1, idCalcolo);
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            document.getElementById("main01").insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultatiSingoloInput)());
+            yield (0, main_view_tabelle_row_js_1.getTechFlow)(apiResultQueries, vps1, idCalcolo);
             document.getElementById('button').addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
                 const selectTechFlow = document.getElementById("listaInput01");
                 const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
@@ -638,18 +726,18 @@ class App {
                     if (listaDirectImpactsOf.length != 0) {
                         console.log(listaDirectImpactsOf);
                         let msg = "Lista di Impact Category value dato l'id del Product System appena calcolato e l'id del Tech Flow selezionato";
-                        creaTabellaImpactCategoryValue(listaDirectImpactsOf, msg);
+                        (0, main_view_tabelle_row_js_1.creaTabellaImpactCategoryValue)(listaDirectImpactsOf, msg);
                     }
                 }
             }));
         }));
-        page('/impactResults/directImpactOfImpactCategoryTechFlow', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/impactResults/directImpactOfImpactCategoryTechFlow', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppioInput());
-            yield getImpactCategoryTechFlow(apiResultQueries, vps1, idCalcolo);
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            document.getElementById("main01").insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultatiDoppioInput)());
+            yield (0, main_view_tabelle_row_js_1.getImpactCategoryTechFlow)(apiResultQueries, vps1, idCalcolo);
             document.getElementById('button').addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
                 const selectImpactCategory = document.getElementById("listaInput01");
                 const selectedOptionImpactCategory = selectImpactCategory.options[selectImpactCategory.selectedIndex];
@@ -668,18 +756,18 @@ class App {
                     if (listaDirectImpactOfImpactCategoryTechFlow.length != 0) {
                         console.log(listaDirectImpactOfImpactCategoryTechFlow);
                         let msg = "Lista di Impact Category value dato l'id del Product System appena calcolato, l'id del Tech Flow selezionato e l'id dell'impact category selezionato";
-                        creaTabellaImpactCategoryValue(listaDirectImpactOfImpactCategoryTechFlow, msg);
+                        (0, main_view_tabelle_row_js_1.creaTabellaImpactCategoryValue)(listaDirectImpactOfImpactCategoryTechFlow, msg);
                     }
                 }
             }));
         }));
-        page('/impactResults/impactIntensitiesOf', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/impactResults/impactIntensitiesOf', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInput());
-            yield getTechFlow(apiResultQueries, vps1, idCalcolo);
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            document.getElementById("main01").insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultatiSingoloInput)());
+            yield (0, main_view_tabelle_row_js_1.getTechFlow)(apiResultQueries, vps1, idCalcolo);
             document.getElementById('button').addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
                 const selectTechFlow = document.getElementById("listaInput01");
                 const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
@@ -695,18 +783,18 @@ class App {
                     if (listaImpactIntensitiesOf.length != 0) {
                         console.log(listaImpactIntensitiesOf);
                         let msg = "Lista di Impact Category value dato l'id del Product System appena calcolato e l'id del Tech Flow selezionato";
-                        creaTabellaImpactCategoryValue(listaImpactIntensitiesOf, msg);
+                        (0, main_view_tabelle_row_js_1.creaTabellaImpactCategoryValue)(listaImpactIntensitiesOf, msg);
                     }
                 }
             }));
         }));
-        page('/impactResults/directImpactIntensityOfImpactCategoryTechFlow', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/impactResults/directImpactIntensityOfImpactCategoryTechFlow', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppioInput());
-            yield getImpactCategoryTechFlow(apiResultQueries, vps1, idCalcolo);
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            document.getElementById("main01").insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultatiDoppioInput)());
+            yield (0, main_view_tabelle_row_js_1.getImpactCategoryTechFlow)(apiResultQueries, vps1, idCalcolo);
             document.getElementById('button').addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
                 const selectImpactCategory = document.getElementById("listaInput01");
                 const selectedOptionImpactCategory = selectImpactCategory.options[selectImpactCategory.selectedIndex];
@@ -725,18 +813,18 @@ class App {
                     if (listaDirectImpactIntensityOfImpactCategoryTechFlow.length != 0) {
                         console.log(listaDirectImpactIntensityOfImpactCategoryTechFlow);
                         let msg = "Lista di Impact Category value dato l'id del Product System appena calcolato, l'id del Tech Flow selezionato e l'id dell'impact category selezionato";
-                        creaTabellaImpactCategoryValue(listaDirectImpactIntensityOfImpactCategoryTechFlow, msg);
+                        (0, main_view_tabelle_row_js_1.creaTabellaImpactCategoryValue)(listaDirectImpactIntensityOfImpactCategoryTechFlow, msg);
                     }
                 }
             }));
         }));
-        page('/impactResults/totalImpactsOf', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/impactResults/totalImpactsOf', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInput());
-            yield getTechFlow(apiResultQueries, vps1, idCalcolo);
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            document.getElementById("main01").insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultatiSingoloInput)());
+            yield (0, main_view_tabelle_row_js_1.getTechFlow)(apiResultQueries, vps1, idCalcolo);
             document.getElementById('button').addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
                 const selectTechFlow = document.getElementById("listaInput01");
                 const selectedOptionTechFlow = selectTechFlow.options[selectTechFlow.selectedIndex];
@@ -752,18 +840,18 @@ class App {
                     if (listaTotalImpactsOf.length != 0) {
                         console.log(listaTotalImpactsOf);
                         let msg = "Lista di Impact Category value dato l'id del Product System appena calcolato e l'id del Tech Flow selezionato";
-                        creaTabellaImpactCategoryValue(listaTotalImpactsOf, msg);
+                        (0, main_view_tabelle_row_js_1.creaTabellaImpactCategoryValue)(listaTotalImpactsOf, msg);
                     }
                 }
             }));
         }));
-        page('/impactResults/totalImpactOfImpactCategoryTechFlow', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/impactResults/totalImpactOfImpactCategoryTechFlow', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppioInput());
-            yield getImpactCategoryTechFlow(apiResultQueries, vps1, idCalcolo);
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            document.getElementById("main01").insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultatiDoppioInput)());
+            yield (0, main_view_tabelle_row_js_1.getImpactCategoryTechFlow)(apiResultQueries, vps1, idCalcolo);
             document.getElementById('button').addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
                 const selectImpactCategory = document.getElementById("listaInput01");
                 const selectedOptionImpactCategory = selectImpactCategory.options[selectImpactCategory.selectedIndex];
@@ -782,18 +870,18 @@ class App {
                     if (listaTotalImpactOfImpactCategoryTechFlow.length != 0) {
                         console.log(listaTotalImpactOfImpactCategoryTechFlow);
                         let msg = "Lista di Impact Category value dato l'id del Product System appena calcolato, l'id del Tech Flow selezionato e l'id dell'impact category selezionato";
-                        creaTabellaImpactCategoryValue(listaTotalImpactOfImpactCategoryTechFlow, msg);
+                        (0, main_view_tabelle_row_js_1.creaTabellaImpactCategoryValue)(listaTotalImpactOfImpactCategoryTechFlow, msg);
                     }
                 }
             }));
         }));
-        page('/impactResults/impactFactorsOf', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/impactResults/impactFactorsOf', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInputDoppiaTabella());
-            yield getImpactCategory(apiResultQueries, vps1, idCalcolo);
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            document.getElementById("main01").insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultatiSingoloInputDoppiaTabella)());
+            yield (0, main_view_tabelle_row_js_1.getImpactCategory)(apiResultQueries, vps1, idCalcolo);
             document.getElementById('button').addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
                 const selectImpactCategory = document.getElementById("listaInput01");
                 const selectedOptionImpactCategory = selectImpactCategory.options[selectImpactCategory.selectedIndex];
@@ -809,18 +897,18 @@ class App {
                     if (listaImpactFactorsOf.length != 0) {
                         console.log(listaImpactFactorsOf);
                         let msg = "Lista di Impact Category value dato l'id del Product System appena calcolato e l'id dell'impact category selezionato";
-                        creaTabellaEnviFlowsInputOutputValue(listaImpactFactorsOf, msg);
+                        (0, main_view_tabelle_row_js_1.creaTabellaEnviFlowsInputOutputValue)(listaImpactFactorsOf, msg);
                     }
                 }
             }));
         }));
-        page('/impactResults/impactFactorsOfImpactCategoryEnviFlow', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/impactResults/impactFactorsOfImpactCategoryEnviFlow', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppioInputDoppiaTabella());
-            yield getImpactCategoryEnviFlow(apiResultQueries, apiFlowResults, vps1, idCalcolo);
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            document.getElementById("main01").insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultatiDoppioInputDoppiaTabella)());
+            yield (0, main_view_tabelle_row_js_1.getImpactCategoryEnviFlow)(apiResultQueries, apiFlowResults, vps1, idCalcolo);
             document.getElementById('button').addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
                 const selectImpactCategory = document.getElementById("listaInput01");
                 const selectedOptionImpactCategory = selectImpactCategory.options[selectImpactCategory.selectedIndex];
@@ -838,18 +926,18 @@ class App {
                     if (listaImpactFactorsOfImpactCategoryEnviFlow.length != 0) {
                         console.log(listaImpactFactorsOfImpactCategoryEnviFlow);
                         let msg = "Lista di Impact Category value dato l'id del Product System appena calcolato, l'id dell'impact category selezionato e l'id dell'Envi Flow";
-                        creaTabellaEnviFlowsInputOutputValue(listaImpactFactorsOfImpactCategoryEnviFlow, msg);
+                        (0, main_view_tabelle_row_js_1.creaTabellaEnviFlowsInputOutputValue)(listaImpactFactorsOfImpactCategoryEnviFlow, msg);
                     }
                 }
             }));
         }));
-        page('/impactResults/flowImpactsOf', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/impactResults/flowImpactsOf', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultatiSingoloInputDoppiaTabella());
-            yield getImpactCategory(apiResultQueries, vps1, idCalcolo);
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            document.getElementById("main01").insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultatiSingoloInputDoppiaTabella)());
+            yield (0, main_view_tabelle_row_js_1.getImpactCategory)(apiResultQueries, vps1, idCalcolo);
             document.getElementById('button').addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
                 const selectImpactCategory = document.getElementById("listaInput01");
                 const selectedOptionImpactCategory = selectImpactCategory.options[selectImpactCategory.selectedIndex];
@@ -865,18 +953,18 @@ class App {
                     if (listaFlowImpactsOf.length != 0) {
                         console.log(listaFlowImpactsOf);
                         let msg = "Lista di Impact Category value dato l'id del Product System appena calcolato e l'id dell'impact category selezionato";
-                        creaTabellaEnviFlowsInputOutputValue(listaFlowImpactsOf, msg);
+                        (0, main_view_tabelle_row_js_1.creaTabellaEnviFlowsInputOutputValue)(listaFlowImpactsOf, msg);
                     }
                 }
             }));
         }));
-        page('/impactResults/flowImpactOfImpactCategoryEnviFlow', () => __awaiter(this, void 0, void 0, function* () {
+        (0, page_mjs_1.default)('/impactResults/flowImpactOfImpactCategoryEnviFlow', () => __awaiter(this, void 0, void 0, function* () {
             header.innerHTML = '';
-            header.insertAdjacentHTML('beforeend', creaViewHeaderRisultati());
+            header.insertAdjacentHTML('beforeend', (0, header_view_js_1.creaViewHeaderRisultati)());
             main.innerHTML = '';
-            main.insertAdjacentHTML('beforeend', creaLateralNavbar());
-            document.getElementById("main01").insertAdjacentHTML('beforeend', creaViewMainRisultatiDoppioInputDoppiaTabella());
-            yield getImpactCategoryEnviFlow(apiResultQueries, apiFlowResults, vps1, idCalcolo);
+            main.insertAdjacentHTML('beforeend', (0, main_view_js_1.creaLateralNavbar)());
+            document.getElementById("main01").insertAdjacentHTML('beforeend', (0, main_view_js_1.creaViewMainRisultatiDoppioInputDoppiaTabella)());
+            yield (0, main_view_tabelle_row_js_1.getImpactCategoryEnviFlow)(apiResultQueries, apiFlowResults, vps1, idCalcolo);
             document.getElementById('button').addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
                 const selectImpactCategory = document.getElementById("listaInput01");
                 const selectedOptionImpactCategory = selectImpactCategory.options[selectImpactCategory.selectedIndex];
@@ -894,12 +982,12 @@ class App {
                     if (listaFlowImpactOfImpactCategoryEnviFlow.length != 0) {
                         console.log(listaFlowImpactOfImpactCategoryEnviFlow);
                         let msg = "Lista di Impact Category value dato l'id del Product System appena calcolato, l'id dell'impact category selezionato e l'id dell'Envi Flow";
-                        creaTabellaEnviFlowsInputOutputValue(listaFlowImpactOfImpactCategoryEnviFlow, msg);
+                        (0, main_view_tabelle_row_js_1.creaTabellaEnviFlowsInputOutputValue)(listaFlowImpactOfImpactCategoryEnviFlow, msg);
                     }
                 }
             }));
         }));
-        page();
+        (0, page_mjs_1.default)();
     }
 }
-export default App;
+exports.default = App;

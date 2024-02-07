@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,6 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.creaViewMainRisultatiDoppioInputDoppiaTabella = exports.creaViewMainRisultatiSingoloInputDoppiaTabella = exports.creaViewMainRisultatiDoppiaTabella = exports.creaViewMainRisultatiSingoloInput = exports.creaViewMainRisultatiDoppioInput = exports.creaViewMainRisultati = exports.creaLateralNavbar = exports.creaModalForPDF = exports.getImpactMethod = exports.getProductSystem = exports.creaViewMain = void 0;
 function creaViewMain() {
     return `
     <div class="container container-fluid mt-5">
@@ -62,6 +65,7 @@ function creaViewMain() {
     </div>
     `;
 }
+exports.creaViewMain = creaViewMain;
 /**
     * In questo metodo raccolgo dal db tutti i Product system che sono disponibili e li inserisco all'interno
     * della select usata per selezionare il product system che si vuole calcolare andando a impostare l'id,
@@ -96,6 +100,7 @@ function getProductSystem(apiCalculation, vps) {
         }
     });
 }
+exports.getProductSystem = getProductSystem;
 /**
 * In questo metodo raccolgo dal db tutti gli impact method che sono disponibili e li inserisco all'interno
 * della select usata per selezionare l'impact method che si vuole utilizzare andando a impostare l'id,
@@ -134,6 +139,7 @@ function getImpactMethod(apiCalculation, vps) {
         }
     });
 }
+exports.getImpactMethod = getImpactMethod;
 function creaModalForPDF() {
     return `<div class="modal fade" id="modalPdf" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -152,6 +158,7 @@ function creaModalForPDF() {
   </div>
 </div>`;
 }
+exports.creaModalForPDF = creaModalForPDF;
 function creaLateralNavbar() {
     return `
   <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
@@ -267,6 +274,7 @@ function creaLateralNavbar() {
     </div>
   `;
 }
+exports.creaLateralNavbar = creaLateralNavbar;
 function creaViewMainRisultati() {
     return `
     <div class="container mt-5 mb-5">
@@ -288,6 +296,7 @@ function creaViewMainRisultati() {
     </div>
     `;
 }
+exports.creaViewMainRisultati = creaViewMainRisultati;
 function creaViewMainRisultatiDoppioInput() {
     return `<div class="container mt-5">
       <div class="row justify-content-center">
@@ -316,6 +325,7 @@ function creaViewMainRisultatiDoppioInput() {
     </div>
     `;
 }
+exports.creaViewMainRisultatiDoppioInput = creaViewMainRisultatiDoppioInput;
 function creaViewMainRisultatiSingoloInput() {
     return `<div class="container mt-5">
       <div class="row justify-content-center">
@@ -339,6 +349,7 @@ function creaViewMainRisultatiSingoloInput() {
     </div>
   `;
 }
+exports.creaViewMainRisultatiSingoloInput = creaViewMainRisultatiSingoloInput;
 function creaViewMainRisultatiDoppiaTabella() {
     return `<div class="container mt-2 mb-5">
       <div class="row justify-content-center">
@@ -360,6 +371,7 @@ function creaViewMainRisultatiDoppiaTabella() {
     </div>
   `;
 }
+exports.creaViewMainRisultatiDoppiaTabella = creaViewMainRisultatiDoppiaTabella;
 function creaViewMainRisultatiSingoloInputDoppiaTabella() {
     return `<div class="container mt-2 mb-5">
       <div class="row justify-content-center">
@@ -388,6 +400,7 @@ function creaViewMainRisultatiSingoloInputDoppiaTabella() {
     </div>
   `;
 }
+exports.creaViewMainRisultatiSingoloInputDoppiaTabella = creaViewMainRisultatiSingoloInputDoppiaTabella;
 function creaViewMainRisultatiDoppioInputDoppiaTabella() {
     return `<div class="container mt-2 mb-5">
       <div class="row justify-content-center">
@@ -423,4 +436,4 @@ function creaViewMainRisultatiDoppioInputDoppiaTabella() {
     </div>
   `;
 }
-export { creaViewMain, getProductSystem, getImpactMethod, creaModalForPDF, creaLateralNavbar, creaViewMainRisultati, creaViewMainRisultatiDoppioInput, creaViewMainRisultatiSingoloInput, creaViewMainRisultatiDoppiaTabella, creaViewMainRisultatiSingoloInputDoppiaTabella, creaViewMainRisultatiDoppioInputDoppiaTabella };
+exports.creaViewMainRisultatiDoppioInputDoppiaTabella = creaViewMainRisultatiDoppioInputDoppiaTabella;

@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,6 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getImpactCategoryTechFlow = exports.getImpactCategoryEnviFlow = exports.getImpactCategory = exports.getTechFlowEnviFlow = exports.getEnviFlow = exports.getTechFlow = exports.creaTabellaImpactCategoryValue = exports.creaTabellaImpactCategory = exports.creaTabellaEnviFlowsInputOutputValue = exports.creaTabellaEnviFlowsInputOutput = exports.creaTabellaTechFlowValue = exports.creaTabellaTechFlow = exports.creaTabellaProviderFlow = void 0;
 function isIterable(obj) {
     // Verifica se l'oggetto ha il metodo Symbol.iterator
     return obj !== null && typeof obj !== 'undefined' && typeof obj[Symbol.iterator] === 'function';
@@ -78,6 +81,7 @@ function creaTabellaProviderFlow(lista, msg) {
         }
     }
 }
+exports.creaTabellaProviderFlow = creaTabellaProviderFlow;
 function creaViewTableTechFlow() {
     return `
         <table class="table table-striped table-bordered table-scrollabile" id="tabella">
@@ -145,6 +149,7 @@ function creaTabellaTechFlow(lista, msg) {
         }
     }
 }
+exports.creaTabellaTechFlow = creaTabellaTechFlow;
 function creaViewTableTechFlowValue() {
     return `
         <table class="table table-striped table-bordered table-scrollabile" id="tabella">
@@ -214,6 +219,7 @@ function creaTabellaTechFlowValue(lista, msg) {
         }
     }
 }
+exports.creaTabellaTechFlowValue = creaTabellaTechFlowValue;
 function creaViewTableEnviFlowsOutput() {
     return `
         <table class="table table-striped table-bordered table-scrollabile" id="tabellaOutput">
@@ -336,6 +342,7 @@ function creaTabellaEnviFlowsInputOutput(lista, msg) {
         tabellaRisultatiRicercaOutput.insertAdjacentHTML('beforeend', `<p>Non è presente nessun envi Flow di output</p>`);
     }
 }
+exports.creaTabellaEnviFlowsInputOutput = creaTabellaEnviFlowsInputOutput;
 function creaViewTableEnviFlowsOutputValue() {
     return `
         <table class="table table-striped table-bordered table-scrollabile" id="tabellaOutput">
@@ -461,6 +468,7 @@ function creaTabellaEnviFlowsInputOutputValue(lista, msg) {
         tabellaRisultatiRicercaOutput.insertAdjacentHTML('beforeend', `<p>Non è presente nessun envi Flow di output</p>`);
     }
 }
+exports.creaTabellaEnviFlowsInputOutputValue = creaTabellaEnviFlowsInputOutputValue;
 function creaViewTableImpactCategories() {
     return `
         <table class="table table-striped table-bordered table-scrollabile" id="tabella">
@@ -525,6 +533,7 @@ function creaTabellaImpactCategory(lista, msg) {
         }
     }
 }
+exports.creaTabellaImpactCategory = creaTabellaImpactCategory;
 function creaViewTableImpactCategoriesValue() {
     return `
         <table class="table table-striped table-bordered table-scrollabile" id="tabella">
@@ -591,6 +600,7 @@ function creaTabellaImpactCategoryValue(lista, msg) {
         }
     }
 }
+exports.creaTabellaImpactCategoryValue = creaTabellaImpactCategoryValue;
 function getTechFlow(apiResultQueries, vps, idCalcolo) {
     return __awaiter(this, void 0, void 0, function* () {
         let textTitolo = document.getElementById("inputTitolo");
@@ -619,6 +629,7 @@ function getTechFlow(apiResultQueries, vps, idCalcolo) {
         }
     });
 }
+exports.getTechFlow = getTechFlow;
 function getEnviFlow(apiFlowResults, vps, idCalcolo) {
     return __awaiter(this, void 0, void 0, function* () {
         let textTitolo = document.getElementById("inputTitolo");
@@ -647,6 +658,7 @@ function getEnviFlow(apiFlowResults, vps, idCalcolo) {
         }
     });
 }
+exports.getEnviFlow = getEnviFlow;
 function getTechFlowEnviFlow(apiResultQueries, apiFlowResults, vps, idCalcolo) {
     return __awaiter(this, void 0, void 0, function* () {
         let textTitolo01 = document.getElementById("inputTitolo01");
@@ -697,6 +709,7 @@ function getTechFlowEnviFlow(apiResultQueries, apiFlowResults, vps, idCalcolo) {
         }
     });
 }
+exports.getTechFlowEnviFlow = getTechFlowEnviFlow;
 function getImpactCategory(apiResultQueries, vps, idCalcolo) {
     return __awaiter(this, void 0, void 0, function* () {
         let textTitolo = document.getElementById("inputTitolo");
@@ -725,6 +738,7 @@ function getImpactCategory(apiResultQueries, vps, idCalcolo) {
         }
     });
 }
+exports.getImpactCategory = getImpactCategory;
 function getImpactCategoryEnviFlow(apiResultQueries, apiFlowResults, vps, idCalcolo) {
     return __awaiter(this, void 0, void 0, function* () {
         let textTitolo01 = document.getElementById("inputTitolo01");
@@ -775,6 +789,7 @@ function getImpactCategoryEnviFlow(apiResultQueries, apiFlowResults, vps, idCalc
         }
     });
 }
+exports.getImpactCategoryEnviFlow = getImpactCategoryEnviFlow;
 function getImpactCategoryTechFlow(apiResultQueries, vps, idCalcolo) {
     return __awaiter(this, void 0, void 0, function* () {
         let textTitolo01 = document.getElementById("inputTitolo01");
@@ -825,4 +840,4 @@ function getImpactCategoryTechFlow(apiResultQueries, vps, idCalcolo) {
         }
     });
 }
-export { creaTabellaProviderFlow, creaTabellaTechFlow, creaTabellaTechFlowValue, creaTabellaEnviFlowsInputOutput, creaTabellaEnviFlowsInputOutputValue, creaTabellaImpactCategory, creaTabellaImpactCategoryValue, getTechFlow, getEnviFlow, getTechFlowEnviFlow, getImpactCategory, getImpactCategoryEnviFlow, getImpactCategoryTechFlow };
+exports.getImpactCategoryTechFlow = getImpactCategoryTechFlow;

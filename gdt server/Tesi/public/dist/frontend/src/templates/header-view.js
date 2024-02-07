@@ -1,3 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.creaViewHeaderRisultati = exports.creaViewHeader = void 0;
 function creaViewHeader() {
     return `
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -23,6 +26,7 @@ function creaViewHeader() {
     </nav>
     `;
 }
+exports.creaViewHeader = creaViewHeader;
 function creaViewHeaderRisultati() {
     return `
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -41,4 +45,4 @@ function creaViewHeaderRisultati() {
     </nav>
   `;
 }
-export { creaViewHeader, creaViewHeaderRisultati };
+exports.creaViewHeaderRisultati = creaViewHeaderRisultati;

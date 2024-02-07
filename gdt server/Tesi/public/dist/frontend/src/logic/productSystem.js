@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,9 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ProductSystem = void 0;
 // @ts-ignore
-import bootstrap from "bootstrap";
-import { creaModalInserisciInput, creaModalInserisciOutput, getFlow, creaModalNuovoFlowInput, creaModalNuovoFlowOutput, creaModalConfermaNuovoProductSystem, creaModalNuovoProductFine } from "../templates/modal-view";
+const bootstrap_1 = __importDefault(require("bootstrap"));
+const modal_view_1 = require("../templates/modal-view");
 class ProductSystem {
     constructor() {
         this.creaModalInfoProductSystem = (vps, apiCalculation) => __awaiter(this, void 0, void 0, function* () {
@@ -60,10 +66,10 @@ class ProductSystem {
                             let modalNuovoProductSystem = document.getElementById("modal");
                             if (modalNuovoProductSystem) {
                                 modalNuovoProductSystem.innerHTML = '';
-                                modalNuovoProductSystem.insertAdjacentHTML('beforeend', creaModalInserisciInput());
+                                modalNuovoProductSystem.insertAdjacentHTML('beforeend', (0, modal_view_1.creaModalInserisciInput)());
                                 let nuovoModal = document.getElementById('creaProductSystemInput');
                                 if (nuovoModal) {
-                                    const myModal = new bootstrap.Modal(nuovoModal);
+                                    const myModal = new bootstrap_1.default.Modal(nuovoModal);
                                     myModal.show();
                                     let jsonProcess = yield this.creaModalProductSystemFlowInput(vps, apiCalculation, arrayInput);
                                     let idProductSystem = yield this.creaProductSystem(vps, apiCalculation, jsonProcess);
@@ -84,7 +90,7 @@ class ProductSystem {
         this.creaModalProductSystemFlowInput = (vps, apiCalculation, arrayInput) => __awaiter(this, void 0, void 0, function* () {
             return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
                 try {
-                    yield getFlow(vps, apiCalculation, "Input");
+                    yield (0, modal_view_1.getFlow)(vps, apiCalculation, "Input");
                     let arrayFlowInput = [];
                     let addFlow = document.getElementById('creaProductSystemInput');
                     if (addFlow) {
@@ -105,10 +111,10 @@ class ProductSystem {
                             event.preventDefault();
                             let modalNuovoProductSystem = document.getElementById("modal");
                             if (modalNuovoProductSystem) {
-                                modalNuovoProductSystem.insertAdjacentHTML('beforeend', creaModalNuovoFlowInput());
+                                modalNuovoProductSystem.insertAdjacentHTML('beforeend', (0, modal_view_1.creaModalNuovoFlowInput)());
                                 let newModal = document.getElementById('creaFlowInput');
                                 if (newModal) {
-                                    let myModal = new bootstrap.Modal(newModal);
+                                    let myModal = new bootstrap_1.default.Modal(newModal);
                                     myModal.show();
                                     //raccogliere l'id del flow input creato
                                     yield this.getAll(vps, apiCalculation, "location");
@@ -128,10 +134,10 @@ class ProductSystem {
                             let modalNuovoProductSystem = document.getElementById("modal");
                             if (modalNuovoProductSystem) {
                                 modalNuovoProductSystem.innerHTML = '';
-                                modalNuovoProductSystem.insertAdjacentHTML('beforeend', creaModalInserisciOutput());
+                                modalNuovoProductSystem.insertAdjacentHTML('beforeend', (0, modal_view_1.creaModalInserisciOutput)());
                                 let newModal = document.getElementById('creaProductSystemOutput');
                                 if (newModal) {
-                                    const myModal = new bootstrap.Modal(newModal);
+                                    const myModal = new bootstrap_1.default.Modal(newModal);
                                     myModal.show();
                                     let jsonProcess = yield this.creaModalProductSystemFlowOutput(vps, apiCalculation, arrayInput);
                                     resolve(jsonProcess);
@@ -148,7 +154,7 @@ class ProductSystem {
         this.creaModalProductSystemFlowOutput = (vps, apiCalculation, arrayInput) => __awaiter(this, void 0, void 0, function* () {
             return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
                 try {
-                    yield getFlow(vps, apiCalculation, "Output");
+                    yield (0, modal_view_1.getFlow)(vps, apiCalculation, "Output");
                     let arrayFlowOutput = [];
                     let buttonCreaProductSystemOutput = document.getElementById('creaProductSystemOutput');
                     if (buttonCreaProductSystemOutput) {
@@ -169,10 +175,10 @@ class ProductSystem {
                             event.preventDefault();
                             let modalNuovoProductSystem = document.getElementById("modal");
                             if (modalNuovoProductSystem) {
-                                modalNuovoProductSystem.insertAdjacentHTML('beforeend', creaModalNuovoFlowOutput());
+                                modalNuovoProductSystem.insertAdjacentHTML('beforeend', (0, modal_view_1.creaModalNuovoFlowOutput)());
                                 let creaDivFlowOutput = document.getElementById('creaFlowOutput');
                                 if (creaDivFlowOutput) {
-                                    const myModal = new bootstrap.Modal(creaDivFlowOutput);
+                                    const myModal = new bootstrap_1.default.Modal(creaDivFlowOutput);
                                     myModal.show();
                                     yield this.getAll(vps, apiCalculation, "location");
                                     yield this.getAll(vps, apiCalculation, "category");
@@ -192,10 +198,10 @@ class ProductSystem {
                             let modalNuovoProductSystem = document.getElementById("modal");
                             if (modalNuovoProductSystem) {
                                 modalNuovoProductSystem.innerHTML = '';
-                                modalNuovoProductSystem.insertAdjacentHTML('beforeend', creaModalConfermaNuovoProductSystem());
+                                modalNuovoProductSystem.insertAdjacentHTML('beforeend', (0, modal_view_1.creaModalConfermaNuovoProductSystem)());
                                 let newModal = document.getElementById('confermaCreaProductSystem');
                                 if (newModal) {
-                                    let myModal = new bootstrap.Modal(newModal);
+                                    let myModal = new bootstrap_1.default.Modal(newModal);
                                     myModal.show();
                                     let buttonConfermaCreazione = document.querySelector('.creaProductSystem');
                                     if (buttonConfermaCreazione) {
@@ -204,10 +210,10 @@ class ProductSystem {
                                             const modalNuovoProductSystem = document.getElementById("modal");
                                             if (modalNuovoProductSystem) {
                                                 modalNuovoProductSystem.innerHTML = '';
-                                                modalNuovoProductSystem.insertAdjacentHTML('beforeend', creaModalNuovoProductFine());
+                                                modalNuovoProductSystem.insertAdjacentHTML('beforeend', (0, modal_view_1.creaModalNuovoProductFine)());
                                                 let divFinaleCreazioneProductSystem = document.getElementById('creaProductSystemFine');
                                                 if (divFinaleCreazioneProductSystem) {
-                                                    const myModal = new bootstrap.Modal(divFinaleCreazioneProductSystem);
+                                                    const myModal = new bootstrap_1.default.Modal(divFinaleCreazioneProductSystem);
                                                     myModal.show();
                                                     let jsonProcess = yield this.creaModalMessaggioConferma(vps, apiCalculation, arrayInput);
                                                     resolve(jsonProcess);
@@ -541,4 +547,4 @@ class ProductSystem {
         };
     }
 }
-export { ProductSystem };
+exports.ProductSystem = ProductSystem;
