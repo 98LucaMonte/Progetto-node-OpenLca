@@ -6,6 +6,6 @@ const main:HTMLElement | null = document.querySelector("#main")as HTMLElement | 
 const footer:HTMLElement | null = document.querySelector("#footer")as HTMLElement | null;
 
 if(header && main && footer){
-    let app = new App("ciao")
-    header.innerHTML= app.saluto;
+    let app = new App(header,main,footer);
+    
 }
