@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(express.static('public'));
 
 app.get('*', function (request, response) {
-    response.sendFile(path.resolve(__dirname, './index.html'));
+    response.sendFile(path.resolve(__dirname, './public/index.html'));
 });
 
 //start server

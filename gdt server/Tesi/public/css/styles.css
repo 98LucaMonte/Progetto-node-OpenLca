@@ -1,0 +1,19 @@
+.dashboard-card {
+  margin-top: 10%;
+}
+
+@media (max-width: 767px) { 
+  .offcanvas-space {
+      width: 80%!important;
+  }
+
+  .dashboard-card {
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+}
+
+.card.dashboard-card:hover {
+  transition: transform 0.3s ease-in-out;
+  transform: scale(1.05);
+}
