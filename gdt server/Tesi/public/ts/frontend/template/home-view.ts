@@ -1,6 +1,6 @@
 
-function creaMain(): string{
-  return `<header id="header">
+function creaMain(): string {
+    return `<header id="header">
   <nav class="navbar navbar-expand-lg bg-body-secondary">
       <button class="btn border border-dark border-1 rounded ms-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
           <span class="navbar-toggler-icon"></span>
@@ -42,7 +42,7 @@ function creaMain(): string{
                   <div class="row">
                       
                       <div class="col-12 col-lg-4">
-                          <a href="#" class="text-decoration-none">
+                            <a class="text-decoration-none" id="creaProductSystem">
                               <div class="card dashboard-card">
                                   <div class="card-body text-center">
                                       <h5 class="card-title">
@@ -52,11 +52,11 @@ function creaMain(): string{
                                       <p class="text-dark">Seleziona o crea gli input e gli output che andranno a comporre il Product System.</p>
                                   </div>
                               </div>
-                          </a>
+                            </a>
                       </div>
 
                       <div class="col-12 col-lg-4">
-                          <a href="#" class="text-decoration-none">
+                          <a class="text-decoration-none">
                               <div class="card dashboard-card">
                                   <div class="card-body text-center">
                                       <h5 class="card-title">
@@ -89,13 +89,14 @@ function creaMain(): string{
       </div>
   </div>
   
+    <div id="modal">
+    </div>
+
 </main>`;
 }
 
-function homeView(contentPage:HTMLDivElement):void{
+export function homeView(contentPage: HTMLDivElement): void {
 
-    contentPage.innerHTML="";
-    contentPage.insertAdjacentHTML('beforeend',creaMain());
+    contentPage.innerHTML = "";
+    contentPage.insertAdjacentHTML('beforeend', creaMain());
 }
-
-export {homeView};

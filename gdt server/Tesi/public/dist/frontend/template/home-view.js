@@ -41,7 +41,7 @@ function creaMain() {
                   <div class="row">
                       
                       <div class="col-12 col-lg-4">
-                          <a href="#" class="text-decoration-none">
+                            <a class="text-decoration-none" id="creaProductSystem">
                               <div class="card dashboard-card">
                                   <div class="card-body text-center">
                                       <h5 class="card-title">
@@ -51,11 +51,11 @@ function creaMain() {
                                       <p class="text-dark">Seleziona o crea gli input e gli output che andranno a comporre il Product System.</p>
                                   </div>
                               </div>
-                          </a>
+                            </a>
                       </div>
 
                       <div class="col-12 col-lg-4">
-                          <a href="#" class="text-decoration-none">
+                          <a class="text-decoration-none">
                               <div class="card dashboard-card">
                                   <div class="card-body text-center">
                                       <h5 class="card-title">
@@ -88,10 +88,12 @@ function creaMain() {
       </div>
   </div>
   
+    <div id="modal">
+    </div>
+
 </main>`;
 }
-function homeView(contentPage) {
+export function homeView(contentPage) {
     contentPage.innerHTML = "";
     contentPage.insertAdjacentHTML('beforeend', creaMain());
 }
-export { homeView };
