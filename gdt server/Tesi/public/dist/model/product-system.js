@@ -1,6 +1,8 @@
 import { ApiCalculation } from "../backend/apiCalculation.js";
 import { modalCreaProductSystem01, creaModalInserisciInput, creaModalInserisciOutput, getFlow, creaModalConfermaNuovoProductSystem, creaModalNuovoFlowInput, creaModalNuovoFlowOutput, creaModalNuovoProductFine } from "../frontend/template/modal-view.js";
+import { Flow } from "./flow.js";
 const apiCalculation = new ApiCalculation();
+const flow = new Flow();
 export class ProductSystem {
     //Metodo usato per creare un nuovo product system tramite gli input ricevuti con l'interazione con gli utenti
     async creaProductSystem() {
@@ -73,7 +75,7 @@ export class ProductSystem {
                                 //@ts-ignore
                                 const myModal = new bootstrap.Modal(nuovoModal);
                                 myModal.show();
-                                let jsonProcess = await this.creaModalProductSystemFlowInput(arrayInput);
+                                let jsonProcess = await this.aggiungiFlowInputEsistenti(arrayInput);
                                 setTimeout(async () => {
                                     resolve(jsonProcess);
                                 }, 1500);
@@ -87,19 +89,28 @@ export class ProductSystem {
             }
         });
     };
-    creaModalProductSystemFlowInput = async (arrayInput) => {
+    /*Metodo per scegliere i flow da aggiungere come input al product system.
+    Premendo il button crea flow si può andare a creare un nuovo flow di input personalizzato.  */
+    aggiungiFlowInputEsistenti = async (arrayInput) => {
         return new Promise(async (resolve, reject) => {
             try {
-                console.log("array");
-                console.log(arrayInput);
                 await getFlow(apiCalculation, "Input");
                 let arrayFlowInput = [];
-                let addFlow = document.getElementById('creaProductSystemInput');
-                if (addFlow) {
-                    addFlow.addEventListener('click', function (event) {
-                        let button = event.target;
-                        if (button) {
-                            if (button.classList.contains('flowInputButton')) {
+                //Modal(div) in cui sono presenti tutti i flow esistenti nel sistema 
+                let divFlowEsistenti = document.getElementById('creaProductSystemInput');
+                //button per creare un nuovo flow
+                let buttonCreaFlow = document.querySelector('.newFlowInput');
+                //button per andare aprire un modal dove si possono selezionare i flow da inserire come output
+                let buttonInserisciFlowOutput = document.querySelector('.inserisciOutput');
+                if (divFlowEsistenti) {
+                    /*
+                    Se viene premuto un button per aggiungere un flow tale button viene disattivato
+                    e l'id del flow relativo al button premuto viene aggiunto alla lista degli arrayFlowInput
+                    */
+                    divFlowEsistenti.addEventListener('click', function (event) {
+                        let buttonAggiungiFlow = event.target;
+                        if (buttonAggiungiFlow) {
+                            if (buttonAggiungiFlow.classList.contains('flowInputButton')) {
                                 let buttonId = event.target.id;
                                 event.target.disabled = true;
                                 arrayFlowInput.push(buttonId);
@@ -107,13 +118,13 @@ export class ProductSystem {
                         }
                     });
                 }
-                let addNewFlow = document.querySelector('.newFlowInput');
-                if (addNewFlow) {
-                    addNewFlow.addEventListener('click', async (event) => {
+                //Una volta premuto tale button viene aperto un nuovo modal per poter creare un nuovo flow personalizzato
+                if (buttonCreaFlow) {
+                    buttonCreaFlow.addEventListener('click', async (event) => {
                         event.preventDefault();
-                        let modalNuovoProductSystem = document.getElementById("modal");
-                        if (modalNuovoProductSystem) {
-                            modalNuovoProductSystem.insertAdjacentHTML('beforeend', creaModalNuovoFlowInput());
+                        let modal = document.getElementById("modal");
+                        if (modal) {
+                            modal.insertAdjacentHTML('beforeend', creaModalNuovoFlowInput());
                             let newModal = document.getElementById('creaFlowInput');
                             if (newModal) {
                                 //@ts-ignore
@@ -121,17 +132,16 @@ export class ProductSystem {
                                 myModal.show();
                                 //raccogliere l'id del flow input creato
                                 await this.getAll("location");
-                                await this.getAll("category");
                                 await this.getAll("flow-property");
-                                let jsonNuovoFlow = await this.creaModalFlowInput();
+                                let jsonNuovoFlow = await this.aggiungiFlowInput();
                                 arrayFlowInput.push(jsonNuovoFlow);
                             }
                         }
                     });
                 }
-                let flowOutput = document.querySelector('.inserisciOutput');
-                if (flowOutput) {
-                    flowOutput.addEventListener('click', async (event) => {
+                //Una volta premuto tale button si chiude questo modale e si passa al modale successivo per aggiungere i flow di output
+                if (buttonInserisciFlowOutput) {
+                    buttonInserisciFlowOutput.addEventListener('click', async (event) => {
                         event.preventDefault();
                         arrayInput.push(arrayFlowInput);
                         let modalNuovoProductSystem = document.getElementById("modal");
@@ -143,7 +153,7 @@ export class ProductSystem {
                                 //@ts-ignore
                                 const myModal = new bootstrap.Modal(newModal);
                                 myModal.show();
-                                let jsonProcess = await this.creaModalProductSystemFlowOutput(arrayInput);
+                                let jsonProcess = await this.aggiungiFlowOutputEsistenti(arrayInput);
                                 resolve(jsonProcess);
                             }
                         }
@@ -155,95 +165,88 @@ export class ProductSystem {
             }
         });
     };
-    creaModalFlowInput() {
+    //Metodo usato per aggiungere un flow di input creato dall'utente 
+    aggiungiFlowInput() {
         return new Promise((resolve, reject) => {
             try {
+                /*Prendo l'id del div per vedere se ci sono dei cambiamenti all'interno
+                del modal e se tutti gli input sono stati inseriti abilito il button avanti*/
                 let divModal = document.getElementById("creaFlowInput");
+                let buttonCreaFlowInput = document.querySelector('.creaFlowInput');
+                //Elementi per predere i dati per creare il flow dal modal 
+                let selectFlowType = document.getElementById("listaflow-type");
+                let selectedOptionFlowType;
+                let flowType = "selectedFlowType";
+                let textNomeFlowInput = document.getElementById("nomeFlowInput");
+                let nomeProductSystem = "";
+                let selectLocation = document.getElementById("listalocation");
+                let selectedOptionLocation;
+                let idLocation = "selectedlocation";
+                let nomeLocation;
+                let selectFlowProperty = document.getElementById("listaflow-property");
+                let selectedOptionFlowProperty;
+                let idFlowProperty = "selectedflow-property";
+                let nomeFlowProperty;
                 if (divModal) {
                     divModal.addEventListener('change', event => {
                         event.preventDefault();
-                        let selectFlowType = document.getElementById("listaflow-type");
-                        let selectedOptionFlowType;
-                        let flowType = "selectedFlowType";
+                        if (textNomeFlowInput) {
+                            nomeProductSystem = textNomeFlowInput.value;
+                        }
                         if (selectFlowType) {
                             selectedOptionFlowType = selectFlowType.options[selectFlowType.selectedIndex];
                             flowType = selectedOptionFlowType.id;
                         }
-                        let button = document.querySelector('.creaFlowInput');
-                        let textNomeFlowInput = document.getElementById("nomeFlowInput");
-                        if (button && textNomeFlowInput) {
-                            if (textNomeFlowInput.value === "" || flowType === "selectedFlowType") {
-                                button.disabled = true;
-                            }
-                            else {
-                                button.disabled = false;
-                            }
+                        if (selectLocation) {
+                            selectedOptionLocation = selectLocation.options[selectLocation.selectedIndex];
+                            idLocation = selectedOptionLocation.value;
+                            nomeLocation = selectedOptionLocation.text;
+                        }
+                        if (selectFlowProperty) {
+                            selectedOptionFlowProperty = selectFlowProperty.options[selectFlowProperty.selectedIndex];
+                            idFlowProperty = selectedOptionFlowProperty.value;
+                            nomeFlowProperty = selectedOptionFlowProperty.text;
+                        }
+                        if (buttonCreaFlowInput && textNomeFlowInput && selectFlowType && selectLocation && selectFlowProperty) {
+                            if (nomeProductSystem === "" || flowType === "selectedFlowType" || nomeLocation === "" || nomeFlowProperty === "")
+                                buttonCreaFlowInput.disabled = true;
+                            else
+                                buttonCreaFlowInput.disabled = false;
                         }
                     });
                 }
-                let buttonCreaFlowInput = document.querySelector('.creaFlowInput');
                 if (buttonCreaFlowInput) {
                     buttonCreaFlowInput.addEventListener('click', async (event) => {
                         event.preventDefault();
-                        let textInputNomeProductSystem = document.getElementById("nomeFlowInput");
-                        let nomeProductSystem;
-                        if (textInputNomeProductSystem) {
-                            nomeProductSystem = textInputNomeProductSystem.value;
+                        if (textNomeFlowInput) {
+                            nomeProductSystem = textNomeFlowInput.value;
                         }
-                        let selectLocation = document.getElementById("listalocation");
-                        let selectedOptionLocation;
-                        let idLocation;
-                        let nomeLocation;
                         if (selectLocation) {
                             selectedOptionLocation = selectLocation.options[selectLocation.selectedIndex];
                             idLocation = selectedOptionLocation.id;
                             nomeLocation = selectedOptionLocation.value;
                         }
-                        let selectFlowType = document.getElementById("listaflow-type");
-                        let selectedOptionFlowType;
-                        let flowType;
                         if (selectFlowType) {
                             selectedOptionFlowType = selectFlowType.options[selectFlowType.selectedIndex];
                             flowType = selectedOptionFlowType.id;
                         }
-                        let selectCategory = document.getElementById("listacategory");
-                        let selectedCategory;
-                        let idCategory;
-                        if (selectCategory) {
-                            selectedCategory = selectCategory.options[selectCategory.selectedIndex];
-                            idCategory = selectedCategory.id;
-                        }
-                        let selectFlowProperty = document.getElementById("listaflow-property");
-                        let selectedOptionFlowProperty;
-                        let idFlowProperty;
-                        let nomeFlowProperty;
                         if (selectFlowProperty) {
                             selectedOptionFlowProperty = selectFlowProperty.options[selectFlowProperty.selectedIndex];
                             idFlowProperty = selectedOptionFlowProperty.id;
                             nomeFlowProperty = selectedOptionFlowProperty.value;
                         }
-                        let jsonFlow = {
-                            "@type": "Flow",
-                            "name": nomeProductSystem,
-                            "flowType": flowType,
-                            "location": {
-                                "@type": "Location",
-                                "@id": idLocation,
-                                "name": nomeLocation
-                            },
-                            "flowProperties": [
-                                {
-                                    "@type": "FlowPropertyFactor",
-                                    "isRefFlowProperty": true,
-                                    "conversionFactor": 1.0,
-                                    "flowProperty": {
-                                        "@type": "FlowProperty",
-                                        "@id": idFlowProperty,
-                                        "name": nomeFlowProperty
-                                    }
-                                }
-                            ]
-                        };
+                        let jsonFlow = flow.creaJsonFlow(nomeProductSystem, flowType, idLocation, nomeLocation, idFlowProperty, nomeFlowProperty);
+                        if (textNomeFlowInput && selectLocation && selectFlowType && selectFlowProperty) {
+                            textNomeFlowInput.value = "";
+                            selectedOptionLocation = selectLocation.options[selectLocation.selectedIndex];
+                            selectedOptionLocation.value = "";
+                            selectedOptionLocation.id = "";
+                            selectedOptionFlowType = selectFlowType.options[selectFlowType.selectedIndex];
+                            selectedOptionFlowType.id = "";
+                            selectedOptionFlowProperty = selectFlowProperty.options[selectFlowProperty.selectedIndex];
+                            selectedOptionFlowProperty.id = "";
+                            selectedOptionFlowProperty.value = "";
+                        }
                         resolve(jsonFlow);
                     });
                 }
@@ -253,13 +256,21 @@ export class ProductSystem {
             }
         });
     }
-    creaModalProductSystemFlowOutput = async (arrayInput) => {
+    /*Metodo per scegliere i flow da aggiungere come output al product system.
+    Premendo il button crea flow si può andare a creare un nuovo flow di output personalizzato.  */
+    aggiungiFlowOutputEsistenti = async (arrayInput) => {
         return new Promise(async (resolve, reject) => {
             try {
                 await getFlow(apiCalculation, "Output");
                 let arrayFlowOutput = [];
                 let buttonCreaProductSystemOutput = document.getElementById('creaProductSystemOutput');
+                let buttonCreaNewFlowOutput = document.querySelector('.newFlowOutput');
+                let buttonAggiungiFlowOutput = document.querySelector('.confermaCreaProductSystem');
                 if (buttonCreaProductSystemOutput) {
+                    /*
+                    Se viene premuto un button per aggiungere un flow tale button viene disattivato
+                    e l'id del flow relativo al button premuto viene aggiunto alla lista degli arrayFlowOutput
+                    */
                     buttonCreaProductSystemOutput.addEventListener('click', function (event) {
                         let button = event.target;
                         if (button) {
@@ -271,7 +282,6 @@ export class ProductSystem {
                         }
                     });
                 }
-                let buttonCreaNewFlowOutput = document.querySelector('.newFlowOutput');
                 if (buttonCreaNewFlowOutput) {
                     buttonCreaNewFlowOutput.addEventListener('click', async (event) => {
                         event.preventDefault();
@@ -284,16 +294,14 @@ export class ProductSystem {
                                 const myModal = new bootstrap.Modal(creaDivFlowOutput);
                                 myModal.show();
                                 await this.getAll("location");
-                                await this.getAll("category");
                                 await this.getAll("flow-property");
                                 //raccogliere l'id del flow input creato
-                                let jsonNuovoFlow = await this.creaModalFlowOutput();
+                                let jsonNuovoFlow = await this.aggiungiFlowOutput();
                                 arrayFlowOutput.push(jsonNuovoFlow);
                             }
                         }
                     });
                 }
-                let buttonAggiungiFlowOutput = document.querySelector('.confermaCreaProductSystem');
                 if (buttonAggiungiFlowOutput) {
                     buttonAggiungiFlowOutput.addEventListener('click', event => {
                         event.preventDefault();
@@ -336,22 +344,36 @@ export class ProductSystem {
             }
         });
     };
-    creaModalFlowOutput() {
+    aggiungiFlowOutput() {
         return new Promise((resolve, reject) => {
             try {
                 let divCreaFlowOutput = document.getElementById("creaFlowOutput");
+                let buttonCreaFlowOutput = document.querySelector('.creaFlowOutput');
+                let selectFlowType = document.getElementById("listaflow-type");
+                let selectedOptionFlowType;
+                let flowType = "selectedFlowType";
+                let textNomeFlowOutput = document.getElementById("nomeFlowOutput");
+                let nomeFlow;
+                let selectLocation = document.getElementById("listalocation");
+                let selectedOptionLocation;
+                let idLocation;
+                let nomeLocation;
+                let selectFlowProperty = document.getElementById("listaflow-property");
+                let selectedOptionFlowProperty;
+                let idFlowProperty;
+                let nomeFlowProperty;
                 if (divCreaFlowOutput) {
                     divCreaFlowOutput.addEventListener('change', event => {
                         event.preventDefault();
-                        let selectFlowType = document.getElementById("listaflow-type");
-                        let selectedOptionFlowType;
-                        let flowType;
-                        let textNomeFlowOutput = document.getElementById("nomeFlowOutput");
-                        let buttonCreaFlowOutput = document.querySelector('.creaFlowOutput');
-                        if (selectFlowType && textNomeFlowOutput && buttonCreaFlowOutput) {
+                        if (selectFlowProperty && selectLocation && selectFlowType && textNomeFlowOutput && buttonCreaFlowOutput) {
                             selectedOptionFlowType = selectFlowType.options[selectFlowType.selectedIndex];
                             flowType = selectedOptionFlowType.id;
-                            if (textNomeFlowOutput.value === "" || flowType === "selectedFlowType") {
+                            nomeFlow = textNomeFlowOutput.value;
+                            selectedOptionFlowProperty = selectFlowProperty.options[selectFlowProperty.selectedIndex];
+                            idFlowProperty = selectedOptionFlowProperty.id;
+                            selectedOptionLocation = selectLocation.options[selectLocation.selectedIndex];
+                            idLocation = selectedOptionLocation.id;
+                            if (nomeFlow === "" || flowType === "selectedFlowType") {
                                 buttonCreaFlowOutput.disabled = true;
                             }
                             else {
@@ -360,69 +382,27 @@ export class ProductSystem {
                         }
                     });
                 }
-                let buttonCreaFlowOutput = document.querySelector('.creaFlowOutput');
                 if (buttonCreaFlowOutput) {
                     buttonCreaFlowOutput.addEventListener('click', async (event) => {
                         event.preventDefault();
-                        let textNomeFlow = document.getElementById("nomeFlowOutput");
-                        let nomeFlow;
-                        if (textNomeFlow) {
-                            nomeFlow = textNomeFlow.value;
+                        if (textNomeFlowOutput) {
+                            nomeFlow = textNomeFlowOutput.value;
                         }
-                        let selectLocation = document.getElementById("listalocation");
-                        let selectedOptionLocation;
-                        let idLocation;
-                        let nomeLocation;
                         if (selectLocation) {
                             selectedOptionLocation = selectLocation.options[selectLocation.selectedIndex];
                             idLocation = selectedOptionLocation.id;
                             nomeLocation = selectedOptionLocation.value;
                         }
-                        let selectFlowType = document.getElementById("listaflow-type");
-                        let selectedOptionFlowType;
-                        let flowType;
                         if (selectFlowType) {
                             selectedOptionFlowType = selectFlowType.options[selectFlowType.selectedIndex];
                             flowType = selectedOptionFlowType.id;
                         }
-                        let selectCategory = document.getElementById("listacategory");
-                        let selectedCategory;
-                        let idCategory;
-                        if (selectCategory) {
-                            selectedCategory = selectCategory.options[selectCategory.selectedIndex];
-                            idCategory = selectedCategory.id;
-                        }
-                        let selectFlowProperty = document.getElementById("listaflow-property");
-                        let selectedOptionFlowProperty;
-                        let idFlowProperty;
-                        let nomeFlowProperty;
                         if (selectFlowProperty) {
                             selectedOptionFlowProperty = selectFlowProperty.options[selectFlowProperty.selectedIndex];
                             idFlowProperty = selectedOptionFlowProperty.id;
                             nomeFlowProperty = selectedOptionFlowProperty.value;
                         }
-                        let jsonFlow = {
-                            "@type": "Flow",
-                            "name": nomeFlow,
-                            "flowType": flowType,
-                            "location": {
-                                "@type": "Location",
-                                "@id": idLocation,
-                                "name": nomeLocation
-                            },
-                            "flowProperties": [
-                                {
-                                    "@type": "FlowPropertyFactor",
-                                    "isRefFlowProperty": true,
-                                    "conversionFactor": 1.0,
-                                    "flowProperty": {
-                                        "@type": "FlowProperty",
-                                        "@id": idFlowProperty,
-                                        "name": nomeFlowProperty
-                                    }
-                                }
-                            ]
-                        };
+                        let jsonFlow = flow.creaJsonFlow(nomeFlow, idLocation, nomeLocation, flowType, idFlowProperty, nomeFlowProperty);
                         resolve(jsonFlow);
                     });
                 }

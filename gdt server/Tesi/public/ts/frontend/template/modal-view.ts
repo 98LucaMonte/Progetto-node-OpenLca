@@ -187,20 +187,6 @@ export function creaModalNuovoFlowInput(){
                       </div>
                     </div>
                     <div class="col-sm-6">
-                      <label for="validationDefaultUsername" class="form-label">Category</label>
-                      <div class="input-group">
-                      
-                        <select class="form-select input-style" aria-label="select example" id="listacategory">
-                          <option selected id="selectedcategory"></option>
-                        
-                        </select>
-                      
-                      </div>
-                    </div>
-                  </div>
-               
-                  <div class="mb-3 row">
-                    <div class="col-sm-6">
                       <label for="validationDefaultUsername" class="form-label">Flow Properties</label>
                         <div class="input-group">
                           
@@ -212,7 +198,7 @@ export function creaModalNuovoFlowInput(){
                         </div>
                     </div>
                   </div>
-
+               
                 </div>
                 <div class="modal-footer">
                   <button class="btn btn-outline-secondary btn-sm creaFlowInput" data-bs-dismiss="modal" type="submit" disabled>Avanti</button>
@@ -267,18 +253,6 @@ export function creaModalNuovoFlowOutput(){
                       </div>
                     </div>
                     <div class="col-sm-6">
-                      <label for="validationDefaultUsername" class="form-label">Category</label>
-                    <div class="input-group">
-                      <select class="form-select input-style" aria-label="select example" id="listacategory">
-                        <option selected id="selectedcategory"></option>
-
-                      </select>
-                    </div>
-                    </div>
-                  </div>
-               
-                  <div class="mb-3 row">
-                    <div class="col-sm-6">
                       <label for="validationDefaultUsername" class="form-label">Flow Properties</label>
                       <div class="input-group">
                         <select class="form-select input-style" aria-label="select example" id="listaflow-property">
@@ -287,6 +261,10 @@ export function creaModalNuovoFlowOutput(){
                         </select>
                       </div>
                     </div>
+                  </div>
+               
+                  <div class="mb-3 row">
+                    
                   </div>
 
                 </div>

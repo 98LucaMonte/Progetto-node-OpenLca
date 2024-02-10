@@ -3,7 +3,10 @@ import { modalCreaProductSystem01,creaModalInserisciInput,
          creaModalInserisciOutput,getFlow,creaModalConfermaNuovoProductSystem,
          creaModalNuovoFlowInput,creaModalNuovoFlowOutput,creaModalNuovoProductFine} from "../frontend/template/modal-view.js";
 
+import { Flow } from "./flow.js";
+
 const apiCalculation = new ApiCalculation();
+const flow = new Flow();
 
 export class ProductSystem{
     
@@ -100,7 +103,7 @@ export class ProductSystem{
                                 //@ts-ignore
                                 const myModal = new bootstrap.Modal(nuovoModal);
                                 myModal.show();
-                                let jsonProcess:any = await this.creaModalProductSystemFlowInput(arrayInput);
+                                let jsonProcess:any = await this.aggiungiFlowInputEsistenti(arrayInput);
                                 
                                 setTimeout(async () => {
                                     resolve(jsonProcess);
@@ -118,23 +121,33 @@ export class ProductSystem{
 
     }
 
-    private creaModalProductSystemFlowInput = async (arrayInput:[string,string,string,string[],string[]]) => {
+    /*Metodo per scegliere i flow da aggiungere come input al product system.
+    Premendo il button crea flow si può andare a creare un nuovo flow di input personalizzato.  */
+    private aggiungiFlowInputEsistenti = async (arrayInput:[string,string,string,string[],string[]]) => {
 
         return new Promise(async (resolve, reject) => {
 
             try {
-                console.log("array");
-                console.log(arrayInput);
+                
                 await getFlow(apiCalculation, "Input");
                 let arrayFlowInput: string[] = [];
 
-                let addFlow :HTMLDivElement | null= document.getElementById('creaProductSystemInput') as HTMLDivElement | null;
+                //Modal(div) in cui sono presenti tutti i flow esistenti nel sistema 
+                let divFlowEsistenti :HTMLDivElement | null= document.getElementById('creaProductSystemInput') as HTMLDivElement | null;
+                //button per creare un nuovo flow
+                let buttonCreaFlow:HTMLButtonElement | null = document.querySelector('.newFlowInput') as HTMLButtonElement | null;
+                //button per andare aprire un modal dove si possono selezionare i flow da inserire come output
+                let buttonInserisciFlowOutput: HTMLButtonElement | null =  document.querySelector('.inserisciOutput') as HTMLButtonElement | null;
 
-                if(addFlow){
-                    addFlow.addEventListener('click', function (event) {
-                        let button: HTMLButtonElement | null = event.target as HTMLButtonElement | null;
-                        if(button){
-                            if (button.classList.contains('flowInputButton')) {
+                if(divFlowEsistenti){
+                    /*
+                    Se viene premuto un button per aggiungere un flow tale button viene disattivato
+                    e l'id del flow relativo al button premuto viene aggiunto alla lista degli arrayFlowInput
+                    */
+                    divFlowEsistenti.addEventListener('click', function (event) {
+                        let buttonAggiungiFlow: HTMLButtonElement | null = event.target as HTMLButtonElement | null;
+                        if(buttonAggiungiFlow){
+                            if (buttonAggiungiFlow.classList.contains('flowInputButton')) {
                                 let buttonId: string = (event.target as HTMLElement).id;
                                 (event.target as HTMLButtonElement).disabled = true;
                                 arrayFlowInput.push(buttonId);
@@ -143,38 +156,38 @@ export class ProductSystem{
                     });
                 }
                
-                let addNewFlow:HTMLButtonElement | null = document.querySelector('.newFlowInput') as HTMLButtonElement | null;
-                
-                if(addNewFlow){
-                    addNewFlow.addEventListener('click', async (event) => {
+                //Una volta premuto tale button viene aperto un nuovo modal per poter creare un nuovo flow personalizzato
+                if(buttonCreaFlow){
+                    buttonCreaFlow.addEventListener('click', async (event) => {
                         event.preventDefault();
     
-                        let modalNuovoProductSystem:HTMLDivElement |null = document.getElementById("modal") as HTMLDivElement | null;
-                        if(modalNuovoProductSystem){
-                            modalNuovoProductSystem.insertAdjacentHTML('beforeend', creaModalNuovoFlowInput());
-                            let newModal: HTMLDivElement | null =document.getElementById('creaFlowInput') as HTMLDivElement | null;
+                        let modal:HTMLDivElement |null = document.getElementById("modal") as HTMLDivElement | null;
+                        if(modal){
+                            modal.insertAdjacentHTML('beforeend', creaModalNuovoFlowInput());
+                            let newModal: HTMLDivElement | null = document.getElementById('creaFlowInput') as HTMLDivElement | null;
                             if(newModal){
                                 //@ts-ignore
                                 let myModal = new bootstrap.Modal(newModal);
                                 myModal.show();
                                 //raccogliere l'id del flow input creato
                                 await this.getAll("location");
-                                await this.getAll("category");
                                 await this.getAll("flow-property");
         
-                                let jsonNuovoFlow:any = await this.creaModalFlowInput();
+                                let jsonNuovoFlow:any = await this.aggiungiFlowInput();
                                 arrayFlowInput.push(jsonNuovoFlow);
                             }
                         }
                     });
                 }
-                
-                let flowOutput: HTMLButtonElement | null =  document.querySelector('.inserisciOutput') as HTMLButtonElement | null;
-                
-                if(flowOutput){
-                    flowOutput.addEventListener('click', async (event) => {
+                                
+                //Una volta premuto tale button si chiude questo modale e si passa al modale successivo per aggiungere i flow di output
+                if(buttonInserisciFlowOutput){
+
+                    buttonInserisciFlowOutput.addEventListener('click', async (event) => {
+                        
                         event.preventDefault();
                         arrayInput.push(arrayFlowInput);
+                        
                         let modalNuovoProductSystem = document.getElementById("modal");
                         if(modalNuovoProductSystem){
                             modalNuovoProductSystem.innerHTML = '';
@@ -184,7 +197,7 @@ export class ProductSystem{
                                 //@ts-ignore
                                 const myModal = new bootstrap.Modal(newModal);
                                 myModal.show();
-                                let jsonProcess = await this.creaModalProductSystemFlowOutput(arrayInput);
+                                let jsonProcess = await this.aggiungiFlowOutputEsistenti(arrayInput);
                                 resolve(jsonProcess);
                             }
                         }
@@ -199,109 +212,113 @@ export class ProductSystem{
 
     }
 
-    private creaModalFlowInput() {
+    //Metodo usato per aggiungere un flow di input creato dall'utente 
+    private aggiungiFlowInput() {
 
         return new Promise((resolve, reject) => {
             try {
 
+                /*Prendo l'id del div per vedere se ci sono dei cambiamenti all'interno 
+                del modal e se tutti gli input sono stati inseriti abilito il button avanti*/
                 let divModal: HTMLElement | null = document.getElementById("creaFlowInput") as HTMLElement | null;
+                let buttonCreaFlowInput: HTMLButtonElement | null = document.querySelector('.creaFlowInput') as HTMLButtonElement | null; 
+
+                //Elementi per predere i dati per creare il flow dal modal 
+                let selectFlowType:HTMLSelectElement | null = document.getElementById("listaflow-type")as HTMLSelectElement | null;
+                let selectedOptionFlowType;
+                let flowType = "selectedFlowType";
                 
+                let textNomeFlowInput: HTMLInputElement | null = document.getElementById("nomeFlowInput") as HTMLInputElement | null;
+                let nomeProductSystem:string = "";
+
+                let selectLocation: HTMLSelectElement | null = document.getElementById("listalocation") as HTMLSelectElement | null;
+                let selectedOptionLocation;
+                let idLocation:string = "selectedlocation";
+                let nomeLocation:string;
+
+                let selectFlowProperty:HTMLSelectElement | null = document.getElementById("listaflow-property") as HTMLSelectElement | null;
+                let selectedOptionFlowProperty;
+                let idFlowProperty:string = "selectedflow-property";
+                let nomeFlowProperty:string;
+
                 if(divModal){
                     divModal.addEventListener('change', event => {
                         event.preventDefault();
-                        let selectFlowType:HTMLSelectElement | null = document.getElementById("listaflow-type")as HTMLSelectElement | null;
-                        let selectedOptionFlowType;
-                        let flowType = "selectedFlowType";
+                        
+                        if(textNomeFlowInput){
+                            nomeProductSystem = textNomeFlowInput.value;
+                        }
+
                         if(selectFlowType){
                             selectedOptionFlowType = selectFlowType.options[selectFlowType.selectedIndex];
                             flowType = selectedOptionFlowType.id;
                         }
+
+                        if(selectLocation){
+                            selectedOptionLocation = selectLocation.options[selectLocation.selectedIndex];
+                            idLocation =  selectedOptionLocation.value;
+                            nomeLocation = selectedOptionLocation.text;
+                        }
+
+                        if(selectFlowProperty){
+                            selectedOptionFlowProperty = selectFlowProperty.options[selectFlowProperty.selectedIndex];
+                            idFlowProperty  = selectedOptionFlowProperty.value;
+                            nomeFlowProperty = selectedOptionFlowProperty.text;
+                        }
                         
-                        let button: HTMLButtonElement | null = document.querySelector('.creaFlowInput') as HTMLButtonElement | null; 
-                        let textNomeFlowInput: HTMLInputElement | null = document.getElementById("nomeFlowInput") as HTMLInputElement | null;
-                        if(button && textNomeFlowInput){
-                            if (textNomeFlowInput.value === "" || flowType === "selectedFlowType") {
-                                button.disabled = true;
-                            }
-                            else {
-                                button.disabled = false;
-                            }
+                        if(buttonCreaFlowInput && textNomeFlowInput && selectFlowType && selectLocation && selectFlowProperty){
+                            if ( nomeProductSystem === "" || flowType === "selectedFlowType" || nomeLocation === "" || nomeFlowProperty === "")  
+                                buttonCreaFlowInput.disabled = true;
+                            else 
+                                buttonCreaFlowInput.disabled = false;
                         }
                         
                     });
                 }
 
-                let buttonCreaFlowInput: HTMLButtonElement | null =  document.querySelector('.creaFlowInput') as HTMLButtonElement | null;
-
                 if(buttonCreaFlowInput){
                     buttonCreaFlowInput.addEventListener('click', async (event) => {
                         event.preventDefault();
                         
-                        let textInputNomeProductSystem: HTMLInputElement | null = document.getElementById("nomeFlowInput") as HTMLInputElement | null;
-                        let nomeProductSystem;
-                        if(textInputNomeProductSystem){
-                            nomeProductSystem = textInputNomeProductSystem.value;
+                        if(textNomeFlowInput){
+                            nomeProductSystem = textNomeFlowInput.value;
                         }
                         
-                        let selectLocation: HTMLSelectElement | null = document.getElementById("listalocation") as HTMLSelectElement | null;
-                        let selectedOptionLocation;
-                        let idLocation;
-                        let nomeLocation;
                         if(selectLocation){
                             selectedOptionLocation = selectLocation.options[selectLocation.selectedIndex];
                             idLocation = selectedOptionLocation.id;
                             nomeLocation = selectedOptionLocation.value;
                         }
     
-                        let selectFlowType:HTMLSelectElement | null = document.getElementById("listaflow-type") as HTMLSelectElement | null;
-                        let selectedOptionFlowType;
-                        let flowType;
                         if(selectFlowType){
                             selectedOptionFlowType = selectFlowType.options[selectFlowType.selectedIndex];
                             flowType = selectedOptionFlowType.id;
                         }
     
-                        let selectCategory:HTMLSelectElement | null = document.getElementById("listacategory") as HTMLSelectElement | null;
-                        let selectedCategory;
-                        let idCategory;
-                        if(selectCategory){
-                            selectedCategory = selectCategory.options[selectCategory.selectedIndex];
-                            idCategory = selectedCategory.id;
-                        }
-
-                        let selectFlowProperty:HTMLSelectElement | null = document.getElementById("listaflow-property") as HTMLSelectElement | null;
-                        let selectedOptionFlowProperty;
-                        let idFlowProperty;
-                        let nomeFlowProperty;
                         if(selectFlowProperty){
                             selectedOptionFlowProperty = selectFlowProperty.options[selectFlowProperty.selectedIndex];
                             idFlowProperty = selectedOptionFlowProperty.id;
                             nomeFlowProperty = selectedOptionFlowProperty.value;
                         }
 
-                        let jsonFlow = {
-                            "@type": "Flow",
-                            "name": nomeProductSystem,
-                            "flowType": flowType,
-                            "location": {
-                                "@type": "Location",
-                                "@id": idLocation,
-                                "name": nomeLocation
-                            },
-                            "flowProperties": [
-                                {
-                                    "@type": "FlowPropertyFactor",
-                                    "isRefFlowProperty": true,
-                                    "conversionFactor": 1.0,
-                                    "flowProperty": {
-                                        "@type": "FlowProperty",
-                                        "@id": idFlowProperty,
-                                        "name": nomeFlowProperty
-                                    }
-                                }
-                            ]
+                        let jsonFlow = flow.creaJsonFlow(nomeProductSystem,flowType,idLocation,nomeLocation,idFlowProperty,nomeFlowProperty);
+                        
+                        if(textNomeFlowInput && selectLocation && selectFlowType && selectFlowProperty){
+                            textNomeFlowInput.value=""; 
+
+                            selectedOptionLocation = selectLocation.options[selectLocation.selectedIndex];
+                            selectedOptionLocation.value=""; 
+                            selectedOptionLocation.id = "";
+
+                            selectedOptionFlowType = selectFlowType.options[selectFlowType.selectedIndex];
+                            selectedOptionFlowType.id = "";
+
+                            selectedOptionFlowProperty = selectFlowProperty.options[selectFlowProperty.selectedIndex];
+                            selectedOptionFlowProperty.id = "";
+                            selectedOptionFlowProperty.value = "";
+
                         }
-    
+                        
                         resolve(jsonFlow);
                     });
                 }
@@ -314,7 +331,9 @@ export class ProductSystem{
 
     }
 
-    private creaModalProductSystemFlowOutput = async (arrayInput:[string,string,string,string[],string[]]) => {
+    /*Metodo per scegliere i flow da aggiungere come output al product system.
+    Premendo il button crea flow si può andare a creare un nuovo flow di output personalizzato.  */
+    private aggiungiFlowOutputEsistenti = async (arrayInput:[string,string,string,string[],string[]]) => {
 
         return new Promise(async (resolve, reject) => {
             try {
@@ -322,8 +341,14 @@ export class ProductSystem{
 
                 let arrayFlowOutput:string[] = [];
                 let buttonCreaProductSystemOutput:HTMLButtonElement | null = document.getElementById('creaProductSystemOutput') as HTMLButtonElement | null;
+                let buttonCreaNewFlowOutput: HTMLButtonElement | null = document.querySelector('.newFlowOutput') as HTMLButtonElement | null;
+                let buttonAggiungiFlowOutput: HTMLButtonElement | null = document.querySelector('.confermaCreaProductSystem') as HTMLButtonElement | null;
 
                 if(buttonCreaProductSystemOutput){
+                    /*
+                    Se viene premuto un button per aggiungere un flow tale button viene disattivato
+                    e l'id del flow relativo al button premuto viene aggiunto alla lista degli arrayFlowOutput
+                    */
                     buttonCreaProductSystemOutput.addEventListener('click', function (event) {
                         let button: HTMLButtonElement | null = event.target as HTMLButtonElement | null;
                         if(button){
@@ -337,8 +362,6 @@ export class ProductSystem{
                     });
                 }
                 
-                let buttonCreaNewFlowOutput: HTMLButtonElement | null = document.querySelector('.newFlowOutput') as HTMLButtonElement | null;
-
                 if(buttonCreaNewFlowOutput){
                     buttonCreaNewFlowOutput.addEventListener('click', async (event) => {
                         event.preventDefault();
@@ -353,10 +376,9 @@ export class ProductSystem{
                                 const myModal = new bootstrap.Modal(creaDivFlowOutput);
                                 myModal.show();
                                 await this.getAll("location");
-                                await this.getAll("category");
                                 await this.getAll("flow-property");
                                 //raccogliere l'id del flow input creato
-                                let jsonNuovoFlow:any = await this.creaModalFlowOutput();
+                                let jsonNuovoFlow:any = await this.aggiungiFlowOutput();
                                 arrayFlowOutput.push(jsonNuovoFlow);
                             }
                             
@@ -365,7 +387,6 @@ export class ProductSystem{
                     });
                 }
                 
-                let buttonAggiungiFlowOutput: HTMLButtonElement | null = document.querySelector('.confermaCreaProductSystem') as HTMLButtonElement | null;
                 if(buttonAggiungiFlowOutput){
                     buttonAggiungiFlowOutput.addEventListener('click', event => {
                         event.preventDefault();
@@ -398,9 +419,8 @@ export class ProductSystem{
                                                 let jsonProcess = await this.creaModalMessaggioConferma(arrayInput);
                                                 resolve(jsonProcess);
                                             }
-                                            
                                         }
-                                        
+
                                     });
                                 }
 
@@ -418,26 +438,47 @@ export class ProductSystem{
 
     }
 
-    private creaModalFlowOutput() {
+    private aggiungiFlowOutput() {
 
         return new Promise((resolve, reject) => {
             try {
                 let divCreaFlowOutput: HTMLDivElement | null =  document.getElementById("creaFlowOutput") as HTMLDivElement | null;
-               
+                let buttonCreaFlowOutput: HTMLButtonElement | null = document.querySelector('.creaFlowOutput') as HTMLButtonElement | null;
+                
+                let selectFlowType:HTMLSelectElement | null = document.getElementById("listaflow-type") as HTMLSelectElement | null;
+                let selectedOptionFlowType;
+                let flowType:string = "selectedFlowType";
+
+                let textNomeFlowOutput: HTMLInputElement | null = document.getElementById("nomeFlowOutput") as HTMLInputElement | null;
+                let nomeFlow:string;
+
+                let selectLocation:HTMLSelectElement | null = document.getElementById("listalocation") as HTMLSelectElement | null;
+                let selectedOptionLocation;
+                let idLocation:string;
+                let nomeLocation:string;
+
+                let selectFlowProperty:HTMLSelectElement | null = document.getElementById("listaflow-property") as HTMLSelectElement | null;
+                let selectedOptionFlowProperty;
+                let idFlowProperty:string;
+                let nomeFlowProperty:string;
+
                 if(divCreaFlowOutput){
                     divCreaFlowOutput.addEventListener('change', event => {
                         event.preventDefault();
-                        let selectFlowType:HTMLSelectElement | null = document.getElementById("listaflow-type") as HTMLSelectElement | null;
-                        let selectedOptionFlowType;
-                        let flowType;
-
-                        let textNomeFlowOutput: HTMLInputElement | null = document.getElementById("nomeFlowOutput") as HTMLInputElement | null;
-                        let buttonCreaFlowOutput: HTMLButtonElement | null = document.querySelector('.creaFlowOutput') as HTMLButtonElement | null;
-                        if(selectFlowType && textNomeFlowOutput && buttonCreaFlowOutput){
+                                                
+                        if(selectFlowProperty && selectLocation && selectFlowType && textNomeFlowOutput && buttonCreaFlowOutput){
                             selectedOptionFlowType = selectFlowType.options[selectFlowType.selectedIndex];
                             flowType = selectedOptionFlowType.id;
 
-                            if (textNomeFlowOutput.value === "" || flowType === "selectedFlowType") {
+                            nomeFlow = textNomeFlowOutput.value;
+
+                            selectedOptionFlowProperty = selectFlowProperty.options[selectFlowProperty.selectedIndex];
+                            idFlowProperty = selectedOptionFlowProperty.id;
+                            
+                            selectedOptionLocation = selectLocation.options[selectLocation.selectedIndex];
+                            idLocation = selectedOptionLocation.id;
+
+                            if (nomeFlow === "" || flowType === "selectedFlowType") {
                                 buttonCreaFlowOutput.disabled = true;
                             }
                             else {
@@ -449,76 +490,32 @@ export class ProductSystem{
                     });
                 }
                
-                let buttonCreaFlowOutput: HTMLButtonElement | null = document.querySelector('.creaFlowOutput') as HTMLButtonElement | null;
-
                 if(buttonCreaFlowOutput){
                     buttonCreaFlowOutput.addEventListener('click', async (event) => {
                         event.preventDefault();
-                        let textNomeFlow:HTMLInputElement | null = document.getElementById("nomeFlowOutput") as HTMLInputElement | null;
-                        let nomeFlow;
-                        if(textNomeFlow){
-                            nomeFlow = textNomeFlow.value;
+                        
+                        if(textNomeFlowOutput){
+                            nomeFlow = textNomeFlowOutput.value;
                         }
                         
-                        let selectLocation:HTMLSelectElement | null = document.getElementById("listalocation") as HTMLSelectElement | null;
-                        let selectedOptionLocation;
-                        let idLocation;
-                        let nomeLocation;
                         if(selectLocation){
                             selectedOptionLocation = selectLocation.options[selectLocation.selectedIndex];
                             idLocation = selectedOptionLocation.id;
                             nomeLocation = selectedOptionLocation.value;
                         }
                         
-    
-                        let selectFlowType:HTMLSelectElement | null = document.getElementById("listaflow-type") as HTMLSelectElement | null;
-                        let selectedOptionFlowType;
-                        let flowType;
                         if(selectFlowType){
                             selectedOptionFlowType = selectFlowType.options[selectFlowType.selectedIndex];
                             flowType = selectedOptionFlowType.id;
                         }
 
-                        let selectCategory:HTMLSelectElement | null  = document.getElementById("listacategory")as HTMLSelectElement | null ;
-                        let selectedCategory;
-                        let idCategory;
-                        if(selectCategory){
-                            selectedCategory = selectCategory.options[selectCategory.selectedIndex];
-                            idCategory = selectedCategory.id;   
-                        }
-
-                        let selectFlowProperty:HTMLSelectElement | null = document.getElementById("listaflow-property") as HTMLSelectElement | null;
-                        let selectedOptionFlowProperty;
-                        let idFlowProperty;
-                        let nomeFlowProperty;
                         if(selectFlowProperty){
                             selectedOptionFlowProperty = selectFlowProperty.options[selectFlowProperty.selectedIndex];
                             idFlowProperty = selectedOptionFlowProperty.id;
                             nomeFlowProperty = selectedOptionFlowProperty.value;
                         }
 
-                        let jsonFlow = {
-                            "@type": "Flow",
-                            "name": nomeFlow,
-                            "flowType": flowType,
-                            "location": {
-                                "@type": "Location",
-                                "@id": idLocation,
-                                "name": nomeLocation
-                            },
-                            "flowProperties": [
-                                {
-                                    "@type": "FlowPropertyFactor",
-                                    "isRefFlowProperty": true,
-                                    "conversionFactor": 1.0,
-                                    "flowProperty": {
-                                        "@type": "FlowProperty",
-                                        "@id": idFlowProperty,
-                                        "name": nomeFlowProperty
-                                    }
-                                }
-                            ]
-                        }
+                        let jsonFlow = flow.creaJsonFlow(nomeFlow, idLocation, nomeLocation, flowType, idFlowProperty, nomeFlowProperty);
     
                         resolve(jsonFlow);
                     });
