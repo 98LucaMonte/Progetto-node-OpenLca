@@ -1,5 +1,7 @@
 import { ApiCalculation } from "../../backend/apiCalculation.js";
 
+const apiCalculation = new ApiCalculation();
+
 export function modalCreaProductSystem01(){
     return `
     <div class="modal fade" id="creaProductSystemMain" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -379,4 +381,41 @@ function ordinaEDividiPerCategoria(array:any) {
   }, {});
 
   return raggruppatoPerCategoria;
+}
+
+export async function getAll(type:string) {
+  const placeholder:HTMLOptionElement | null = document.getElementById(`selected${type}`) as HTMLOptionElement | null;
+  let lista = await apiCalculation.getAllData(type);
+
+  if(placeholder){
+      if (lista.length == 0) {
+          placeholder.innerHTML = `Non ci sono ${type} selezionabili`;
+      } else {
+          const select:HTMLSelectElement | null = document.getElementById(`lista${type}`) as HTMLSelectElement | null;
+          placeholder.innerHTML = `Seleziona una ${type}`;
+          if(select){
+              for (let i = 0; i < lista.length; i++) {
+                  let option = document.createElement("option");
+                  option.value = lista[i].name;
+                  option.text = lista[i].name;
+                  option.id = lista[i]["@id"];
+                  select.appendChild(option);
+              }
+          }
+      }
+  }
+  
+}
+
+export function avanzamentoBarra(width:string){
+        
+  return new Promise(() => {
+      let progressBar:HTMLElement | null = document.getElementById('progressBar') as HTMLElement | null;
+      
+      setTimeout(function () {
+          if(progressBar)
+              progressBar.style.width = width + '%';
+      }, 1500);
+      
+  });
 }

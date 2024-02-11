@@ -1,12 +1,17 @@
 import { ApiCalculation } from "../backend/apiCalculation.js";
-import { modalCreaProductSystem01,creaModalInserisciInput,
-         creaModalInserisciOutput,getFlow,creaModalConfermaNuovoProductSystem,
-         creaModalNuovoFlowInput,creaModalNuovoFlowOutput,creaModalNuovoProductFine} from "../frontend/template/modal-view.js";
+
+import { modalCreaProductSystem01,creaModalInserisciInput,creaModalInserisciOutput,
+         getFlow,creaModalConfermaNuovoProductSystem,creaModalNuovoFlowInput,
+         creaModalNuovoFlowOutput,creaModalNuovoProductFine,getAll,avanzamentoBarra } from "../frontend/template/modal-view.js";
 
 import { Flow } from "./flow.js";
+import { Exchange } from "./exchange.js";
+import { Process } from "./process.js"; 
 
 const apiCalculation = new ApiCalculation();
 const flow = new Flow();
+const exchange = new Exchange();
+const process = new Process();
 
 export class ProductSystem{
     
@@ -25,7 +30,7 @@ export class ProductSystem{
                     let json:any = await this.creaModalInfoProductSystem();
                     let idProcess = await apiCalculation.putNuovoElement("process", json);
                     let idProductSystem = await apiCalculation.nuovoProductSystem(idProcess["@id"]);
-                    await this.avanzamentoBarra("100");
+                    avanzamentoBarra("100");
                     resolve(idProductSystem);
                 }
             }
@@ -43,7 +48,7 @@ export class ProductSystem{
         return new Promise(async (resolve, reject) => {
             try {
                 let arrayInput: [string,string,string,string[],string[]];
-                await this.getAll("location");
+                getAll("location");
 
                 // Elementi del modal usati per prelevare le informazioni
                 let modalElement: HTMLDivElement | null = document.getElementById("creaProductSystemMain") as HTMLDivElement | null;
@@ -170,8 +175,8 @@ export class ProductSystem{
                                 let myModal = new bootstrap.Modal(newModal);
                                 myModal.show();
                                 //raccogliere l'id del flow input creato
-                                await this.getAll("location");
-                                await this.getAll("flow-property");
+                                getAll("location");
+                                getAll("flow-property");
         
                                 let jsonNuovoFlow:any = await this.aggiungiFlowInput();
                                 arrayFlowInput.push(jsonNuovoFlow);
@@ -332,7 +337,8 @@ export class ProductSystem{
     }
 
     /*Metodo per scegliere i flow da aggiungere come output al product system.
-    Premendo il button crea flow si può andare a creare un nuovo flow di output personalizzato.  */
+    Premendo il button avanti si va al modal di conferma per chiedere all'utente 
+    se è sicuro che vuole creare il product system.  */
     private aggiungiFlowOutputEsistenti = async (arrayInput:[string,string,string,string[],string[]]) => {
 
         return new Promise(async (resolve, reject) => {
@@ -375,8 +381,8 @@ export class ProductSystem{
                                 //@ts-ignore
                                 const myModal = new bootstrap.Modal(creaDivFlowOutput);
                                 myModal.show();
-                                await this.getAll("location");
-                                await this.getAll("flow-property");
+                                getAll("location");
+                                getAll("flow-property");
                                 //raccogliere l'id del flow input creato
                                 let jsonNuovoFlow:any = await this.aggiungiFlowOutput();
                                 arrayFlowOutput.push(jsonNuovoFlow);
@@ -416,7 +422,7 @@ export class ProductSystem{
                                                 //@ts-ignore
                                                 const myModal = new bootstrap.Modal(divFinaleCreazioneProductSystem);
                                                 myModal.show();
-                                                let jsonProcess = await this.creaModalMessaggioConferma(arrayInput);
+                                                let jsonProcess = await this.creaDatiPerProductSystem(arrayInput);
                                                 resolve(jsonProcess);
                                             }
                                         }
@@ -438,6 +444,7 @@ export class ProductSystem{
 
     }
 
+    //Metodo usato per aggiungere un flow di output creato dall'utente
     private aggiungiFlowOutput() {
 
         return new Promise((resolve, reject) => {
@@ -450,16 +457,16 @@ export class ProductSystem{
                 let flowType:string = "selectedFlowType";
 
                 let textNomeFlowOutput: HTMLInputElement | null = document.getElementById("nomeFlowOutput") as HTMLInputElement | null;
-                let nomeFlow:string;
+                let nomeFlow:string = "";
 
                 let selectLocation:HTMLSelectElement | null = document.getElementById("listalocation") as HTMLSelectElement | null;
                 let selectedOptionLocation;
-                let idLocation:string;
+                let idLocation:string = "selectedlocation";
                 let nomeLocation:string;
 
                 let selectFlowProperty:HTMLSelectElement | null = document.getElementById("listaflow-property") as HTMLSelectElement | null;
                 let selectedOptionFlowProperty;
-                let idFlowProperty:string;
+                let idFlowProperty:string ="selectedflow-property"; 
                 let nomeFlowProperty:string;
 
                 if(divCreaFlowOutput){
@@ -516,7 +523,23 @@ export class ProductSystem{
                         }
 
                         let jsonFlow = flow.creaJsonFlow(nomeFlow, idLocation, nomeLocation, flowType, idFlowProperty, nomeFlowProperty);
-    
+                        
+                        if(textNomeFlowOutput && selectLocation && selectFlowType && selectFlowProperty){
+                            textNomeFlowOutput.value=""; 
+
+                            selectedOptionLocation = selectLocation.options[selectLocation.selectedIndex];
+                            selectedOptionLocation.value=""; 
+                            selectedOptionLocation.id = "";
+
+                            selectedOptionFlowType = selectFlowType.options[selectFlowType.selectedIndex];
+                            selectedOptionFlowType.id = "";
+
+                            selectedOptionFlowProperty = selectFlowProperty.options[selectFlowProperty.selectedIndex];
+                            selectedOptionFlowProperty.id = "";
+                            selectedOptionFlowProperty.value = "";
+
+                        }
+
                         resolve(jsonFlow);
                     });
                 }
@@ -531,84 +554,50 @@ export class ProductSystem{
 
     }
 
-    private creaModalMessaggioConferma = async (arrayInput:[string,string,string,string[],string[]]) => {
+    /*Metodo usato per creare i dati (Flow e Exchange) che andranno a formare il 
+    Process che apparterrà al Product system.  */
+    private creaDatiPerProductSystem = async (arrayInput:[string,string,string,string[],string[]]) => {
         return new Promise(async (resolve, reject) => {
             try {
                 let data = new Date();
                 let dataFormattata = data.toISOString();
                 let arrayFlowInput:any = arrayInput[3];
                 let arrayFlowOutput:any = arrayInput[4];
-                let exchanges = [];
+                let exchanges:any = [];
 
                 for (let i = 0; i < arrayFlowInput.length; i++) {
                     if (typeof arrayFlowInput[i] === 'string') {
-                        exchanges.push(this.creaExchanges(arrayFlowInput[i], true));
+                        //exchanges.push(this.creaExchanges(arrayFlowInput[i], true));
+                        exchanges.push(exchange.creaJsonExchange(true,arrayFlowInput[i]));
                     } else {
                         let nuovoFlow = await apiCalculation.putNuovoElement("flow", arrayFlowInput[i]);
-                        exchanges.push(this.creaExchangesNuovoFlow(arrayFlowInput[i], true, nuovoFlow));
+                        //exchanges.push(this.creaExchangesNuovoFlow(arrayFlowInput[i], true, nuovoFlow));
+                        exchanges.push(exchange.creaJsonNuovoExchange(true,arrayFlowInput[i],nuovoFlow));
                     }
                 }
 
-                await this.avanzamentoBarra("25");
+                avanzamentoBarra("25");
 
                 for (let i = 0; i < arrayFlowOutput.length; i++) {
                     if (typeof arrayFlowOutput[i] === 'string') {
-                        exchanges.push(this.creaExchanges(arrayFlowOutput[i], false));
+                        //exchanges.push(this.creaExchanges(arrayFlowOutput[i], false));
+                        exchanges.push(exchange.creaJsonExchange(false,arrayFlowOutput[i]));
                     } else {
                         let nuovoFlow = await apiCalculation.putNuovoElement("flow", arrayFlowOutput[i]);
-                        exchanges.push(this.creaExchangesNuovoFlow(arrayFlowOutput[i], false, nuovoFlow));
+                        //exchanges.push(this.creaExchangesNuovoFlow(arrayFlowOutput[i], false, nuovoFlow));
+                        exchanges.push(exchange.creaJsonNuovoExchange(false,arrayFlowOutput[i],nuovoFlow));
                     }
                 }
 
-                await this.avanzamentoBarra("50");
+                avanzamentoBarra("50");
 
-                let jsonProcess = {
-                    "@type": "Process",
-                    "name": arrayInput[0],
-                    "description": arrayInput[1],
-                    "processType": "UNIT_PROCESS",
-                    "location": {
-                        "@type": "Location",
-                        "@id": arrayInput[2]
-                    },
-                    "processDocumentation": {
-                        "copyright": false,
-                        "creationDate": dataFormattata
-                    },
-                    "exchanges": exchanges
-                };
-
-                console.log(exchanges);
+                let jsonProcess = process.creaJsonProcess(arrayInput,dataFormattata,exchanges);
 
                 resolve(jsonProcess);
             } catch (error) {
                 reject(error);
             }
         });
-    }
-
-    private getAll = async (type:string) => {
-        const placeholder:HTMLOptionElement | null = document.getElementById(`selected${type}`) as HTMLOptionElement | null;
-        let lista = await apiCalculation.getAllData(type);
-
-        if(placeholder){
-            if (lista.length == 0) {
-                placeholder.innerHTML = `Non ci sono ${type} selezionabili`;
-            } else {
-                const select:HTMLSelectElement | null = document.getElementById(`lista${type}`) as HTMLSelectElement | null;
-                placeholder.innerHTML = `Seleziona una ${type}`;
-                if(select){
-                    for (let i = 0; i < lista.length; i++) {
-                        let option = document.createElement("option");
-                        option.value = lista[i].name;
-                        option.text = lista[i].name;
-                        option.id = lista[i]["@id"];
-                        select.appendChild(option);
-                    }
-                }
-            }
-        }
-        
     }
 
     private creaExchangesNuovoFlow(element:any, type:boolean, flow:any) {
@@ -648,17 +637,6 @@ export class ProductSystem{
 
     }
 
-    private avanzamentoBarra = async (width:string) => {
-        
-        return new Promise(() => {
-            let progressBar:HTMLElement | null = document.getElementById('progressBar') as HTMLElement | null;
-            
-            setTimeout(function () {
-                if(progressBar)
-                    progressBar.style.width = width + '%';
-            }, 1500);
-            
-        });
-    }
+    
 }
 
