@@ -1,5 +1,5 @@
 import { ApiCalculation } from "../backend/apiCalculation.js";
-import { modalCreaProductSystem01, creaModalInserisciInput, creaModalInserisciOutput, getFlow, creaModalConfermaNuovoProductSystem, creaModalNuovoFlowInput, creaModalNuovoFlowOutput, creaModalNuovoProductFine, getAll, avanzamentoBarra } from "../frontend/template/modal-view.js";
+import { modalCalcolaProductSystem01, modalCreaProductSystem01, creaModalInserisciInput, creaModalInserisciOutput, getFlow, creaModalConfermaNuovoProductSystem, creaModalNuovoFlowInput, creaModalNuovoFlowOutput, creaModalNuovoProductFine, getAll, avanzamentoBarra } from "../frontend/template/modal-view.js";
 import { Flow } from "./flow.js";
 import { Exchange } from "./exchange.js";
 import { Process } from "./process.js";
@@ -8,6 +8,107 @@ const flow = new Flow();
 const exchange = new Exchange();
 const process = new Process();
 export class ProductSystem {
+    async mostraModalCalcolaProductSystem() {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let modalCalcolo = document.getElementById("modal");
+                if (modalCalcolo) {
+                    modalCalcolo.insertAdjacentHTML('beforeend', modalCalcolaProductSystem01());
+                    //@ts-ignore
+                    let myModal = new bootstrap.Modal(document.getElementById('calcolaProductSystemMain'));
+                    myModal.show();
+                    let idCalcolo = await this.calcolaProductSystem();
+                    resolve(idCalcolo);
+                }
+            }
+            catch (error) {
+                reject(error);
+            }
+        });
+    }
+    calcolaProductSystem = async () => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                await getAll("product-system");
+                await getAll("impact-method");
+                let modalCalcolaProductSystem = document.getElementById("calcolaProductSystemMain");
+                let buttonCalcola = document.querySelector(".calcolaProduct");
+                let selectProductSystem = document.getElementById("listaproduct-system");
+                let selectedOptionProductSystem;
+                let idProductSystem = "selectedproduct-system";
+                let selectImpactMethod = document.getElementById("listaimpact-method");
+                let selectedOptionImpactMethod;
+                let idImpactMethod = "selectedimpact-method";
+                let idNewSet;
+                let idCalcolo;
+                if (modalCalcolaProductSystem) {
+                    modalCalcolaProductSystem.addEventListener('change', (event) => {
+                        event.preventDefault();
+                        if (selectImpactMethod && selectProductSystem && buttonCalcola) {
+                            selectedOptionProductSystem = selectProductSystem.options[selectProductSystem.selectedIndex];
+                            idProductSystem = selectedOptionProductSystem.id;
+                            selectedOptionImpactMethod = selectImpactMethod.options[selectImpactMethod.selectedIndex];
+                            idImpactMethod = selectedOptionImpactMethod.id;
+                            if (idImpactMethod === "selectedimpact-method" || idProductSystem === "selectedproduct-system")
+                                buttonCalcola.disabled = true;
+                            else
+                                buttonCalcola.disabled = false;
+                        }
+                    });
+                }
+                if (buttonCalcola) {
+                    buttonCalcola.addEventListener('click', async (event) => {
+                        event.preventDefault();
+                        if (selectImpactMethod && selectProductSystem) {
+                            selectedOptionProductSystem = selectProductSystem.options[selectProductSystem.selectedIndex];
+                            idProductSystem = selectedOptionProductSystem.id;
+                            selectedOptionImpactMethod = selectImpactMethod.options[selectImpactMethod.selectedIndex];
+                            idImpactMethod = selectedOptionImpactMethod.id;
+                            let arrayInfoImpactMethod = idImpactMethod.split("/");
+                            if (arrayInfoImpactMethod.length === 2) {
+                                idImpactMethod = arrayInfoImpactMethod[0];
+                                idNewSet = arrayInfoImpactMethod[1];
+                            }
+                            let jsonCalcolo = await apiCalculation.calcolaProductSystem(idProductSystem, idImpactMethod, idNewSet);
+                            idCalcolo = jsonCalcolo["@id"];
+                            let statoCalcolo = false;
+                            let numeroIterazioni = 0;
+                            //Attraverso questo ciclo verifico inviando l'id del calcolo se quest'ultimo è stato ultimato 
+                            while (statoCalcolo != true) {
+                                statoCalcolo = await apiCalculation.getStatoCalcolo(idCalcolo);
+                                statoCalcolo = statoCalcolo.isReady;
+                                if (numeroIterazioni === 10) {
+                                    break;
+                                }
+                                numeroIterazioni++;
+                            }
+                            if (numeroIterazioni === 10) {
+                                let divCreaProductSystem = document.getElementById("infoCalcolo");
+                                if (divCreaProductSystem) {
+                                    divCreaProductSystem.innerHTML = "";
+                                    divCreaProductSystem.insertAdjacentHTML('beforeend', `<div class="alert alert-danger" role="alert">
+                                    Siamo spiacenti si è verficato un errore durante il calcolo del product system.
+                                    <br>
+                                    <button id="retryButton" type="button" class="btn btn-link text-dark text-center">Riprova</button>
+                                    </div>`);
+                                    let buttonRicarica = document.getElementById("retryButton");
+                                    if (buttonRicarica) {
+                                        buttonRicarica.addEventListener("click", function () {
+                                            location.reload();
+                                        });
+                                    }
+                                }
+                            }
+                            resolve(idCalcolo);
+                        }
+                    });
+                }
+            }
+            catch (error) {
+                reject(error);
+            }
+        });
+    };
     //Metodo usato per creare un nuovo product system tramite gli input ricevuti con l'interazione con gli utenti
     async creaProductSystem() {
         return new Promise(async (resolve, reject) => {
@@ -19,14 +120,34 @@ export class ProductSystem {
                     let myModal = new bootstrap.Modal(document.getElementById('creaProductSystemMain'));
                     myModal.show();
                     let json = await this.creaModalInfoProductSystem();
+                    if (json === null) {
+                        reject(new Error("Errore nella compilazione del Prodotto di Sistema"));
+                    }
                     let idProcess = await apiCalculation.putNuovoElement("process", json);
                     let idProductSystem = await apiCalculation.nuovoProductSystem(idProcess["@id"]);
-                    avanzamentoBarra("100");
-                    resolve(idProductSystem);
+                    if (idProductSystem != null) {
+                        avanzamentoBarra("100");
+                        resolve(idProductSystem);
+                    }
                 }
             }
-            catch {
-                reject(Error);
+            catch (error) {
+                let divCreaProductSystem = document.getElementById("bodyDivCreaProduct");
+                if (divCreaProductSystem) {
+                    divCreaProductSystem.innerHTML = "";
+                    divCreaProductSystem.insertAdjacentHTML('beforeend', `<div class="alert alert-danger" role="alert">
+                    Siamo spiacenti si è verficato un errore durante la creazione del product system.
+                    <br>
+                    <button id="retryButton" type="button" class="btn btn-link text-dark text-center">Riprova</button>
+                    </div>`);
+                    let buttonRicarica = document.getElementById("retryButton");
+                    if (buttonRicarica) {
+                        buttonRicarica.addEventListener("click", function () {
+                            location.reload();
+                        });
+                    }
+                }
+                reject(error);
             }
         });
     }
@@ -43,7 +164,7 @@ export class ProductSystem {
                 //Elementi per estrarre la location
                 let selectLocation = document.getElementById("listalocation");
                 let selectedOptionLocation;
-                let idLocation = "";
+                let idLocation = "selectedlocation";
                 //Elementi per estrarre il nome e la descrizione 
                 let textNomeProductSystem = document.getElementById("nomeProductSystem");
                 let textDescrizioneProductSystem = document.getElementById("descrizioneProductSystem");
@@ -54,7 +175,7 @@ export class ProductSystem {
                             selectedOptionLocation = selectLocation.options[selectLocation.selectedIndex];
                             idLocation = selectedOptionLocation.id;
                             if (textNomeProductSystem && textDescrizioneProductSystem && buttonNewInput) {
-                                if (textNomeProductSystem.value === "" || textDescrizioneProductSystem.value === "" || idLocation === "")
+                                if (textNomeProductSystem.value === "" || textDescrizioneProductSystem.value === "" || idLocation === "selectedlocation")
                                     buttonNewInput.disabled = true;
                                 else
                                     buttonNewInput.disabled = false;
@@ -80,6 +201,9 @@ export class ProductSystem {
                                 const myModal = new bootstrap.Modal(nuovoModal);
                                 myModal.show();
                                 let jsonProcess = await this.aggiungiFlowInputEsistenti(arrayInput);
+                                if (jsonProcess === null) {
+                                    reject(new Error('Errore nel caricamento dei dati'));
+                                }
                                 setTimeout(async () => {
                                     resolve(jsonProcess);
                                 }, 1500);
@@ -88,8 +212,8 @@ export class ProductSystem {
                     });
                 }
             }
-            catch {
-                reject(Error);
+            catch (error) {
+                reject(error);
             }
         });
     };
@@ -158,14 +282,17 @@ export class ProductSystem {
                                 const myModal = new bootstrap.Modal(newModal);
                                 myModal.show();
                                 let jsonProcess = await this.aggiungiFlowOutputEsistenti(arrayInput);
+                                if (jsonProcess === null) {
+                                    reject(new Error("Errore nella generazione del Process"));
+                                }
                                 resolve(jsonProcess);
                             }
                         }
                     });
                 }
             }
-            catch {
-                reject(Error);
+            catch (error) {
+                reject(error);
             }
         });
     };
@@ -255,8 +382,8 @@ export class ProductSystem {
                     });
                 }
             }
-            catch {
-                reject(Error);
+            catch (error) {
+                reject(error);
             }
         });
     }
@@ -446,8 +573,13 @@ export class ProductSystem {
                     }
                     else {
                         let nuovoFlow = await apiCalculation.putNuovoElement("flow", arrayFlowInput[i]);
-                        //exchanges.push(this.creaExchangesNuovoFlow(arrayFlowInput[i], true, nuovoFlow));
-                        exchanges.push(exchange.creaJsonNuovoExchange(true, arrayFlowInput[i], nuovoFlow));
+                        if (nuovoFlow["status"] == "OK") {
+                            //exchanges.push(this.creaExchangesNuovoFlow(arrayFlowInput[i], true, nuovoFlow));
+                            exchanges.push(exchange.creaJsonNuovoExchange(true, nuovoFlow, arrayFlowInput[i]));
+                        }
+                        else {
+                            reject(new Error("Errore nella creazione del flusso"));
+                        }
                     }
                 }
                 avanzamentoBarra("25");
@@ -458,8 +590,13 @@ export class ProductSystem {
                     }
                     else {
                         let nuovoFlow = await apiCalculation.putNuovoElement("flow", arrayFlowOutput[i]);
-                        //exchanges.push(this.creaExchangesNuovoFlow(arrayFlowOutput[i], false, nuovoFlow));
-                        exchanges.push(exchange.creaJsonNuovoExchange(false, arrayFlowOutput[i], nuovoFlow));
+                        if (nuovoFlow["status"] == "OK") {
+                            //exchanges.push(this.creaExchangesNuovoFlow(arrayFlowOutput[i], false, nuovoFlow));
+                            exchanges.push(exchange.creaJsonNuovoExchange(false, nuovoFlow, arrayFlowOutput[i]));
+                        }
+                        else {
+                            reject(new Error("Errore nella creazione del flusso"));
+                        }
                     }
                 }
                 avanzamentoBarra("50");

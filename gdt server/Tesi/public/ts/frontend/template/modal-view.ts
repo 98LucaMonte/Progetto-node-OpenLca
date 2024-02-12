@@ -2,6 +2,51 @@ import { ApiCalculation } from "../../backend/apiCalculation.js";
 
 const apiCalculation = new ApiCalculation();
 
+export function modalCalcolaProductSystem01(){
+  return `
+  <div class="modal fade" id="calcolaProductSystemMain" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Calcola Product System</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form class="row g-3">
+            <div class="modal-body">
+            <div class="container text-center">
+              <div class="row">
+                <div class="col-sm-6">
+                  <p class="text-start fs-6">Seleziona il product system che vuoi calcolare</p>
+                  <select class="form-select form-select-sm input-style" aria-label="Small select example" id="listaproduct-system">
+                    <option selected id="selectedproduct-system">Inserisci Product System</option>
+                    
+                  </select>
+                </div>
+                <div class="col-sm-6">
+                  <p class="text-start fs-6">Seleziona l'impact method con cui fare il calcolo</p>
+                  <select class="form-select form-select-sm input-style" aria-label="Small select example" id="listaimpact-method">
+                    <option selected id="selectedimpact-method">Inserisci Impact Method</option>
+                    
+                  </select>
+                </div>
+              </div>
+              <div class="row" id="infoCalcolo">
+
+              <div>
+              
+            </div>
+          </div>
+              <div class="modal-footer">
+              <button class="btn btn-outline-danger btn-sm" data-bs-dismiss="modal">Chiudi</button>
+              <button class="btn btn-outline-secondary btn-sm calcolaProduct" data-bs-dismiss="modal" type="submit" disabled>Calcola</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      `;
+}
 export function modalCreaProductSystem01(){
     return `
     <div class="modal fade" id="creaProductSystemMain" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -25,7 +70,7 @@ export function modalCreaProductSystem01(){
                   <div class="mb-3">
                     <label for="validationDefaultUsername" class="form-label">Luogo</label>
                     <div class="input-group">
-                      <select class="form-select input-style" aria-label="select example" id="listalocation">
+                      <select class="form-select form-select-sm input-style" aria-label="select example" id="listalocation">
                         <option selected id="selectedlocation"></option>
                         
                       </select>
@@ -312,7 +357,7 @@ export function creaModalNuovoProductFine(){
               <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Crea Product System</h1>
               </div>
-              <div class="modal-body">
+              <div class="modal-body" id="bodyDivCreaProduct">
                 <p>Creazione del product system in corso...</p>
                 <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
                   <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" style="width:0%"></div>
@@ -325,7 +370,7 @@ export function creaModalNuovoProductFine(){
 }
 
 export async function getFlow(apiCalculation:ApiCalculation,nome:string){
-  let listaFlow = await apiCalculation.getAllData("flow");
+  let listaFlow = await apiCalculation.getData("flow");
   let risultato = ordinaEDividiPerCategoria(listaFlow);
   let num = 0;
   let categorie = Object.keys(risultato);
@@ -398,7 +443,12 @@ export async function getAll(type:string) {
                   let option = document.createElement("option");
                   option.value = lista[i].name;
                   option.text = lista[i].name;
-                  option.id = lista[i]["@id"];
+                  if(type === "impact-method" && lista[i].nwSets!== undefined){
+                    option.id = lista[i]["@id"]+"/" + lista[i].nwSets[0]["@id"];
+                  }
+                  else{
+                    option.id = lista[i]["@id"];
+                  }
                   select.appendChild(option);
               }
           }

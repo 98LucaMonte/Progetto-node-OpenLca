@@ -1,5 +1,6 @@
 //const vps:string = 'http://109.205.180.220:3000/'; //indirizzo vps 
 const vps:string = 'http://127.0.0.1:3000/'; // docker run -p 3000:8080 -v $HOME/openLCA-data-1.4:/app/data --rm -d gdt-server -db case_study
+//docker run -p 3000:8080 -v $HOME/openLCA-data-1.4:/app/data --rm -d dbopenlca -db case_study
 
 export class ApiCalculation {
 
@@ -135,6 +136,8 @@ export class ApiCalculation {
             let url = vps + "data/create-system";
             console.log(url);
             
+            console.log(idProcess);
+
             let response = await fetch(url, {
                 method: "POST",
                 headers: {
@@ -147,18 +150,13 @@ export class ApiCalculation {
                 })
             });
 
-            if (response.ok) {
-                //La richiesta ha avuto successo
-                const responseData = await response.json();
-                return responseData;
-            } else {
-                //Gestisco l'errore se la richiesta non ha avuto successo
-                console.error('Errore nella risposta HTTP:', response.status, response.statusText);
-                return response;
-            }
+            //La richiesta ha avuto successo
+            const responseData = await response.json();
+            return responseData;
+            
         } catch (error) {
-            console.log("sono qui")
-            console.error('Errore durante la connessione:', error);
+            console.log("errore")
+            throw error;         
         }
     }
     
@@ -184,7 +182,7 @@ export class ApiCalculation {
             let v = await response.json();
             return v;
         } catch (error) {
-            console.error('Errore durante la connessione:', error);
+            throw error; 
         }
     }
 }

@@ -1,12 +1,13 @@
 import { ApiCalculation } from "../backend/apiCalculation.js";
 
-import { modalCreaProductSystem01,creaModalInserisciInput,creaModalInserisciOutput,
+import { modalCalcolaProductSystem01,modalCreaProductSystem01,creaModalInserisciInput,creaModalInserisciOutput,
          getFlow,creaModalConfermaNuovoProductSystem,creaModalNuovoFlowInput,
          creaModalNuovoFlowOutput,creaModalNuovoProductFine,getAll,avanzamentoBarra } from "../frontend/template/modal-view.js";
 
 import { Flow } from "./flow.js";
 import { Exchange } from "./exchange.js";
 import { Process } from "./process.js"; 
+import { JsonFlow, JsonProcess } from "./types.js";
 
 const apiCalculation = new ApiCalculation();
 const flow = new Flow();
@@ -15,37 +16,184 @@ const process = new Process();
 
 export class ProductSystem{
     
+    async mostraModalCalcolaProductSystem(){
+        return new Promise<string>(async (resolve, reject) => {
+            try {
+                let modalCalcolo: HTMLDivElement | null = document.getElementById("modal") as HTMLDivElement | null;
+                if (modalCalcolo) {
+                    modalCalcolo.insertAdjacentHTML('beforeend', modalCalcolaProductSystem01());
+                    
+                    //@ts-ignore
+                    let myModal = new bootstrap.Modal(document.getElementById('calcolaProductSystemMain'));
+                    myModal.show();
+                    let idCalcolo:string = await this.calcolaProductSystem();
+
+                    resolve(idCalcolo);
+
+                } 
+            }catch (error) {
+                reject(error)
+            }
+            
+        });
+    }
+
+    private calcolaProductSystem = async () =>{
+        return new Promise<string>(async (resolve, reject) => {
+            try {
+                await getAll("product-system");
+                await getAll("impact-method");
+
+                let modalCalcolaProductSystem:HTMLDivElement | null = document.getElementById("calcolaProductSystemMain") as HTMLDivElement | null;
+                let buttonCalcola:HTMLButtonElement | null = document.querySelector(".calcolaProduct") as HTMLButtonElement | null;
+                
+                let selectProductSystem:HTMLSelectElement |null = document.getElementById("listaproduct-system") as HTMLSelectElement | null;
+                let selectedOptionProductSystem;
+                let idProductSystem:string = "selectedproduct-system";
+                
+                let selectImpactMethod: HTMLSelectElement | null = document.getElementById("listaimpact-method") as HTMLSelectElement | null;
+                let selectedOptionImpactMethod;
+                let idImpactMethod:string = "selectedimpact-method";
+                let idNewSet:string;
+
+                let idCalcolo;
+
+                if(modalCalcolaProductSystem){
+                    modalCalcolaProductSystem.addEventListener('change', (event) => {
+                        event.preventDefault();
+                        
+                        if (selectImpactMethod && selectProductSystem && buttonCalcola) {
+                            selectedOptionProductSystem = selectProductSystem.options[selectProductSystem.selectedIndex];
+                            idProductSystem = selectedOptionProductSystem.id;
+                            
+                            selectedOptionImpactMethod = selectImpactMethod.options[selectImpactMethod.selectedIndex];
+                            idImpactMethod = selectedOptionImpactMethod.id;
+
+                            if (idImpactMethod === "selectedimpact-method" || idProductSystem === "selectedproduct-system") 
+                                buttonCalcola.disabled = true;
+                            else 
+                                buttonCalcola.disabled = false;
+                        }
+
+                    });   
+                }
+
+                if(buttonCalcola){
+                    buttonCalcola.addEventListener('click',async (event)=>{
+                        event.preventDefault();
+                        if(selectImpactMethod && selectProductSystem){
+                            selectedOptionProductSystem = selectProductSystem.options[selectProductSystem.selectedIndex];
+                            idProductSystem = selectedOptionProductSystem.id;
+                            
+                            selectedOptionImpactMethod = selectImpactMethod.options[selectImpactMethod.selectedIndex];
+                            idImpactMethod = selectedOptionImpactMethod.id;
+
+                            let arrayInfoImpactMethod:string[] = idImpactMethod.split("/");
+                            if (arrayInfoImpactMethod.length === 2) {
+                                idImpactMethod = arrayInfoImpactMethod[0];
+                                idNewSet = arrayInfoImpactMethod[1];
+                            }
+
+                            let jsonCalcolo = await apiCalculation.calcolaProductSystem(idProductSystem,idImpactMethod,idNewSet);
+                            idCalcolo = jsonCalcolo["@id"];
+                            let statoCalcolo:any = false;
+                            let numeroIterazioni = 0;
+                            //Attraverso questo ciclo verifico inviando l'id del calcolo se quest'ultimo è stato ultimato 
+                            while (statoCalcolo != true) {
+                                statoCalcolo = await apiCalculation.getStatoCalcolo(idCalcolo);
+                                statoCalcolo = statoCalcolo.isReady;
+                                if(numeroIterazioni === 10) {break;}
+                                numeroIterazioni++;
+                            }
+
+                            if(numeroIterazioni === 10){
+                                let divCreaProductSystem:HTMLDivElement | null = document.getElementById("infoCalcolo")as HTMLDivElement|null;
+                                if(divCreaProductSystem){
+                                    divCreaProductSystem.innerHTML = "";
+                                    divCreaProductSystem.insertAdjacentHTML('beforeend',
+                                    `<div class="alert alert-danger" role="alert">
+                                    Siamo spiacenti si è verficato un errore durante il calcolo del product system.
+                                    <br>
+                                    <button id="retryButton" type="button" class="btn btn-link text-dark text-center">Riprova</button>
+                                    </div>`);
+
+                                    let buttonRicarica:HTMLButtonElement | null = document.getElementById("retryButton") as HTMLButtonElement | null;
+                                    if(buttonRicarica){
+                                        buttonRicarica.addEventListener("click", function() {
+                                            location.reload();
+                                        });
+                                    }
+                                }
+                            }
+
+                            resolve(idCalcolo);
+                        }
+                        
+                    })
+                }
+
+            }
+            catch(error) {
+                reject(error)
+            }
+        });
+    }
+
     //Metodo usato per creare un nuovo product system tramite gli input ricevuti con l'interazione con gli utenti
-    async creaProductSystem(){
-        
-        return new Promise(async (resolve, reject) => {
+    async creaProductSystem() {
+        return new Promise<string>(async (resolve, reject) => {
             try {
                 let modalNuovoProductSystem: HTMLDivElement | null = document.getElementById("modal") as HTMLDivElement | null;
-                if(modalNuovoProductSystem){
-                    modalNuovoProductSystem.insertAdjacentHTML('beforeend',modalCreaProductSystem01());
+                if (modalNuovoProductSystem) {
+                    modalNuovoProductSystem.insertAdjacentHTML('beforeend', modalCreaProductSystem01());
                     //@ts-ignore
                     let myModal = new bootstrap.Modal(document.getElementById('creaProductSystemMain'));
                     myModal.show();
-
-                    let json:any = await this.creaModalInfoProductSystem();
+    
+                    let json: JsonProcess = await this.creaModalInfoProductSystem();
+                    if (json === null) {
+                        reject(new Error("Errore nella compilazione del Prodotto di Sistema"));
+                    }
+    
                     let idProcess = await apiCalculation.putNuovoElement("process", json);
+                    
                     let idProductSystem = await apiCalculation.nuovoProductSystem(idProcess["@id"]);
-                    avanzamentoBarra("100");
-                    resolve(idProductSystem);
+                    
+                    if(idProductSystem != null){
+                        avanzamentoBarra("100");
+                        resolve(idProductSystem);
+                    }
+                    
                 }
             }
-            catch {
-                reject(Error)
+            catch (error) {
+                let divCreaProductSystem:HTMLDivElement | null = document.getElementById("bodyDivCreaProduct")as HTMLDivElement|null;
+                if(divCreaProductSystem){
+                    divCreaProductSystem.innerHTML = "";
+                    divCreaProductSystem.insertAdjacentHTML('beforeend',
+                    `<div class="alert alert-danger" role="alert">
+                    Siamo spiacenti si è verficato un errore durante la creazione del product system.
+                    <br>
+                    <button id="retryButton" type="button" class="btn btn-link text-dark text-center">Riprova</button>
+                    </div>`);
+
+                    let buttonRicarica:HTMLButtonElement | null = document.getElementById("retryButton") as HTMLButtonElement | null;
+                    if(buttonRicarica){
+                        buttonRicarica.addEventListener("click", function() {
+                            location.reload();
+                        });
+                    }
+                }
+                reject(error);
             }
         });
-
     }
-
+    
     /*Metodo usato per prelevare i dati inseriti nel primo modal. 
     I dati prelevati sono nome del product system, descrizione e il luogo in cui viene prodotto */
     private creaModalInfoProductSystem = async () => {
 
-        return new Promise(async (resolve, reject) => {
+        return new Promise<JsonProcess>(async (resolve, reject) => {
             try {
                 let arrayInput: [string,string,string,string[],string[]];
                 getAll("location");
@@ -57,7 +205,7 @@ export class ProductSystem{
                 //Elementi per estrarre la location
                 let selectLocation: HTMLSelectElement | null = document.getElementById("listalocation") as HTMLSelectElement | null;
                 let selectedOptionLocation;
-                let idLocation:string = "";
+                let idLocation:string = "selectedlocation";
 
                 //Elementi per estrarre il nome e la descrizione 
                 let textNomeProductSystem: HTMLInputElement | null = document.getElementById("nomeProductSystem") as HTMLInputElement | null;
@@ -73,7 +221,7 @@ export class ProductSystem{
                             idLocation = selectedOptionLocation.id;
                             
                             if (textNomeProductSystem && textDescrizioneProductSystem && buttonNewInput) {
-                                if (textNomeProductSystem.value === "" || textDescrizioneProductSystem.value === "" || idLocation === "") 
+                                if (textNomeProductSystem.value === "" || textDescrizioneProductSystem.value === "" || idLocation === "selectedlocation") 
                                     buttonNewInput.disabled = true;
                                 else 
                                     buttonNewInput.disabled = false;
@@ -108,8 +256,11 @@ export class ProductSystem{
                                 //@ts-ignore
                                 const myModal = new bootstrap.Modal(nuovoModal);
                                 myModal.show();
-                                let jsonProcess:any = await this.aggiungiFlowInputEsistenti(arrayInput);
-                                
+                                let jsonProcess:JsonProcess = await this.aggiungiFlowInputEsistenti(arrayInput);
+                                if(jsonProcess === null){
+                                    reject(new Error('Errore nel caricamento dei dati'));
+                                }
+
                                 setTimeout(async () => {
                                     resolve(jsonProcess);
                                 }, 1500);
@@ -119,8 +270,8 @@ export class ProductSystem{
                     });
                 }
             }
-            catch {
-                reject(Error)
+            catch(error) {
+                reject(error)
             }
         });
 
@@ -130,7 +281,7 @@ export class ProductSystem{
     Premendo il button crea flow si può andare a creare un nuovo flow di input personalizzato.  */
     private aggiungiFlowInputEsistenti = async (arrayInput:[string,string,string,string[],string[]]) => {
 
-        return new Promise(async (resolve, reject) => {
+        return new Promise<JsonProcess>(async (resolve, reject) => {
 
             try {
                 
@@ -202,15 +353,18 @@ export class ProductSystem{
                                 //@ts-ignore
                                 const myModal = new bootstrap.Modal(newModal);
                                 myModal.show();
-                                let jsonProcess = await this.aggiungiFlowOutputEsistenti(arrayInput);
+                                let jsonProcess:JsonProcess = await this.aggiungiFlowOutputEsistenti(arrayInput);
+                                if(jsonProcess === null){
+                                    reject(new Error( "Errore nella generazione del Process")); 
+                                }
                                 resolve(jsonProcess);
                             }
                         }
                     });
                 }
             }
-            catch {
-                reject(Error);
+            catch(error) {
+                reject(error);
             }
 
         })
@@ -220,7 +374,7 @@ export class ProductSystem{
     //Metodo usato per aggiungere un flow di input creato dall'utente 
     private aggiungiFlowInput() {
 
-        return new Promise((resolve, reject) => {
+        return new Promise<JsonFlow>((resolve, reject) => {
             try {
 
                 /*Prendo l'id del div per vedere se ci sono dei cambiamenti all'interno 
@@ -306,7 +460,7 @@ export class ProductSystem{
                             nomeFlowProperty = selectedOptionFlowProperty.value;
                         }
 
-                        let jsonFlow = flow.creaJsonFlow(nomeProductSystem,flowType,idLocation,nomeLocation,idFlowProperty,nomeFlowProperty);
+                        let jsonFlow:JsonFlow = flow.creaJsonFlow(nomeProductSystem,flowType,idLocation,nomeLocation,idFlowProperty,nomeFlowProperty);
                         
                         if(textNomeFlowInput && selectLocation && selectFlowType && selectFlowProperty){
                             textNomeFlowInput.value=""; 
@@ -329,8 +483,8 @@ export class ProductSystem{
                 }
                 
             }
-            catch {
-                reject(Error);
+            catch(error) {
+                reject(error);
             }
         });
 
@@ -341,7 +495,7 @@ export class ProductSystem{
     se è sicuro che vuole creare il product system.  */
     private aggiungiFlowOutputEsistenti = async (arrayInput:[string,string,string,string[],string[]]) => {
 
-        return new Promise(async (resolve, reject) => {
+        return new Promise<JsonProcess>(async (resolve, reject) => {
             try {
                 await getFlow(apiCalculation, "Output");
 
@@ -447,7 +601,7 @@ export class ProductSystem{
     //Metodo usato per aggiungere un flow di output creato dall'utente
     private aggiungiFlowOutput() {
 
-        return new Promise((resolve, reject) => {
+        return new Promise<JsonFlow>((resolve, reject) => {
             try {
                 let divCreaFlowOutput: HTMLDivElement | null =  document.getElementById("creaFlowOutput") as HTMLDivElement | null;
                 let buttonCreaFlowOutput: HTMLButtonElement | null = document.querySelector('.creaFlowOutput') as HTMLButtonElement | null;
@@ -522,7 +676,7 @@ export class ProductSystem{
                             nomeFlowProperty = selectedOptionFlowProperty.value;
                         }
 
-                        let jsonFlow = flow.creaJsonFlow(nomeFlow, idLocation, nomeLocation, flowType, idFlowProperty, nomeFlowProperty);
+                        let jsonFlow:JsonFlow = flow.creaJsonFlow(nomeFlow, idLocation, nomeLocation, flowType, idFlowProperty, nomeFlowProperty);
                         
                         if(textNomeFlowOutput && selectLocation && selectFlowType && selectFlowProperty){
                             textNomeFlowOutput.value=""; 
@@ -557,7 +711,7 @@ export class ProductSystem{
     /*Metodo usato per creare i dati (Flow e Exchange) che andranno a formare il 
     Process che apparterrà al Product system.  */
     private creaDatiPerProductSystem = async (arrayInput:[string,string,string,string[],string[]]) => {
-        return new Promise(async (resolve, reject) => {
+        return new Promise<JsonProcess>(async (resolve, reject) => {
             try {
                 let data = new Date();
                 let dataFormattata = data.toISOString();
@@ -571,8 +725,14 @@ export class ProductSystem{
                         exchanges.push(exchange.creaJsonExchange(true,arrayFlowInput[i]));
                     } else {
                         let nuovoFlow = await apiCalculation.putNuovoElement("flow", arrayFlowInput[i]);
+                        if(nuovoFlow["status"] == "OK"){
                         //exchanges.push(this.creaExchangesNuovoFlow(arrayFlowInput[i], true, nuovoFlow));
-                        exchanges.push(exchange.creaJsonNuovoExchange(true,arrayFlowInput[i],nuovoFlow));
+                        exchanges.push(exchange.creaJsonNuovoExchange(true,nuovoFlow,arrayFlowInput[i]));
+                        }
+                        else{
+                            reject(new Error("Errore nella creazione del flusso")); 
+                        }
+
                     }
                 }
 
@@ -584,14 +744,19 @@ export class ProductSystem{
                         exchanges.push(exchange.creaJsonExchange(false,arrayFlowOutput[i]));
                     } else {
                         let nuovoFlow = await apiCalculation.putNuovoElement("flow", arrayFlowOutput[i]);
+                        if(nuovoFlow["status"] == "OK"){
                         //exchanges.push(this.creaExchangesNuovoFlow(arrayFlowOutput[i], false, nuovoFlow));
-                        exchanges.push(exchange.creaJsonNuovoExchange(false,arrayFlowOutput[i],nuovoFlow));
+                        exchanges.push(exchange.creaJsonNuovoExchange(false,nuovoFlow,arrayFlowOutput[i]));
+                        }
+                        else{
+                            reject(new Error("Errore nella creazione del flusso")); 
+                        }
                     }
                 }
 
                 avanzamentoBarra("50");
 
-                let jsonProcess = process.creaJsonProcess(arrayInput,dataFormattata,exchanges);
+                let jsonProcess:JsonProcess = process.creaJsonProcess(arrayInput,dataFormattata,exchanges);
 
                 resolve(jsonProcess);
             } catch (error) {

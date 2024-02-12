@@ -28,12 +28,26 @@ export class App {
                 event.preventDefault();
                 let buttonCreaProductSystem: HTMLElement | null = document.getElementById('creaProductSystem') as HTMLElement | null;
 
+                let buttonCalcolaProductSystem: HTMLElement | null = document.getElementById('calcolaProductSystem') as HTMLElement | null;
+
+
                 if (buttonCreaProductSystem) {
                     //Una volta trovato il button  di creazione del product system attendo l'evento di click per aprire il primo modal
                     buttonCreaProductSystem.addEventListener('click', async (event) =>{
                         event.preventDefault(); 
-                        await productSystem.creaProductSystem();
-                        //location.reload();
+                        let idProductSystem = await productSystem.creaProductSystem();
+                        if(idProductSystem){
+                            location.reload();
+                        }
+                                                
+                    });
+                }
+
+                if(buttonCalcolaProductSystem){
+                    buttonCalcolaProductSystem.addEventListener('click', async (event)=>{
+                        event.preventDefault();
+                        let idProductSystemCalcolato = await productSystem.mostraModalCalcolaProductSystem();
+                        console.log(idProductSystemCalcolato);
                     });
                 }
             }); 

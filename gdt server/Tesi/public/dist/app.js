@@ -18,12 +18,22 @@ export class App {
             document.addEventListener('DOMContentLoaded', (event) => {
                 event.preventDefault();
                 let buttonCreaProductSystem = document.getElementById('creaProductSystem');
+                let buttonCalcolaProductSystem = document.getElementById('calcolaProductSystem');
                 if (buttonCreaProductSystem) {
                     //Una volta trovato il button  di creazione del product system attendo l'evento di click per aprire il primo modal
                     buttonCreaProductSystem.addEventListener('click', async (event) => {
                         event.preventDefault();
-                        await productSystem.creaProductSystem();
-                        //location.reload();
+                        let idProductSystem = await productSystem.creaProductSystem();
+                        if (idProductSystem) {
+                            location.reload();
+                        }
+                    });
+                }
+                if (buttonCalcolaProductSystem) {
+                    buttonCalcolaProductSystem.addEventListener('click', async (event) => {
+                        event.preventDefault();
+                        let idProductSystemCalcolato = await productSystem.mostraModalCalcolaProductSystem();
+                        console.log(idProductSystemCalcolato);
                     });
                 }
             });

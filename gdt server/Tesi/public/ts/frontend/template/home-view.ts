@@ -56,7 +56,7 @@ function creaMain(): string {
                       </div>
 
                       <div class="col-12 col-lg-4">
-                          <a class="text-decoration-none">
+                          <a class="text-decoration-none" id="calcolaProductSystem" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                               <div class="card dashboard-card">
                                   <div class="card-body text-center">
                                       <h5 class="card-title">
