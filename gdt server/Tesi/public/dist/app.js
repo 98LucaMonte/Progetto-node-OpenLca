@@ -19,6 +19,8 @@ export class App {
                 event.preventDefault();
                 let buttonCreaProductSystem = document.getElementById('creaProductSystem');
                 let buttonCalcolaProductSystem = document.getElementById('calcolaProductSystem');
+                let buttonConfrontaProductSystem = document.getElementById('confrontaProductSystem');
+                console.log("lunghezza " + productSystem.arrayJsonDatiCalcolo.length);
                 if (buttonCreaProductSystem) {
                     //Una volta trovato il button  di creazione del product system attendo l'evento di click per aprire il primo modal
                     buttonCreaProductSystem.addEventListener('click', async (event) => {
@@ -30,10 +32,20 @@ export class App {
                     });
                 }
                 if (buttonCalcolaProductSystem) {
+                    //Apertura del modal per effettuare il calcolo di un Product System
                     buttonCalcolaProductSystem.addEventListener('click', async (event) => {
                         event.preventDefault();
-                        let idProductSystemCalcolato = await productSystem.mostraModalCalcolaProductSystem();
-                        console.log(idProductSystemCalcolato);
+                        //Abbiamo l'id del calcolo del product system appena calcolato
+                        let risultato = await productSystem.mostraModalCalcolaProductSystem();
+                        if (risultato) {
+                            location.reload();
+                        }
+                    });
+                }
+                if (buttonConfrontaProductSystem) {
+                    buttonConfrontaProductSystem.addEventListener('click', async (event) => {
+                        event.preventDefault();
+                        await productSystem.confrontaProductSystem();
                     });
                 }
             });

@@ -66,3 +66,16 @@ export interface JsonProcess{
     },
     "exchanges": any
 };
+
+export interface JsonDatiCalcolo{
+    "productSystem":{
+        "id":string,
+        "nome":string
+    },
+    "impactMethod":{
+        "id":string,
+        "nome":string
+    },
+    "idCalcolo":string
+
+}

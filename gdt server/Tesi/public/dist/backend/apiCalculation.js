@@ -116,7 +116,7 @@ export class ApiCalculation {
             console.log("Stiamo calcolando...");
             let resp = await fetch(url);
             let v = await resp.json();
-            return v.isReady;
+            return v;
         }
         catch (error) {
             console.error('Errore durante la connessione:', error);

@@ -69,7 +69,7 @@ function creaMain() {
                       </div>
                       
                       <div class="col-12 col-lg-4">
-                          <a href="#" class="text-decoration-none">
+                          <a class="text-decoration-none" id="confrontaProductSystem">
                               <div class="card dashboard-card">
                                   <div class="card-body text-center">
                                       <h5 class="card-title">
