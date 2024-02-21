@@ -9,7 +9,6 @@
   "author": "Luca Monteleone",
   "license": "ISC",
   "devDependencies": {
-    "@types/mysql": "^2.15.25",
     "@types/node": "^20.11.17",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
@@ -17,8 +16,7 @@
   "dependencies": {
     "express": "^4.18.2",
     "morgan": "^1.10.0",
-    "mysql": "^2.18.1",
-    "mysql2": "^3.9.1",
-    "page": "^1.11.6"
+    "page": "^1.11.6",
+    "sequelize": "^6.37.1"
   }
 }

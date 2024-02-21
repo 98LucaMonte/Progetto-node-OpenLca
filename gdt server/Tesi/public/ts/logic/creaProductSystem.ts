@@ -155,6 +155,7 @@ const process = new Process();
         
                                 let jsonNuovoFlow:any = await aggiungiFlowInput();
                                 arrayFlowInput.push(jsonNuovoFlow);
+                                console.log(arrayFlowInput)
                             }
                         }
                     });
@@ -166,8 +167,8 @@ const process = new Process();
                     buttonInserisciFlowOutput.addEventListener('click', async (event) => {
                         
                         event.preventDefault();
-                        arrayInput.push(arrayFlowInput);
-                        
+                        arrayInput[3]=arrayFlowInput;
+                        console.log(arrayInput);
                         let modalNuovoProductSystem = document.getElementById("modal");
                         if(modalNuovoProductSystem){
                             modalNuovoProductSystem.innerHTML = '';
@@ -285,7 +286,8 @@ const process = new Process();
                         }
 
                         let jsonFlow:JsonFlow = flow.creaJsonFlow(nomeProductSystem,flowType,idLocation,nomeLocation,idFlowProperty,nomeFlowProperty);
-                        
+                        console.log(jsonFlow)
+
                         if(textNomeFlowInput && selectLocation && selectFlowType && selectFlowProperty){
                             textNomeFlowInput.value=""; 
 
@@ -374,7 +376,7 @@ const process = new Process();
                 if(buttonAggiungiFlowOutput){
                     buttonAggiungiFlowOutput.addEventListener('click', event => {
                         event.preventDefault();
-                        arrayInput.push(arrayFlowOutput);
+                        arrayInput[4] = arrayFlowOutput;
                         let modalNuovoProductSystem:HTMLDivElement | null = document.getElementById("modal") as HTMLDivElement | null;
                         if(modalNuovoProductSystem){
                             
@@ -502,6 +504,8 @@ const process = new Process();
 
                         let jsonFlow:JsonFlow = flow.creaJsonFlow(nomeFlow, idLocation, nomeLocation, flowType, idFlowProperty, nomeFlowProperty);
                         
+                        console.log(jsonFlow)
+
                         if(textNomeFlowOutput && selectLocation && selectFlowType && selectFlowProperty){
                             textNomeFlowOutput.value=""; 
 
@@ -548,10 +552,17 @@ const process = new Process();
                         //exchanges.push(this.creaExchanges(arrayFlowInput[i], true));
                         exchanges.push(exchange.creaJsonExchange(true,arrayFlowInput[i]));
                     } else {
-                        let nuovoFlow = await apiCalculation.putNuovoElement("flow", arrayFlowInput[i]);
+                        console.log(arrayFlowInput[i])
+                        //let json = exchange.creaJsonNuovoExchange(true,nuovoFlow,arrayFlowInput[i]);
+                        //console.log(json);
+                        let jsonFlow:JsonFlow = arrayFlowInput[i]; 
+                        console.log(jsonFlow);
+                        let nuovoFlow = await apiCalculation.putNuovoElement("flow", jsonFlow);
                         if(nuovoFlow["status"] == "OK"){
                         //exchanges.push(this.creaExchangesNuovoFlow(arrayFlowInput[i], true, nuovoFlow));
-                        exchanges.push(exchange.creaJsonNuovoExchange(true,nuovoFlow,arrayFlowInput[i]));
+                        let json = exchange.creaJsonNuovoExchange(true,nuovoFlow,arrayFlowInput[i]);
+                        console.log(json);
+                        exchanges.push(json);
                         }
                         else{
                             reject(new Error("Errore nella creazione del flusso")); 

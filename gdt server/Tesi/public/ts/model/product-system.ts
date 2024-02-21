@@ -6,14 +6,26 @@ import { JsonDatiCalcolo, JsonProcess } from "./types.js";
 
 import { calcolaProductSystem } from "../logic/calcolaProductSystem.js"
 import { creaModalInfoProductSystem } from "../logic/creaProductSystem.js"
+//import { DatabaseConnector } from "../backend/db.js";
 
 const apiCalculation = new ApiCalculation();
 
 export class ProductSystem{
     
-    arrayJsonDatiCalcolo: JsonDatiCalcolo[] = []; //Array usato per tenere traccia degli idCalcolo dei product system calcolati
-    
-    async confrontaProductSystem() {
+    /*async confrontaProductSystem(){
+        const dbConnector = new DatabaseConnector();
+        try {
+            await dbConnector.connect();
+            const queryResults = await dbConnector.queryDatabase('SELECT * FROM tbl_product_systems');
+            console.log(queryResults);
+        } catch (error) {
+            console.error('Errore durante l\'esecuzione dell\'operazione:', error);
+        } finally {
+            await dbConnector.disconnect();
+        }
+    };*/
+
+    /*async confrontaProductSystem(arrayJsonDatiCalcolo:JsonDatiCalcolo[]) {
 
         return new Promise<any>(async (resolve, reject) => {
             try {
@@ -24,8 +36,8 @@ export class ProductSystem{
                     //@ts-ignore
                     let myModal = new bootstrap.Modal(document.getElementById('confrontaProductSystemMain'));
                     myModal.show();
-                    riempiSelectCofrontaProductSystem(this.arrayJsonDatiCalcolo,"productsystem01");
-                    riempiSelectCofrontaProductSystem(this.arrayJsonDatiCalcolo,"productsystem02");
+                    riempiSelectCofrontaProductSystem(arrayJsonDatiCalcolo,"productsystem01");
+                    riempiSelectCofrontaProductSystem(arrayJsonDatiCalcolo,"productsystem02");
 
                 } 
             } 
@@ -34,7 +46,7 @@ export class ProductSystem{
             } 
         })
         
-    }
+    }*/
 
     //Metodo usato per aprire il modale relativo all'inizializzazione dei campi per fare il calcolo.
     async mostraModalCalcolaProductSystem(){
@@ -49,8 +61,6 @@ export class ProductSystem{
                     myModal.show();
                     let risultato:JsonDatiCalcolo = await calcolaProductSystem();
                     
-                    this.arrayJsonDatiCalcolo.push(risultato);
-                    console.log(this.arrayJsonDatiCalcolo);
                     resolve(risultato);
                     
                     
@@ -81,6 +91,8 @@ export class ProductSystem{
     
                     let idProcess = await apiCalculation.putNuovoElement("process", json);
                     
+                    console.log(idProcess["@id"])
+
                     let idProductSystem = await apiCalculation.nuovoProductSystem(idProcess["@id"]);
                     
                     if(idProductSystem != null){
@@ -96,7 +108,7 @@ export class ProductSystem{
                     divCreaProductSystem.innerHTML = "";
                     divCreaProductSystem.insertAdjacentHTML('beforeend',
                     `<div class="alert alert-danger" role="alert">
-                    Siamo spiacenti si è verficato un errore durante la creazione del product system.
+                    Siamo spiacenti si è verificato un errore durante la creazione del product system.
                     <br>
                     <button id="retryButton" type="button" class="btn btn-link text-dark text-center">Riprova</button>
                     </div>`);

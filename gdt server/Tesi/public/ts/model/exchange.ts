@@ -1,4 +1,4 @@
-import { JsonExchange } from "./types";
+import { JsonExchange, JsonExchangeNuovo } from "./types";
 
 export class Exchange {
 
@@ -23,7 +23,7 @@ export class Exchange {
 
     }
 
-    creaJsonNuovoExchange(type:boolean,flow:any,flowProperty:any){
+    creaJsonNuovoExchange(type:boolean,flow:any,flowProperty:any):JsonExchangeNuovo{
         
         let json = {
             "@type": "Exchange",

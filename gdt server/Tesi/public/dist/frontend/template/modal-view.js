@@ -1,3 +1,12 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import { ApiCalculation } from "../../backend/apiCalculation.js";
 const apiCalculation = new ApiCalculation();
 export function modalConfrontaProductSystem01() {
@@ -420,27 +429,29 @@ export function creaModalNuovoProductFine() {
         </div>
       `;
 }
-export async function getFlow(apiCalculation, nome) {
-    let listaFlow = await apiCalculation.getData("flow");
-    let risultato = ordinaEDividiPerCategoria(listaFlow);
-    let num = 0;
-    let categorie = Object.keys(risultato);
-    categorie.forEach(function (categoria) {
-        num++;
-        //lista di flow di una certa categoria
-        let listaFlowByCategoria = risultato[categoria];
-        if (listaFlowByCategoria[0].hasOwnProperty('category')) {
-            let divAccordionFlow = document.getElementById(`accordionFlushExample${nome}`);
-            if (divAccordionFlow) {
-                divAccordionFlow.insertAdjacentHTML('beforeend', creaAccordionElement(num, listaFlowByCategoria[0].category, nome));
-                for (let element of listaFlowByCategoria) {
-                    let UlElementFlow = document.getElementById(`listaFlow${num}`);
-                    if (UlElementFlow) {
-                        UlElementFlow.insertAdjacentHTML('beforeend', creaFlowElement(element));
+export function getFlow(apiCalculation, nome) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let listaFlow = yield apiCalculation.getData("flow");
+        let risultato = ordinaEDividiPerCategoria(listaFlow);
+        let num = 0;
+        let categorie = Object.keys(risultato);
+        categorie.forEach(function (categoria) {
+            num++;
+            //lista di flow di una certa categoria
+            let listaFlowByCategoria = risultato[categoria];
+            if (listaFlowByCategoria[0].hasOwnProperty('category')) {
+                let divAccordionFlow = document.getElementById(`accordionFlushExample${nome}`);
+                if (divAccordionFlow) {
+                    divAccordionFlow.insertAdjacentHTML('beforeend', creaAccordionElement(num, listaFlowByCategoria[0].category, nome));
+                    for (let element of listaFlowByCategoria) {
+                        let UlElementFlow = document.getElementById(`listaFlow${num}`);
+                        if (UlElementFlow) {
+                            UlElementFlow.insertAdjacentHTML('beforeend', creaFlowElement(element));
+                        }
                     }
                 }
             }
-        }
+        });
     });
 }
 function ordinaEDividiPerCategoria(array) {
@@ -469,32 +480,34 @@ function ordinaEDividiPerCategoria(array) {
     }, {});
     return raggruppatoPerCategoria;
 }
-export async function getAll(type) {
-    const placeholder = document.getElementById(`selected${type}`);
-    let lista = await apiCalculation.getAllData(type);
-    if (placeholder) {
-        if (lista.length == 0) {
-            placeholder.innerHTML = `Non ci sono ${type} selezionabili`;
-        }
-        else {
-            const select = document.getElementById(`lista${type}`);
-            placeholder.innerHTML = `Seleziona una ${type}`;
-            if (select) {
-                for (let i = 0; i < lista.length; i++) {
-                    let option = document.createElement("option");
-                    option.value = lista[i].name;
-                    option.text = lista[i].name;
-                    if (type === "impact-method" && lista[i].nwSets !== undefined) {
-                        option.id = lista[i]["@id"] + "/" + lista[i].nwSets[0]["@id"];
+export function getAll(type) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const placeholder = document.getElementById(`selected${type}`);
+        let lista = yield apiCalculation.getAllData(type);
+        if (placeholder) {
+            if (lista.length == 0) {
+                placeholder.innerHTML = `Non ci sono ${type} selezionabili`;
+            }
+            else {
+                const select = document.getElementById(`lista${type}`);
+                placeholder.innerHTML = `Seleziona una ${type}`;
+                if (select) {
+                    for (let i = 0; i < lista.length; i++) {
+                        let option = document.createElement("option");
+                        option.value = lista[i].name;
+                        option.text = lista[i].name;
+                        if (type === "impact-method" && lista[i].nwSets !== undefined) {
+                            option.id = lista[i]["@id"] + "/" + lista[i].nwSets[0]["@id"];
+                        }
+                        else {
+                            option.id = lista[i]["@id"];
+                        }
+                        select.appendChild(option);
                     }
-                    else {
-                        option.id = lista[i]["@id"];
-                    }
-                    select.appendChild(option);
                 }
             }
         }
-    }
+    });
 }
 export function riempiSelectCofrontaProductSystem(arrayJsonDatiCalcolo, type) {
     const placeholder = document.getElementById(`selected${type}`);
@@ -526,3 +539,4 @@ export function avanzamentoBarra(width) {
         }, 1500);
     });
 }
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibW9kYWwtdmlldy5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3RzL2Zyb250ZW5kL3RlbXBsYXRlL21vZGFsLXZpZXcudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7O0FBQUEsT0FBTyxFQUFFLGNBQWMsRUFBRSxNQUFNLGlDQUFpQyxDQUFDO0FBR2pFLE1BQU0sY0FBYyxHQUFHLElBQUksY0FBYyxFQUFFLENBQUM7QUFFNUMsTUFBTSxVQUFVLDZCQUE2QjtJQUMzQyxPQUFPOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztHQXNDTixDQUFDO0FBQ0osQ0FBQztBQUVELE1BQU0sVUFBVSwyQkFBMkI7SUFDekMsT0FBTzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7T0F5Q0YsQ0FBQztBQUNSLENBQUM7QUFFRCxNQUFNLFVBQVUsb0NBQW9DO0lBQ2xELE9BQU87Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7T0FtQkYsQ0FBQztBQUNSLENBQUM7QUFFRCxNQUFNLFVBQVUsd0JBQXdCO0lBQ3BDLE9BQU87Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O1NBc0NGLENBQUM7QUFDVixDQUFDO0FBRUQsTUFBTSxVQUFVLHVCQUF1QjtJQUNyQyxPQUFPOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7T0E4QkYsQ0FBQztBQUNSLENBQUM7QUFFRCxNQUFNLFVBQVUsd0JBQXdCO0lBQ3RDLE9BQU87Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztPQThCRixDQUFDO0FBQ1IsQ0FBQztBQUVELFNBQVMsb0JBQW9CLENBQUMsR0FBVSxFQUFDLFFBQWUsRUFBQyxJQUFXO0lBQ2xFLE9BQU87OzBIQUVpSCxHQUFHLEdBQUcsSUFBSTtVQUMxSCxRQUFROzs7NkJBR1csR0FBRyxHQUFHLElBQUk7OzhDQUVPLEdBQUc7Ozs7OztHQU05QyxDQUFDO0FBQ0osQ0FBQztBQUVELFNB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

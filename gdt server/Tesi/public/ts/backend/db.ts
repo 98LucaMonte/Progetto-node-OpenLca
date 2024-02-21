@@ -1,23 +1,16 @@
-import * as mysql from 'mysql2';
-
-export class Db {
-  public readonly connection: mysql.Connection;
-
-  constructor() {
-    this.connection = mysql.createConnection({
-      host: '127.0.0.1',
-      port:3000,
-      database: 'dbopenlca'
-    });
-  }
-
-  avviaConnessione(){
-    this.connection.connect((err)=> {
-      if (err) {
-        return console.error('Errore di connessione: ' + err.message);
-      }    
-      console.log('Connessione riuscita al db.');
-    });
-  }
-    
-}
+/*import { Sequelize } from 'sequelize'; 
+export async function connectDb() { 
+    try {
+        const db = new Sequelize('case_study', {
+            host: 'localhost', 
+            port: 3000,
+            dialect: 'mysql' /* one of 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'db2' | 'snowflake' | 'oracle' 
+        });
+        await db.authenticate();
+        console.log('Connection has been established successfully.');
+        db.close();
+    }
+    catch (error) {
+        console.error('Unable to connect to the database:', error);
+    }
+}*/
