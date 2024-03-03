@@ -169,7 +169,7 @@ export class ApiCalculation {
         try {
             let url = vps + "data/"+type+"/";
             console.log(url);
-            
+            console.log(json);
             
             let response = await fetch(url, {
                 method: "PUT",
@@ -182,6 +182,7 @@ export class ApiCalculation {
             let v = await response.json();
             return v;
         } catch (error) {
+            console.error(error);
             throw error; 
         }
     }

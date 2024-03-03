@@ -2,6 +2,8 @@ import { modalCaricamentoCalcoloProductSystem,getAll,avanzamentoBarra } from "..
 
 import { ApiCalculation } from "../backend/apiCalculation.js";
 import { JsonDatiCalcolo } from "../model/types.js";
+import { creaPdf } from "./creaPdf.js";
+
 
 const apiCalculation = new ApiCalculation();
 
