@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,11 +7,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.avanzamentoBarra = exports.riempiSelectCofrontaProductSystem = exports.getAll = exports.getFlow = exports.creaModalNuovoProductFine = exports.creaModalConfermaNuovoProductSystem = exports.creaModalNuovoFlowOutput = exports.creaModalNuovoFlowInput = exports.creaModalInserisciOutput = exports.creaModalInserisciInput = exports.modalCreaProductSystem01 = exports.modalCaricamentoCalcoloProductSystem = exports.modalCalcolaProductSystem01 = exports.modalConfrontaProductSystem01 = void 0;
-const apiCalculation_js_1 = require("../../backend/apiCalculation.js");
-const apiCalculation = new apiCalculation_js_1.ApiCalculation();
-function modalConfrontaProductSystem01() {
+import { ApiCalculation } from "../../backend/apiCalculation.js";
+const apiCalculation = new ApiCalculation();
+export function modalConfrontaProductSystem01() {
     return `
     <div class="modal fade" id="confrontaProductSystemMain" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -53,8 +50,7 @@ function modalConfrontaProductSystem01() {
   </div>
   `;
 }
-exports.modalConfrontaProductSystem01 = modalConfrontaProductSystem01;
-function modalCalcolaProductSystem01() {
+export function modalCalcolaProductSystem01() {
     return `
   <div class="modal fade" id="calcolaProductSystemMain" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -62,7 +58,7 @@ function modalCalcolaProductSystem01() {
             <div class="modal-header">
             <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Calcola Product System</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+             </div>
             <form class="row g-3">
             <div class="modal-body">
             <div class="container text-center">
@@ -98,8 +94,7 @@ function modalCalcolaProductSystem01() {
       </div>
       `;
 }
-exports.modalCalcolaProductSystem01 = modalCalcolaProductSystem01;
-function modalCaricamentoCalcoloProductSystem() {
+export function modalCaricamentoCalcoloProductSystem() {
     return `
   <div class="modal fade" id="calcolaProductSystemCaricamento" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -121,8 +116,7 @@ function modalCaricamentoCalcoloProductSystem() {
   </div>
       `;
 }
-exports.modalCaricamentoCalcoloProductSystem = modalCaricamentoCalcoloProductSystem;
-function modalCreaProductSystem01() {
+export function modalCreaProductSystem01() {
     return `
     <div class="modal fade" id="creaProductSystemMain" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog">
@@ -163,8 +157,7 @@ function modalCreaProductSystem01() {
 
         `;
 }
-exports.modalCreaProductSystem01 = modalCreaProductSystem01;
-function creaModalInserisciInput() {
+export function creaModalInserisciInput() {
     return `
   <div class="modal fade" id="creaProductSystemInput" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog">
@@ -197,8 +190,7 @@ function creaModalInserisciInput() {
         
       `;
 }
-exports.creaModalInserisciInput = creaModalInserisciInput;
-function creaModalInserisciOutput() {
+export function creaModalInserisciOutput() {
     return `
   <div class="modal fade" id="creaProductSystemOutput" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog">
@@ -231,7 +223,6 @@ function creaModalInserisciOutput() {
         
       `;
 }
-exports.creaModalInserisciOutput = creaModalInserisciOutput;
 function creaAccordionElement(num, category, nome) {
     return `<div class="accordion-item input-style">
     <h2 class="accordion-header">
@@ -261,7 +252,7 @@ function creaFlowElement(element) {
     </div>
   </li>`;
 }
-function creaModalNuovoFlowInput() {
+export function creaModalNuovoFlowInput() {
     return `
 
   <div class="modal fade" id="creaFlowInput" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -330,8 +321,7 @@ function creaModalNuovoFlowInput() {
 
   `;
 }
-exports.creaModalNuovoFlowInput = creaModalNuovoFlowInput;
-function creaModalNuovoFlowOutput() {
+export function creaModalNuovoFlowOutput() {
     return `
   <div class="modal fade" id="creaFlowOutput" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog">
@@ -398,8 +388,7 @@ function creaModalNuovoFlowOutput() {
 
   `;
 }
-exports.creaModalNuovoFlowOutput = creaModalNuovoFlowOutput;
-function creaModalConfermaNuovoProductSystem() {
+export function creaModalConfermaNuovoProductSystem() {
     return `
   <div class="modal fade" id="confermaCreaProductSystem" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -421,8 +410,7 @@ function creaModalConfermaNuovoProductSystem() {
  
       `;
 }
-exports.creaModalConfermaNuovoProductSystem = creaModalConfermaNuovoProductSystem;
-function creaModalNuovoProductFine() {
+export function creaModalNuovoProductFine() {
     return `
   <div class="modal fade" id="creaProductSystemFine" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog">
@@ -441,8 +429,7 @@ function creaModalNuovoProductFine() {
         </div>
       `;
 }
-exports.creaModalNuovoProductFine = creaModalNuovoProductFine;
-function getFlow(apiCalculation, nome) {
+export function getFlow(apiCalculation, nome) {
     return __awaiter(this, void 0, void 0, function* () {
         let listaFlow = yield apiCalculation.getData("flow");
         let risultato = ordinaEDividiPerCategoria(listaFlow);
@@ -467,7 +454,6 @@ function getFlow(apiCalculation, nome) {
         });
     });
 }
-exports.getFlow = getFlow;
 function ordinaEDividiPerCategoria(array) {
     // Verifica se ogni oggetto ha la proprietà 'category' prima di ordinare
     array.sort(function (a, b) {
@@ -494,7 +480,7 @@ function ordinaEDividiPerCategoria(array) {
     }, {});
     return raggruppatoPerCategoria;
 }
-function getAll(type) {
+export function getAll(type) {
     return __awaiter(this, void 0, void 0, function* () {
         const placeholder = document.getElementById(`selected${type}`);
         let lista = yield apiCalculation.getAllData(type);
@@ -523,8 +509,7 @@ function getAll(type) {
         }
     });
 }
-exports.getAll = getAll;
-function riempiSelectCofrontaProductSystem(arrayJsonDatiCalcolo, type) {
+export function riempiSelectCofrontaProductSystem(arrayJsonDatiCalcolo, type) {
     const placeholder = document.getElementById(`selected${type}`);
     if (placeholder) {
         if (arrayJsonDatiCalcolo.length == 0) {
@@ -545,8 +530,7 @@ function riempiSelectCofrontaProductSystem(arrayJsonDatiCalcolo, type) {
         }
     }
 }
-exports.riempiSelectCofrontaProductSystem = riempiSelectCofrontaProductSystem;
-function avanzamentoBarra(width) {
+export function avanzamentoBarra(width) {
     return new Promise(() => {
         let progressBar = document.getElementById('progressBar');
         setTimeout(function () {
@@ -555,5 +539,3 @@ function avanzamentoBarra(width) {
         }, 1500);
     });
 }
-exports.avanzamentoBarra = avanzamentoBarra;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibW9kYWwtdmlldy5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3RzL2Zyb250ZW5kL3RlbXBsYXRlL21vZGFsLXZpZXcudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7O0FBQUEsdUVBQWlFO0FBR2pFLE1BQU0sY0FBYyxHQUFHLElBQUksa0NBQWMsRUFBRSxDQUFDO0FBRTVDLFNBQWdCLDZCQUE2QjtJQUMzQyxPQUFPOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztHQXNDTixDQUFDO0FBQ0osQ0FBQztBQXhDRCxzRUF3Q0M7QUFFRCxTQUFnQiwyQkFBMkI7SUFDekMsT0FBTzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7T0F5Q0YsQ0FBQztBQUNSLENBQUM7QUEzQ0Qsa0VBMkNDO0FBRUQsU0FBZ0Isb0NBQW9DO0lBQ2xELE9BQU87Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7T0FtQkYsQ0FBQztBQUNSLENBQUM7QUFyQkQsb0ZBcUJDO0FBRUQsU0FBZ0Isd0JBQXdCO0lBQ3BDLE9BQU87Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O1NBc0NGLENBQUM7QUFDVixDQUFDO0FBeENELDREQXdDQztBQUVELFNBQWdCLHVCQUF1QjtJQUNyQyxPQUFPOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7T0E4QkYsQ0FBQztBQUNSLENBQUM7QUFoQ0QsMERBZ0NDO0FBRUQsU0FBZ0Isd0JBQXdCO0lBQ3RDLE9BQU87Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztPQThCRixDQUFDO0FBQ1IsQ0FBQztBQWhDRCw0REFnQ0M7QUFFRCxTQUFTLG9CQUFvQixDQUFDLEdBQVUsRUFBQyxRQUFlLEVBQUMsSUFBVztJQUNsRSxPQUFPOzswSEFFaUgsR0FBRyxHQUFHLElBQUk7VUFDMUgsUUFBUTs7OzZCQUdXLEdBQUcsR0FBRyxJQUFJOzs4Q0FFTyxHQUFHOzs7Ozs7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

@@ -178,7 +178,7 @@ export class ApiCalculation {
                 },
                 body: JSON.stringify(json)
             });
-
+ 
             let v = await response.json();
             return v;
         } catch (error) {

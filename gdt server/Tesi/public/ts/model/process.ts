@@ -17,7 +17,7 @@ export class Process {
                 "copyright": false,
                 "creationDate": dataFormattata
             },
-            "exchanges": exchanges
+             "exchanges": exchanges
         };
 
         return json;

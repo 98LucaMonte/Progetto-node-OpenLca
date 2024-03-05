@@ -22,5 +22,5 @@ app.get('*', function (request, response) {
 
 //start server
 app.listen(port, () => {
-    console.log(`App in ascolto sulla porta: ${port}`);
-})
+    console.log(`App in ascolto sulla porta: ${port}`); 
+}) 

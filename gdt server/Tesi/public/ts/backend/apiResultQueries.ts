@@ -88,4 +88,4 @@ export class ApiCalculation {
             console.error('Errore durante la connessione:', error);
         }
     }
-}
+}  

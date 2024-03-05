@@ -2,12 +2,11 @@
 import page from '//unpkg.com/page/page.mjs';
 
 import { homeView } from './frontend/template/home-view.js';
-import { notFound } from './frontend/template/error-view.js';
-
+import { notFound } from './frontend/template/error-view.js'; 
+ 
 import { ProductSystem } from './model/product-system.js';
 import { JsonDatiCalcolo } from './model/types.js';
-//@ts-ignore
-//import { connectDb } from './backend/db.js';
+
    
 const productSystem = new ProductSystem();
 
@@ -58,6 +57,7 @@ export class App {
                         //Abbiamo l'id del calcolo del product system appena calcolato
                         let risultato = await productSystem.mostraModalCalcolaProductSystem();
                         if(risultato){
+                            
                             // TODO: salvare il risultato del calcolo sul database. Bisogna collegarsi al database e salvare questo risultato 
                             arrayJsonDatiCalcolo.push(risultato);
                             console.log(arrayJsonDatiCalcolo);

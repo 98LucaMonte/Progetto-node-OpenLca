@@ -198,5 +198,5 @@ export class ApiImpactResults {
     }
 
 }
-
+ 
 

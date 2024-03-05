@@ -94,7 +94,7 @@ export class ProductSystem{
                     console.log(idProcess["@id"])
 
                     let idProductSystem = await apiCalculation.nuovoProductSystem(idProcess["@id"]);
-                    
+                     
                     if(idProductSystem != null){
                         avanzamentoBarra("100");
                         resolve(idProductSystem);

@@ -94,6 +94,6 @@ export class ApiTechnosphereFlows {
         } catch (error) {
             console.error('Errore durante la connessione:', error);
         }
-    }
+    } 
     
 }

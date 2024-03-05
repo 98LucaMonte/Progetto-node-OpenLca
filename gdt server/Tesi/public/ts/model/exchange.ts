@@ -26,7 +26,7 @@ export class Exchange {
     creaJsonNuovoExchange(type:boolean,flow:any,flowProperty:any):JsonExchangeNuovo{
         
         let json = {
-            "@type": "Exchange",
+            "@type": "Exchange", 
             "internalId": 1,
             "amount": 1.0,
             "isAvoidedProduct": false,

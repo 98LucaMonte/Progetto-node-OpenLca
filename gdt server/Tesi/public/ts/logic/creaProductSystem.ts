@@ -546,9 +546,9 @@ const process = new Process();
                 let arrayFlowInput:any = arrayInput[3];
                 let arrayFlowOutput:any = arrayInput[4];
                 let exchanges:any = [];
-
+ 
                 for (let i = 0; i < arrayFlowInput.length; i++) {
-                    if (typeof arrayFlowInput[i] === 'string') {
+                     if (typeof arrayFlowInput[i] === 'string') {
                         //exchanges.push(this.creaExchanges(arrayFlowInput[i], true));
                         exchanges.push(exchange.creaJsonExchange(true,arrayFlowInput[i]));
                     } else {

@@ -70,7 +70,7 @@ export interface JsonProcess{
 export interface JsonDatiCalcolo{
     "productSystem":{
         "id":string,
-        "nome":string
+         "nome":string
     },
     "impactMethod":{
         "id":string,

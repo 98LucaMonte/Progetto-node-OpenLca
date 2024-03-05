@@ -9,7 +9,7 @@ function creaPaginaError404(ctx:{path:string}):string{
       </div>
     </div>
     </div>
-    `;
+    `; 
 }
 
 function notFound(ctx: { path: string },contentPage:HTMLDivElement): void {

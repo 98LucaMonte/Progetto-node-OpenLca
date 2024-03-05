@@ -2,7 +2,8 @@ import { modalCaricamentoCalcoloProductSystem,getAll,avanzamentoBarra } from "..
 
 import { ApiCalculation } from "../backend/apiCalculation.js";
 import { JsonDatiCalcolo } from "../model/types.js";
-import { creaPdf } from "./creaPdf.js";
+
+import { creaPdf } from './creaPdf.js';
 
 
 const apiCalculation = new ApiCalculation();
@@ -97,17 +98,17 @@ export async function calcolaProductSystem (){
                                 statoCalcolo = statoCalcolo.isReady;
                                                               
                                 if (numeroIterazioni === 6) {
-                                    break;
+                                    break; 
                                 }
-                                avanzamentoBarra(String(10*numeroIterazioni))
+                                 avanzamentoBarra(String(10*numeroIterazioni))
                                 numeroIterazioni++;
                             }
                             
-                            if(statoCalcolo){
+                            if(statoCalcolo){ 
                                 avanzamentoBarra("100");
                                 await new Promise(resolve => setTimeout(resolve, 3000));
                                 divCreaProductSystem.innerHTML = "";
-                                
+                                creaPdf()
                                 jsonDatiCalcolo = creaJsonDatiCalcolo(idProductSystem,nomeProductSystem,idImpactMethod,nomeImpactMethod,idCalcolo);
                                 resolve(jsonDatiCalcolo);
                             }

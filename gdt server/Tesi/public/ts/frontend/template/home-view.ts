@@ -80,7 +80,7 @@ function creaMain(): string {
                                       <p class="text-dark">Seleziona i Product System che sono stati calcolati e confrontali.</p>
                                   </div>
                               </div>
-                          </a>
+                           </a>
                       </div>
                       
                   </div>
