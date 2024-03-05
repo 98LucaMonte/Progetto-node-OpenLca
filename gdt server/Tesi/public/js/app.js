@@ -23,7 +23,8 @@ import {creaTabellaProviderFlow,creaTabellaTechFlow,creaTabellaTechFlowValue,
         getEnviFlow,getTechFlowEnviFlow,getImpactCategory,
         getImpactCategoryEnviFlow,getImpactCategoryTechFlow} from './frontend/src/templates/main-view-tabelle-row.js';
 
-import { creaViewHeader,creaViewHeaderRisultati } from './frontend/src/templates/header-view.js'
+import { creaViewHeader,creaViewHeaderRisultati } from './frontend/src/templates/header-view.js';
+import { creaPaginaRisultati,creaTabellaCategorieImpatto,creaTabellaFlowsInputOutputValue } from './function/templateResult.js'
 import page from '//unpkg.com/page/page.mjs';
 
 const apiCalculation = new ApiCalculation();
@@ -90,7 +91,7 @@ class App {
                         console.log("chiudi");
                         setTimeout(async () => {
                             messaggio.innerHTML = '';
-                            page.redirect('/resultQueries/technosphereFlows');
+                            page.redirect('/result');
                         }, 3000); 
                     });
 
@@ -106,6 +107,20 @@ class App {
                 }
               
             });
+
+        });
+        page('/result',async ()=>{
+            this.header.innerHTML = '';
+            this.main.innerHTML = '';
+            this.footer.innerHTML = '';
+            
+            this.main.insertAdjacentHTML('beforeend',creaPaginaRisultati());
+            const lista = await apiImpactResults.getTotalImpacts(vps1,idCalcolo);
+
+            document.getElementById("risultatiRicerca",creaTabellaCategorieImpatto(lista));
+
+            const lista1 = await apiFlowResults.getInventoryResult(vps1, idCalcolo);
+            creaTabellaFlowsInputOutputValue(lista1);
 
         });
         page('/resultQueries/technosphereFlows', async () => {

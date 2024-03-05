@@ -6,13 +6,13 @@
 }
 
 .div-scrollabile{
-  height: 350px; 
+  height: 300px; 
   overflow-y: scroll;
   text-align: center;
 }
 
 .table-scrollabile{
-  height: 350px; 
+  height: 300px; 
   overflow-y: scroll;
 }
 
