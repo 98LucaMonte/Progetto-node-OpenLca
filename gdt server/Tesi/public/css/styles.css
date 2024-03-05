@@ -1,0 +1,80 @@
+.dashboard-card {
+  margin-top: 10%;
+}
+
+@media (max-width: 767px) { 
+  .offcanvas-space {
+      width: 80%!important;
+  }
+
+  .dashboard-card {
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+}
+
+.card.dashboard-card:hover {
+  transition: transform 0.3s ease-in-out;
+  transform: scale(1.05);
+}
+
+
+.form-select {
+  width: 70% !important;
+  height: 40px;
+  margin-bottom: 10px; 
+}
+
+.div-scrollabile{
+height: 350px; 
+overflow-y: scroll;
+text-align: center;
+}
+
+.table-scrollabile{
+height: 350px; 
+overflow-y: scroll;
+}
+
+.text-justify{
+text-align: justify;
+}
+
+@media (max-width: 576px) {
+
+.order-element2 {
+  order: 2;
+}
+
+.order-element1 {
+    order: 1;
+}
+
+.order-element0 {
+    order: 0;
+}
+}
+
+.input-style {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+.modal-body .input-group .dropdown-menu {
+  max-height: 200px; /* Imposta un'altezza massima per il menu a discesa */
+  overflow-y: auto; /* Aggiungi la barra di scorrimento verticale se necessario */
+}
+
+.div-scrollabile-flow{
+  height: 260px; 
+  overflow-y: auto;
+}
+
+.modal-body .input-group .dropdown-menu option {
+  font-size: smaller; /* Riduci la dimensione del carattere delle opzioni */
+  padding: 3px 6px; /* Riduci il padding delle opzioni */
+}
+
+
+body {
+  padding-bottom: 700px; /* Aggiungi spazio alla parte inferiore del corpo */
+}
