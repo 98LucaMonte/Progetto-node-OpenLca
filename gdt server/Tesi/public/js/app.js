@@ -24,7 +24,7 @@ import {creaTabellaProviderFlow,creaTabellaTechFlow,creaTabellaTechFlowValue,
         getImpactCategoryEnviFlow,getImpactCategoryTechFlow} from './frontend/src/templates/main-view-tabelle-row.js';
 
 import { creaViewHeader,creaViewHeaderRisultati } from './frontend/src/templates/header-view.js';
-import { creaPaginaRisultati,creaTabellaCategorieImpatto,creaTabellaFlowsInputOutputValue } from './function/templateResult.js'
+import { creaPaginaRisultati,creaTabellaCategorieImpatto,creaTabellaFlowsInputOutputValue,inserisciGrafico } from './function/templateResult.js'
 import page from '//unpkg.com/page/page.mjs';
 
 const apiCalculation = new ApiCalculation();
@@ -121,6 +121,19 @@ class App {
 
             const lista1 = await apiFlowResults.getInventoryResult(vps1, idCalcolo);
             creaTabellaFlowsInputOutputValue(lista1);
+            
+            document.getElementById('listaCategorieFlow1').addEventListener('change', async event => {
+                const selectedOption = event.target.value;
+                console.log('Opzione selezionata:', selectedOption);
+                inserisciGrafico(lista1,selectedOption,true);
+            });
+
+            document.getElementById('listaCategorieFlow2').addEventListener('change', async event => {
+                const selectedOption = event.target.value;
+                console.log('Opzione selezionata:', selectedOption);
+                inserisciGrafico(lista1,selectedOption,false);
+            });
+            
 
         });
         page('/resultQueries/technosphereFlows', async () => {

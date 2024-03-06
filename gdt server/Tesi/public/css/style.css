@@ -48,3 +48,8 @@
   height: 260px; 
   overflow-y: auto;
 }
+
+#myChart {
+  width: 100% !important;
+  height: 80% !important; 
+}
