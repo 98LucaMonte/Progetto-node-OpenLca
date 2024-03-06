@@ -24,7 +24,8 @@ import {creaTabellaProviderFlow,creaTabellaTechFlow,creaTabellaTechFlowValue,
         getImpactCategoryEnviFlow,getImpactCategoryTechFlow} from './frontend/src/templates/main-view-tabelle-row.js';
 
 import { creaViewHeader,creaViewHeaderRisultati } from './frontend/src/templates/header-view.js';
-import { creaPaginaRisultati,creaTabellaCategorieImpatto,creaTabellaFlowsInputOutputValue,inserisciGrafico } from './function/templateResult.js'
+import { creaPaginaRisultati,creaTabellaCategorieImpatto,creaTabellaFlowsInputOutputValue,inserisciGrafico } from './function/templateResult.js';
+import { creaPdf } from './function/creaPdf.js'
 import page from '//unpkg.com/page/page.mjs';
 
 const apiCalculation = new ApiCalculation();
@@ -80,8 +81,8 @@ class App {
                     const messaggio = document.getElementById("risultatiRicerca");
                     messaggio.innerHTML = '';
                     messaggio.insertAdjacentHTML('beforeend', `<h3 class="alert alert-success" role="alert">Calcolo finito!!</h3>`);
-
-                    const modalPdf = document.getElementById("modal");
+                    page.redirect('/result');
+                    /*const modalPdf = document.getElementById("modal");
                     modalPdf.insertAdjacentHTML('beforeend',creaModalForPDF());
                     
                     const myModal = new bootstrap.Modal(document.getElementById('modalPdf'));
@@ -102,7 +103,7 @@ class App {
                             messaggio.innerHTML = '';    
                             page.redirect('/resultQueries/technosphereFlows');
                         }, 3000);  
-                    });
+                    });*/
 
                 }
               
@@ -116,22 +117,33 @@ class App {
             
             this.main.insertAdjacentHTML('beforeend',creaPaginaRisultati());
             const lista = await apiImpactResults.getTotalImpacts(vps1,idCalcolo);
-
+            
             document.getElementById("risultatiRicerca",creaTabellaCategorieImpatto(lista));
 
             const lista1 = await apiFlowResults.getInventoryResult(vps1, idCalcolo);
             creaTabellaFlowsInputOutputValue(lista1);
             
             document.getElementById('listaCategorieFlow1').addEventListener('change', async event => {
-                const selectedOption = event.target.value;
-                console.log('Opzione selezionata:', selectedOption);
-                inserisciGrafico(lista1,selectedOption,true);
+                event.preventDefault();
+                const categoriaScelta = event.target.value;
+                if(categoriaScelta != "Seleziona una categoria"){
+                    console.log('Opzione selezionata:', categoriaScelta);
+                    inserisciGrafico(lista1,categoriaScelta,true);
+                }
             });
 
             document.getElementById('listaCategorieFlow2').addEventListener('change', async event => {
-                const selectedOption = event.target.value;
-                console.log('Opzione selezionata:', selectedOption);
-                inserisciGrafico(lista1,selectedOption,false);
+                event.preventDefault();;
+                const categoriaScelta = event.target.value;
+                if(categoriaScelta != "Seleziona una categoria"){
+                    console.log('Opzione selezionata:', categoriaScelta);
+                    inserisciGrafico(lista1,categoriaScelta,false);
+                }
+            });
+
+            document.getElementById('creaPdf').addEventListener('click',async event => {
+                event.preventDefault();
+                await creaPdf();
             });
             
 

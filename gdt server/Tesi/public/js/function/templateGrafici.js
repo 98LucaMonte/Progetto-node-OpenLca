@@ -1,23 +1,28 @@
 
 export function creaGraficoImpactCategory(lista){
 
+    let listaOrdinata = lista.sort(function(a, b) {
+        return b.amount - a.amount;
+    });
+    listaOrdinata.slice(0,7);
+
     const ctx = document.getElementById('myChart');
 
-    const listaNomeImpactCategory = lista.map(function(element) {
+    const listaNomeImpactCategory = listaOrdinata.map(function(element) {
         return element.impactCategory.name;
     });
 
-    const listaQuantitaImpactCategory = lista.map(function(element) {
+    const listaQuantitaImpactCategory = listaOrdinata.map(function(element) {
         return element.amount;
     });
 
     new Chart(ctx, {
         type: 'bar',
         data: {
-        labels: listaNomeImpactCategory,
+        labels: listaNomeImpactCategory.slice(0,7),
         datasets: [{
             label: 'Impact method',
-            data: listaQuantitaImpactCategory,
+            data: listaQuantitaImpactCategory.slice(0,7),
             fill: true,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -75,27 +80,40 @@ export async function setCategoryForSelect(listaCategorieDisponibili,num){
 }
 
 export function creaGraficoFlow(lista,categoria,isInput,num){
-    const ctx = document.getElementById(`myChart${num}`);
 
-    if(ctx)
-        ctx.destroy
+    const divDiagram = document.getElementById(`diagram${num}`);
+    if(divDiagram){
+        divDiagram.innerHTML='';
+        let canvas = document.createElement("canvas");
+        canvas.id = "myChart"+num;
+        divDiagram.appendChild(canvas);
+    }
 
-    let listaOrdinata = lista.filter(elemento => elemento.isInput === isInput && elemento.flow.category === categoria).sort((a, b) => b.amount - a.amount); 
+    let ctx = document.getElementById(`myChart${num}`);
+
+    console.log(lista);
+
+    let listaOrdinata = lista.filter(elemento => elemento.enviFlow.isInput === isInput && elemento.enviFlow.flow.category === categoria).sort((a, b) => b.amount - a.amount); 
+
+    console.log(listaOrdinata);
 
     const listaNomi = listaOrdinata.slice(0,5).map(function(element) {
-        return element.flow.name;
+        return element.enviFlow.flow.name;
     });
 
     const listaQuantità = listaOrdinata.slice(0,5).map(function(element) {
         return element.amount;
     });
 
+    console.log(listaNomi)
+    console.log(listaQuantità);
 
     new Chart(ctx, {
         type: 'bar',
         data: {
         labels: listaNomi,
         datasets: [{
+            label: `Top 5 Flow per la categoria${categoria}`,
             data: listaQuantità,
             fill: true,
             backgroundColor: [

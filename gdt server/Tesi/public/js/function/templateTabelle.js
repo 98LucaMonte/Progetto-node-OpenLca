@@ -18,7 +18,7 @@ export function creaViewRowImpactCategoriesValue(element,num){
     return `
     <tr class="color-row-table">
         <td>${element.impactCategory.name}</td>
-        <td>${element.amount} ${element.impactCategory.refUnit}</td>
+        <td>${parseFloat(element.amount).toFixed(10)} ${element.impactCategory.refUnit}</td>
     </tr>
     `;
 }
@@ -60,7 +60,7 @@ export function creaViewRowEnviFlowsValue(element,num,amount){
     <tr class="color-row-table">
         <td>${element.flow.name}</td>
         <td>${element.flow.category}</td>
-        <td>${amount} ${element.flow.refUnit}</td>         
+        <td>${parseFloat(amount).toFixed(10)} ${element.flow.refUnit}</td>         
     </tr>
     `;
 }

@@ -2,44 +2,53 @@ import {creaViewRowImpactCategoriesValue,creaViewTableImpactCategoriesValue,
         creaViewRowEnviFlowsValue,creaViewTableEnviFlowsInputValue,creaViewTableEnviFlowsOutputValue} from './templateTabelle.js'
 import {creaGraficoImpactCategory,setCategoryForSelect,creaGraficoFlow} from './templateGrafici.js'
 
-export function creaPaginaRisultati(){
+export function creaPaginaRisultati(productSystem,impactMethod){
     return `
     <div class="container">
         <h1>Pagina dei Risultati</h1> 
-        <div class="row mb-2 mt-2">
-            
-            <p class="text-start fs-5 fw-bold">Inventario del Product System</p>
-            <p class="text-start fs-6">Queste tabelle illustrano i flow ovvero gli input e gli output del processo appartente al Product System.</p>
+        <p>Tale pagina mostra i risultati del calcolo del Product System:${productSystem} calcolato con questo Impact Method ${impactMethod}<p>
+        
+        <div class="row row-style">
+            <p class="text-start fs-5 fw-bold">
+                <a class="btn btn-outline-secondary" role="button" id="creaPdf">Crea Pdf</a>    
+                <br>
+                Inventario del Product System
+            </p>
+            <p class="text-start fs-6">Questi grafici e tabelle illustrano i flow ovvero gli input e gli output del processo appartente al Product System.</p>
             
             <div class="col-sm-6"> 
                 <p><strong>Flow di Input</strong></p>
                 <div class="div-scrollabile table-responsive" id="risultatiRicerca01"></div>
             </div>
             
+            <div class="col-sm-5"> 
+                <p><strong>I 5 principali contributi ai risultati dei flow di input</strong></p>
+
+                <select class="form-select form-select-sm" aria-label="Small select example" id="listaCategorieFlow1">
+                    <option selected id="selectedCategorieFlow1">Seleziona una categoria</option>
+                </select>
+                <div id="diagram1">
+                    <canvas id="myChart1"></canvas>
+                </div> 
+            </div>
+
+        </div>
+
+        <div class="row row-style ">
+            
+
             <div class="col-sm-6"> 
                 <p><strong>Flow di Output</strong></p>
                 <div class="div-scrollabile table-responsive" id="risultatiRicerca02"></div>
             </div>
 
-        </div>
-
-        <div class="row mb-2 mt-2">
             <div class="col-sm-6"> 
-                <p><strong>I 5 principali contributi ai risultati dei flow di input - panoramica per categoria</strong></p>
-                <select class="form-select form-select-sm" aria-label="Small select example" id="listaCategorieFlow1">
-                    <option selected id="selectedCategorieFlow1">Seleziona una categoria</option>
-                </select>
-                <div>
-                    <canvas id="myChart1"></canvas>
-                </div> 
-            </div>
-
-            <div class="col-sm-6"> 
-                <p><strong>I 5 principali contributi ai risultati dei flow di output - panoramica per categoria</strong></p>
+                <p><strong>I 5 principali contributi ai risultati dei flow di output</strong></p>
+        
                 <select class="form-select form-select-sm" aria-label="Small select example" id="listaCategorieFlow2">
                     <option selected id="selectedCategorieFlow2">Seleziona una categoria</option>
                 </select>
-                <div>
+                <div id="diagram2">
                     <canvas id="myChart2"></canvas>
                 </div> 
             </div>
@@ -47,7 +56,7 @@ export function creaPaginaRisultati(){
         </div>
 
 
-        <div class="row mb-2">
+        <div class="row row-style ">
 
             <p class="text-start fs-5 fw-bold">Impact Category</p>
             
@@ -56,14 +65,14 @@ export function creaPaginaRisultati(){
                 <div id="risultatiRicerca"></div>
             </div>
 
-            <div class="col-sm-6">
+            <div class="col-sm-5">
                 <p>Grafico che illustra i sette principali Impact category</p>
                 <canvas id="myChart"></canvas>
             </div> 
         </div>
            
         </div>
-        <div class="row">
+        <div class="row row-style">
             <div class="col-sm">
                 <p class="text-center fs-5 fw-bold">Sankey graph del Product System</p>
             </div>
@@ -111,12 +120,7 @@ export async function creaTabellaCategorieImpatto(lista){
         }
     }
     
-    let listaOrdinata = lista.sort(function(a, b) {
-        return b.amount - a.amount;
-    });
-    listaOrdinata.slice(0,7);
-
-    creaGraficoImpactCategory(listaOrdinata);
+    creaGraficoImpactCategory(lista);
 
 }
 

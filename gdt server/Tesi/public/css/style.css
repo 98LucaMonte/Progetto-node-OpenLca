@@ -49,7 +49,6 @@
   overflow-y: auto;
 }
 
-#myChart {
-  width: 100% !important;
-  height: 80% !important; 
+.row-style {
+  margin-top: 5% !important;
 }
