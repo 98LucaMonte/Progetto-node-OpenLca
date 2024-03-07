@@ -25,7 +25,7 @@ import {creaTabellaProviderFlow,creaTabellaTechFlow,creaTabellaTechFlowValue,
 
 import { creaViewHeader,creaViewHeaderRisultati } from './frontend/src/templates/header-view.js';
 import { creaPaginaRisultati,creaTabellaCategorieImpatto,creaTabellaFlowsInputOutputValue,inserisciGrafico } from './function/templateResult.js';
-import { creaPdf } from './function/creaPdf.js'
+//import { creaPdf } from './function/creaPdf.js'
 import page from '//unpkg.com/page/page.mjs';
 
 const apiCalculation = new ApiCalculation();

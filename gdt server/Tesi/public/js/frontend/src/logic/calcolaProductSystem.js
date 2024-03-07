@@ -1,9 +1,7 @@
-const doc = new jspdf.jsPDF();
-
 
 class CalcolaProductSystem{
 
-    creaPDF = async (vps,idCalcolo,apiImpactResults) =>{
+    /*creaPDF = async (vps,idCalcolo,apiImpactResults) =>{
      
         //Prendo il nome del Product System per dare il nome al file e al titolo del file
         const selectProductSystem = document.getElementById("listaProductSystem");
@@ -33,7 +31,7 @@ class CalcolaProductSystem{
         
         //Download del file PDF
         doc.save(nomeProductSystem+".pdf");    
-    }
+    }*/
 
     /** 
     * In questo metodo si esegue il calcolo del product system usando l'impact method 
