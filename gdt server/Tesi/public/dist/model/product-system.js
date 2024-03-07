@@ -11,43 +11,8 @@ import { ApiCalculation } from "../backend/apiCalculation.js";
 import { modalCalcolaProductSystem01, modalCreaProductSystem01, avanzamentoBarra } from "../frontend/template/modal-view.js";
 import { calcolaProductSystem } from "../logic/calcolaProductSystem.js";
 import { creaModalInfoProductSystem } from "../logic/creaProductSystem.js";
-//import { DatabaseConnector } from "../backend/db.js";
 const apiCalculation = new ApiCalculation();
 export class ProductSystem {
-    /*async confrontaProductSystem(){
-        const dbConnector = new DatabaseConnector();
-        try {
-            await dbConnector.connect();
-            const queryResults = await dbConnector.queryDatabase('SELECT * FROM tbl_product_systems');
-            console.log(queryResults);
-        } catch (error) {
-            console.error('Errore durante l\'esecuzione dell\'operazione:', error);
-        } finally {
-            await dbConnector.disconnect();
-        }
-    };*/
-    /*async confrontaProductSystem(arrayJsonDatiCalcolo:JsonDatiCalcolo[]) {
-
-        return new Promise<any>(async (resolve, reject) => {
-            try {
-                let modalConfronto: HTMLDivElement | null = document.getElementById("modal") as HTMLDivElement | null;
-                if (modalConfronto) {
-                    modalConfronto.insertAdjacentHTML('beforeend', modalConfrontaProductSystem01());
-                    
-                    //@ts-ignore
-                    let myModal = new bootstrap.Modal(document.getElementById('confrontaProductSystemMain'));
-                    myModal.show();
-                    riempiSelectCofrontaProductSystem(arrayJsonDatiCalcolo,"productsystem01");
-                    riempiSelectCofrontaProductSystem(arrayJsonDatiCalcolo,"productsystem02");
-
-                }
-            }
-            catch (error) {
-                reject(error);
-            }
-        })
-        
-    }*/
     //Metodo usato per aprire il modale relativo all'inizializzazione dei campi per fare il calcolo.
     mostraModalCalcolaProductSystem() {
         return __awaiter(this, void 0, void 0, function* () {

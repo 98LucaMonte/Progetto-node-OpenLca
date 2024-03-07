@@ -9,7 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { modalCaricamentoCalcoloProductSystem, getAll, avanzamentoBarra } from "../frontend/template/modal-view.js";
 import { ApiCalculation } from "../backend/apiCalculation.js";
-import { creaPdf } from './creaPdf.js';
 const apiCalculation = new ApiCalculation();
 //Metodo utilizzato per eseguire la chiamata API, che si occupa di prendere i dati in input inseriti dall'utente.
 export function calcolaProductSystem() {
@@ -92,7 +91,6 @@ export function calcolaProductSystem() {
                                     avanzamentoBarra("100");
                                     yield new Promise(resolve => setTimeout(resolve, 3000));
                                     divCreaProductSystem.innerHTML = "";
-                                    creaPdf();
                                     jsonDatiCalcolo = creaJsonDatiCalcolo(idProductSystem, nomeProductSystem, idImpactMethod, nomeImpactMethod, idCalcolo);
                                     resolve(jsonDatiCalcolo);
                                 }

@@ -1,7 +1,7 @@
 //const vps:string = 'http://109.205.180.220:3000/'; //indirizzo vps 
 const vps:string = 'http://127.0.0.1:3000/'; // docker run -p 3000:8080 -v $HOME/openLCA-data-1.4:/app/data --rm -d gdt-server -db case_study
 
-export class ApiCalculation {
+export class ApiResultQueries {
 
     /** 
      * Un sistema di prodotto viene calcolato per un singolo valore di domanda per un flusso della tecnosfera: 
