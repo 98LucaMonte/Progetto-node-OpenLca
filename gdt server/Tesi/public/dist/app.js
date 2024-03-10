@@ -12,7 +12,7 @@ import page from '//unpkg.com/page/page.mjs';
 import { homeView } from './frontend/template/home-view.js';
 import { notFound } from './frontend/template/error-view.js';
 import { ProductSystem } from './model/product-system.js';
-import { resultView, inserisciGraficoFlow } from './frontend/template/result-view.js';
+import { creaPaginaRisultati, resultViewInventario, resultViewImpactCategory, inserisciGraficoFlow } from './frontend/template/result-view.js';
 const productSystem = new ProductSystem();
 export class App {
     constructor(contentPage) {
@@ -47,20 +47,26 @@ export class App {
                         //Abbiamo l'id del calcolo del product system appena calcolato
                         let risultato = yield productSystem.mostraModalCalcolaProductSystem();
                         idCalcolo = risultato.idCalcolo;
+                        if (idCalcolo) {
+                            let divBody = document.getElementById("content");
+                            if (divBody) {
+                                divBody.removeAttribute("style");
+                            }
+                            contentPage.innerHTML = "";
+                            contentPage.insertAdjacentHTML('beforeend', creaPaginaRisultati());
+                            page.redirect('/resultInventory');
+                        }
                     }));
                 }
                 if (buttonConfrontaProductSystem) {
                     buttonConfrontaProductSystem.addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
                         event.preventDefault();
-                        console.log("Collegamento al database");
-                        //await connectDb();
-                        //await productSystem.confrontaProductSystem();
                     }));
                 }
             });
         });
-        page('/result', () => __awaiter(this, void 0, void 0, function* () {
-            yield resultView(contentPage, idCalcolo);
+        page('/resultInventory', () => __awaiter(this, void 0, void 0, function* () {
+            yield resultViewInventario(idCalcolo);
             let selectCategorieFlowInput = document.getElementById('listaCategorieFlow1');
             if (selectCategorieFlowInput) {
                 selectCategorieFlowInput.addEventListener('change', (event) => __awaiter(this, void 0, void 0, function* () {
@@ -97,6 +103,29 @@ export class App {
                 }));
             }
         }));
+        page('/resultImpact', () => __awaiter(this, void 0, void 0, function* () {
+            yield resultViewImpactCategory(idCalcolo);
+            let buttonCreaPdf = document.getElementById('creaPdf');
+            if (buttonCreaPdf) {
+                buttonCreaPdf.addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
+                    event.preventDefault();
+                    //await creaPdf();
+                }));
+            }
+        }));
+        /*page('/resultSankey',async ()=>{
+
+            await resultViewSankey(idCalcolo);
+
+            let buttonCreaPdf:HTMLButtonElement | null = document.getElementById('creaPdf') as HTMLButtonElement | null;
+            if(buttonCreaPdf){
+                buttonCreaPdf.addEventListener('click',async event => {
+                    event.preventDefault();
+                    //await creaPdf();
+                });
+            }
+     
+        });*/
         page('*', (ctx) => {
             //metodo per pagina non esistente
             notFound(ctx, contentPage);

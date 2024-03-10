@@ -88,4 +88,23 @@ export class ApiResultQueries {
             console.error('Errore durante la connessione:', error);
         }
     }
+
+    getSankeyGraphData = async (idCalcolo: string) =>{
+        try {
+            let url = vps + "result/"+idCalcolo+"/sankey";
+            console.log(url);
+            let resp = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            });
+            console.log("end");
+            console.log(resp);
+            let v = await resp.json();
+            return v;
+        } catch (error) {
+            console.error('Errore durante la connessione:', error);
+        }
+    }
 }  

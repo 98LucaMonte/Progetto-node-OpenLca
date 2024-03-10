@@ -81,7 +81,7 @@ export function calcolaProductSystem() {
                                     yield new Promise(resolve => setTimeout(resolve, 1500)); // Ritardo
                                     statoCalcolo = yield apiCalculation.getStatoCalcolo(idCalcolo);
                                     statoCalcolo = statoCalcolo.isReady;
-                                    if (numeroIterazioni === 6) {
+                                    if (numeroIterazioni === 10) {
                                         break;
                                     }
                                     avanzamentoBarra(String(10 * numeroIterazioni));

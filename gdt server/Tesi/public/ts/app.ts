@@ -6,7 +6,7 @@ import { notFound } from './frontend/template/error-view.js';
  
 import { ProductSystem } from './model/product-system.js';
 import { JsonDatiCalcolo } from './model/types.js';
-import { resultView,inserisciGraficoFlow } from './frontend/template/result-view.js';
+import { creaPaginaRisultati,resultViewInventario,resultViewImpactCategory,resultViewSankey,inserisciGraficoFlow } from './frontend/template/result-view.js';
 
    
 const productSystem = new ProductSystem();
@@ -54,18 +54,22 @@ export class App {
                         //Abbiamo l'id del calcolo del product system appena calcolato
                         let risultato:JsonDatiCalcolo = await productSystem.mostraModalCalcolaProductSystem();
                         idCalcolo = risultato.idCalcolo;
-                    
+                        if(idCalcolo){
+                            let divBody: HTMLBodyElement | null = document.getElementById("content") as HTMLBodyElement | null;
+                            if(divBody){
+                                divBody.removeAttribute("style");
+                            }
+
+                            contentPage.innerHTML = "";
+                            contentPage.insertAdjacentHTML('beforeend', creaPaginaRisultati());
+                            page.redirect('/resultInventory');
+                        } 
                     });
                 } 
 
                 if(buttonConfrontaProductSystem){
                     buttonConfrontaProductSystem.addEventListener('click',async (event)=>{
                         event.preventDefault();
-                        console.log("Collegamento al database")
-                        //await connectDb();
-                        //await productSystem.confrontaProductSystem();
-
-
                         
                     })
                     
@@ -73,9 +77,9 @@ export class App {
             }); 
             
         });
-        page('/result',async ()=>{
+        page('/resultInventory',async ()=>{
 
-            await resultView(contentPage,idCalcolo)
+            await resultViewInventario(idCalcolo)
 
             let selectCategorieFlowInput:HTMLSelectElement | null = document.getElementById('listaCategorieFlow1') as HTMLSelectElement | null;
             
@@ -116,10 +120,34 @@ export class App {
                     //await creaPdf();
                 });
             }
-            
-            
-
+             
         });
+        page('/resultImpact',async ()=>{
+
+            await resultViewImpactCategory(idCalcolo)
+
+            let buttonCreaPdf:HTMLButtonElement | null = document.getElementById('creaPdf') as HTMLButtonElement | null;
+            if(buttonCreaPdf){
+                buttonCreaPdf.addEventListener('click',async event => {
+                    event.preventDefault();
+                    //await creaPdf();
+                });
+            }
+     
+        });
+        /*page('/resultSankey',async ()=>{
+
+            await resultViewSankey(idCalcolo);
+
+            let buttonCreaPdf:HTMLButtonElement | null = document.getElementById('creaPdf') as HTMLButtonElement | null;
+            if(buttonCreaPdf){
+                buttonCreaPdf.addEventListener('click',async event => {
+                    event.preventDefault();
+                    //await creaPdf();
+                });
+            }
+     
+        });*/
         page('*', (ctx:{ path:string }) => {
             //metodo per pagina non esistente
             notFound(ctx,contentPage)

@@ -94,7 +94,7 @@ export async function calcolaProductSystem (){
                                 statoCalcolo = await apiCalculation.getStatoCalcolo(idCalcolo);
                                 statoCalcolo = statoCalcolo.isReady;
                                                               
-                                if (numeroIterazioni === 6) {
+                                if (numeroIterazioni === 10) {
                                     break; 
                                 }
                                  avanzamentoBarra(String(10*numeroIterazioni))

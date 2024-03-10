@@ -97,5 +97,24 @@ export class ApiResultQueries {
                 console.error('Errore durante la connessione:', error);
             }
         });
+        this.getSankeyGraphData = (idCalcolo) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                let url = vps + "result/" + idCalcolo + "/sankey";
+                console.log(url);
+                let resp = yield fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                });
+                console.log("end");
+                console.log(resp);
+                let v = yield resp.json();
+                return v;
+            }
+            catch (error) {
+                console.error('Errore durante la connessione:', error);
+            }
+        });
     }
 }

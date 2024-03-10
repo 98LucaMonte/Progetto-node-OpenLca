@@ -1,11 +1,11 @@
-import { EnviFlowData, ImpactCategoryData } from "../../model/types";
+import { EnviFlowData, ImpactCategoryData } from "../../model/types.js";
 
 export function creaGraficoImpactCategory(lista:ImpactCategoryData[]){
 
     let listaOrdinata = lista.sort(function(a, b) {
         return b.amount - a.amount;
     });
-    listaOrdinata.slice(0,7);
+    listaOrdinata.slice(0,5);
 
     const ctx = document.getElementById('myChart');
 
@@ -21,28 +21,24 @@ export function creaGraficoImpactCategory(lista:ImpactCategoryData[]){
     new Chart(ctx, {
         type: 'bar',
         data: {
-        labels: listaNomeImpactCategory.slice(0,7),
+        labels: listaNomeImpactCategory.slice(0,5),
         datasets: [{
             label: 'Impact method',
-            data: listaQuantitaImpactCategory.slice(0,7),
+            data: listaQuantitaImpactCategory.slice(0,5),
             fill: true,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(255, 159, 64, 0.2)',
                 'rgba(255, 205, 86, 0.2)',
                 'rgba(75, 192, 192, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(201, 203, 207, 0.2)'
+                'rgba(54, 162, 235, 0.2)'
             ],
             borderColor: [
                 'rgb(255, 99, 132)',
                 'rgb(255, 159, 64)',
                 'rgb(255, 205, 86)',
                 'rgb(75, 192, 192)',
-                'rgb(54, 162, 235)',
-                'rgb(153, 102, 255)',
-                'rgb(201, 203, 207)'
+                'rgb(54, 162, 235)'
             ],
             borderWidth: 1
         }]
