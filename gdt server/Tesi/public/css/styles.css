@@ -16,6 +16,7 @@
 .card.dashboard-card:hover {
   transition: transform 0.3s ease-in-out;
   transform: scale(1.05);
+  background-color: #addcfa;
 }
 
 
@@ -76,5 +77,14 @@ text-align: justify;
 
 
 body {
-  padding-bottom: 700px; /* Aggiungi spazio alla parte inferiore del corpo */
+  padding-bottom: 250px; /* Aggiungi spazio alla parte inferiore del corpo */
+}
+
+.breadcrumb .breadcrumb-item a {
+  color: black; /* Imposta il colore del testo a nero */
+  text-decoration: none; /* Rimuove la sottolineatura */
+}
+
+.breadcrumb .breadcrumb-item a:hover {
+  text-decoration: underline; /* Aggiunge la sottolineatura al passaggio del mouse */
 }

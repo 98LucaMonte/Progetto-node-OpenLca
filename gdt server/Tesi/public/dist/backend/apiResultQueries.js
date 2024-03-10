@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 //const vps:string = 'http://109.205.180.220:3000/'; //indirizzo vps 
 const vps = 'http://127.0.0.1:3000/'; // docker run -p 3000:8080 -v $HOME/openLCA-data-1.4:/app/data --rm -d gdt-server -db case_study
-export class ApiCalculation {
+export class ApiResultQueries {
     constructor() {
         /**
          * Un sistema di prodotto viene calcolato per un singolo valore di domanda per un flusso della tecnosfera:
@@ -90,6 +90,25 @@ export class ApiCalculation {
                 let url = vps + "result/" + idCalcolo + "/impact-categories";
                 console.log(url);
                 let resp = yield fetch(url);
+                let v = yield resp.json();
+                return v;
+            }
+            catch (error) {
+                console.error('Errore durante la connessione:', error);
+            }
+        });
+        this.getSankeyGraphData = (idCalcolo) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                let url = vps + "result/" + idCalcolo + "/sankey";
+                console.log(url);
+                let resp = yield fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                });
+                console.log("end");
+                console.log(resp);
                 let v = yield resp.json();
                 return v;
             }

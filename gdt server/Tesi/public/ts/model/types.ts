@@ -79,3 +79,29 @@ export interface JsonDatiCalcolo{
     "idCalcolo":string
 
 }
+
+export interface EnviFlowData {
+    enviFlow: {
+      flow: {
+        "@type": string;
+        "@id": string;
+        name: string;
+        category: string;
+        flowType: string;
+        refUnit: string;
+      }
+      isInput: boolean;
+    },
+    amount: number;
+}
+
+export interface ImpactCategoryData {
+    impactCategory: {
+      "@type": string;
+      "@id": string;
+      name: string;
+      category: string;
+      refUnit: string;
+    };
+    amount: number;
+}

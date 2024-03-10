@@ -1,23 +1,17 @@
 function creaMain() {
     return `<header id="header">
   <nav class="navbar navbar-expand-lg bg-body-secondary">
-      <button class="btn border border-dark border-1 rounded ms-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
-          <span class="navbar-toggler-icon"></span>
-      </button> 
-
+      
       <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
           <ul class="navbar-nav me-auto ms-4 mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
+              <a class="nav-link active" aria-current="page" href="/">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">About us</a>
+              <a class="nav-link" href="/">About us</a>
             </li>
           </ul>
-          <form class="d-flex me-5" role="search">
-            <input class="form-control me-2" type="search" placeholder="Inserisci i dati..." aria-label="Search">
-            <button class="btn btn-outline-secondary" type="submit">Cerca</button>
-          </form>
+          
       </div>
       
   </nav>
@@ -27,19 +21,15 @@ function creaMain() {
   
   <div class="container">
       <div class="row">
-          <div class="col-sm offcanvas offcanvas-start offcanvas-space" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
-              <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Backdrop with scrolling</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-              </div>
-              <div class="offcanvas-body">
-                <p>Try scrolling the rest of the page to see this option in action.</p>
-              </div>
-          </div>
+          
           <div class="col-sm">
               <div class="container-fluid">
+                
                   <div class="row">
-                      
+                    
+                  <h3>Benvenuto nella DEMO online di OpenLca</h3><br>
+                  <p class="text-start fs-6 fw-normal">Prova una delle tre funzioni che vengono offerte.</p>
+
                       <div class="col-12 col-lg-4">
                             <a class="text-decoration-none" id="creaProductSystem">
                               <div class="card dashboard-card">

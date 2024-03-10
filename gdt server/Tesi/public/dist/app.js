@@ -12,15 +12,16 @@ import page from '//unpkg.com/page/page.mjs';
 import { homeView } from './frontend/template/home-view.js';
 import { notFound } from './frontend/template/error-view.js';
 import { ProductSystem } from './model/product-system.js';
+import { creaPaginaRisultati, resultViewInventario, resultViewImpactCategory, inserisciGraficoFlow } from './frontend/template/result-view.js';
 const productSystem = new ProductSystem();
 export class App {
     constructor(contentPage) {
         this.contentPage = contentPage;
-        this.arrayJsonDatiCalcolo = [];
-        this.setupRoutes(this.contentPage, this.arrayJsonDatiCalcolo);
+        this.setupRoutes(this.contentPage);
     }
     //Metodo usato per aggiungere le route dell'applicazione 
-    setupRoutes(contentPage, arrayJsonDatiCalcolo) {
+    setupRoutes(contentPage) {
+        let idCalcolo;
         page('/', () => {
             homeView(contentPage);
             //attendo il caricamento elementi della pagina
@@ -29,7 +30,6 @@ export class App {
                 let buttonCreaProductSystem = document.getElementById('creaProductSystem');
                 let buttonCalcolaProductSystem = document.getElementById('calcolaProductSystem');
                 let buttonConfrontaProductSystem = document.getElementById('confrontaProductSystem');
-                console.log(this.arrayJsonDatiCalcolo);
                 if (buttonCreaProductSystem) {
                     //Una volta trovato il button  di creazione del product system attendo l'evento di click per aprire il primo modal
                     buttonCreaProductSystem.addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
@@ -46,23 +46,86 @@ export class App {
                         event.preventDefault();
                         //Abbiamo l'id del calcolo del product system appena calcolato
                         let risultato = yield productSystem.mostraModalCalcolaProductSystem();
-                        if (risultato) {
-                            // TODO: salvare il risultato del calcolo sul database. Bisogna collegarsi al database e salvare questo risultato 
-                            arrayJsonDatiCalcolo.push(risultato);
-                            console.log(arrayJsonDatiCalcolo);
+                        idCalcolo = risultato.idCalcolo;
+                        if (idCalcolo) {
+                            let divBody = document.getElementById("content");
+                            if (divBody) {
+                                divBody.removeAttribute("style");
+                            }
+                            contentPage.innerHTML = "";
+                            contentPage.insertAdjacentHTML('beforeend', creaPaginaRisultati());
+                            page.redirect('/resultInventory');
                         }
                     }));
                 }
                 if (buttonConfrontaProductSystem) {
                     buttonConfrontaProductSystem.addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
                         event.preventDefault();
-                        console.log("Collegamento al database");
-                        //await connectDb();
-                        //await productSystem.confrontaProductSystem();
                     }));
                 }
             });
         });
+        page('/resultInventory', () => __awaiter(this, void 0, void 0, function* () {
+            yield resultViewInventario(idCalcolo);
+            let selectCategorieFlowInput = document.getElementById('listaCategorieFlow1');
+            if (selectCategorieFlowInput) {
+                selectCategorieFlowInput.addEventListener('change', (event) => __awaiter(this, void 0, void 0, function* () {
+                    event.preventDefault();
+                    const target = event.target;
+                    if (target) {
+                        const categoriaScelta = target.value;
+                        if (categoriaScelta != "Seleziona una categoria") {
+                            console.log('Opzione selezionata:', categoriaScelta);
+                            yield inserisciGraficoFlow(idCalcolo, categoriaScelta, true);
+                        }
+                    }
+                }));
+            }
+            let selectCategorieFlowOutput = document.getElementById('listaCategorieFlow2');
+            if (selectCategorieFlowOutput) {
+                selectCategorieFlowOutput.addEventListener('change', (event) => __awaiter(this, void 0, void 0, function* () {
+                    event.preventDefault();
+                    const target = event.target;
+                    if (target) {
+                        const categoriaScelta = target.value;
+                        if (categoriaScelta != "Seleziona una categoria") {
+                            console.log('Opzione selezionata:', categoriaScelta);
+                            yield inserisciGraficoFlow(idCalcolo, categoriaScelta, false);
+                        }
+                    }
+                }));
+            }
+            let buttonCreaPdf = document.getElementById('creaPdf');
+            if (buttonCreaPdf) {
+                buttonCreaPdf.addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
+                    event.preventDefault();
+                    //await creaPdf();
+                }));
+            }
+        }));
+        page('/resultImpact', () => __awaiter(this, void 0, void 0, function* () {
+            yield resultViewImpactCategory(idCalcolo);
+            let buttonCreaPdf = document.getElementById('creaPdf');
+            if (buttonCreaPdf) {
+                buttonCreaPdf.addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
+                    event.preventDefault();
+                    //await creaPdf();
+                }));
+            }
+        }));
+        /*page('/resultSankey',async ()=>{
+
+            await resultViewSankey(idCalcolo);
+
+            let buttonCreaPdf:HTMLButtonElement | null = document.getElementById('creaPdf') as HTMLButtonElement | null;
+            if(buttonCreaPdf){
+                buttonCreaPdf.addEventListener('click',async event => {
+                    event.preventDefault();
+                    //await creaPdf();
+                });
+            }
+     
+        });*/
         page('*', (ctx) => {
             //metodo per pagina non esistente
             notFound(ctx, contentPage);

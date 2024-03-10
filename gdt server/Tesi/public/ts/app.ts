@@ -6,6 +6,7 @@ import { notFound } from './frontend/template/error-view.js';
  
 import { ProductSystem } from './model/product-system.js';
 import { JsonDatiCalcolo } from './model/types.js';
+import { creaPaginaRisultati,resultViewInventario,resultViewImpactCategory,resultViewSankey,inserisciGraficoFlow } from './frontend/template/result-view.js';
 
    
 const productSystem = new ProductSystem();
@@ -14,17 +15,15 @@ const productSystem = new ProductSystem();
 export class App {
     
     protected contentPage:HTMLDivElement;
-    protected arrayJsonDatiCalcolo: JsonDatiCalcolo[]; //Array usato per tenere traccia degli idCalcolo dei product system calcolati
 
     constructor(contentPage:HTMLDivElement) {
         this.contentPage = contentPage;
-        this.arrayJsonDatiCalcolo = [];
-        this.setupRoutes(this.contentPage,this.arrayJsonDatiCalcolo);
+        this.setupRoutes(this.contentPage);
     }
 
     //Metodo usato per aggiungere le route dell'applicazione 
-    private setupRoutes(contentPage:HTMLDivElement,arrayJsonDatiCalcolo:JsonDatiCalcolo[]): void {
-        
+    private setupRoutes(contentPage:HTMLDivElement): void {
+        let idCalcolo: string;
         page('/', () => {
             homeView(contentPage);
             
@@ -34,8 +33,6 @@ export class App {
                 let buttonCreaProductSystem: HTMLElement | null = document.getElementById('creaProductSystem') as HTMLElement | null;
                 let buttonCalcolaProductSystem: HTMLElement | null = document.getElementById('calcolaProductSystem') as HTMLElement | null;
                 let buttonConfrontaProductSystem: HTMLElement | null = document.getElementById('confrontaProductSystem') as HTMLElement | null;
-
-                console.log(this.arrayJsonDatiCalcolo);
 
                 if (buttonCreaProductSystem) {
                     //Una volta trovato il button  di creazione del product system attendo l'evento di click per aprire il primo modal
@@ -55,25 +52,24 @@ export class App {
                         event.preventDefault();
                         
                         //Abbiamo l'id del calcolo del product system appena calcolato
-                        let risultato = await productSystem.mostraModalCalcolaProductSystem();
-                        if(risultato){
-                            
-                            // TODO: salvare il risultato del calcolo sul database. Bisogna collegarsi al database e salvare questo risultato 
-                            arrayJsonDatiCalcolo.push(risultato);
-                            console.log(arrayJsonDatiCalcolo);
-                        }
-                    
+                        let risultato:JsonDatiCalcolo = await productSystem.mostraModalCalcolaProductSystem();
+                        idCalcolo = risultato.idCalcolo;
+                        if(idCalcolo){
+                            let divBody: HTMLBodyElement | null = document.getElementById("content") as HTMLBodyElement | null;
+                            if(divBody){
+                                divBody.removeAttribute("style");
+                            }
+
+                            contentPage.innerHTML = "";
+                            contentPage.insertAdjacentHTML('beforeend', creaPaginaRisultati());
+                            page.redirect('/resultInventory');
+                        } 
                     });
                 } 
 
                 if(buttonConfrontaProductSystem){
                     buttonConfrontaProductSystem.addEventListener('click',async (event)=>{
                         event.preventDefault();
-                        console.log("Collegamento al database")
-                        //await connectDb();
-                        //await productSystem.confrontaProductSystem();
-
-
                         
                     })
                     
@@ -81,6 +77,77 @@ export class App {
             }); 
             
         });
+        page('/resultInventory',async ()=>{
+
+            await resultViewInventario(idCalcolo)
+
+            let selectCategorieFlowInput:HTMLSelectElement | null = document.getElementById('listaCategorieFlow1') as HTMLSelectElement | null;
+            
+            if(selectCategorieFlowInput){
+                selectCategorieFlowInput.addEventListener('change', async event => {
+                    event.preventDefault();
+                    const target = event.target as HTMLSelectElement;
+                    if(target){
+                        const categoriaScelta = target.value;
+                        if(categoriaScelta != "Seleziona una categoria"){
+                            console.log('Opzione selezionata:', categoriaScelta);
+                            await inserisciGraficoFlow(idCalcolo,categoriaScelta,true);
+                        }
+                    }
+                });
+            }
+            
+            let selectCategorieFlowOutput:HTMLSelectElement | null = document.getElementById('listaCategorieFlow2') as HTMLSelectElement | null;
+            
+            if(selectCategorieFlowOutput){
+                selectCategorieFlowOutput.addEventListener('change', async event => {
+                    event.preventDefault();
+                    const target = event.target as HTMLSelectElement;
+                    if(target){
+                        const categoriaScelta = target.value;
+                        if(categoriaScelta != "Seleziona una categoria"){
+                            console.log('Opzione selezionata:', categoriaScelta);
+                            await inserisciGraficoFlow(idCalcolo,categoriaScelta,false);
+                        }
+                    }
+                });
+            }
+            
+            let buttonCreaPdf:HTMLButtonElement | null = document.getElementById('creaPdf') as HTMLButtonElement | null;
+            if(buttonCreaPdf){
+                buttonCreaPdf.addEventListener('click',async event => {
+                    event.preventDefault();
+                    //await creaPdf();
+                });
+            }
+             
+        });
+        page('/resultImpact',async ()=>{
+
+            await resultViewImpactCategory(idCalcolo)
+
+            let buttonCreaPdf:HTMLButtonElement | null = document.getElementById('creaPdf') as HTMLButtonElement | null;
+            if(buttonCreaPdf){
+                buttonCreaPdf.addEventListener('click',async event => {
+                    event.preventDefault();
+                    //await creaPdf();
+                });
+            }
+     
+        });
+        /*page('/resultSankey',async ()=>{
+
+            await resultViewSankey(idCalcolo);
+
+            let buttonCreaPdf:HTMLButtonElement | null = document.getElementById('creaPdf') as HTMLButtonElement | null;
+            if(buttonCreaPdf){
+                buttonCreaPdf.addEventListener('click',async event => {
+                    event.preventDefault();
+                    //await creaPdf();
+                });
+            }
+     
+        });*/
         page('*', (ctx:{ path:string }) => {
             //metodo per pagina non esistente
             notFound(ctx,contentPage)

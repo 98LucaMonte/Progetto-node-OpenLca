@@ -3,47 +3,6 @@ import { JsonDatiCalcolo } from "../../model/types.js";
 
 const apiCalculation = new ApiCalculation();
 
-export function modalConfrontaProductSystem01(){
-  return `
-    <div class="modal fade" id="confrontaProductSystemMain" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Confronta Product System</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <form class="row g-3">
-        <div class="modal-body">
-        
-        <div class="container text-center">
-          <div class="row">
-            <div class="col-sm-6">
-              <p class="text-start fs-6">Seleziona il primo product system</p>
-              <select class="form-select form-select-sm input-style" aria-label="Small select example" id="listaproductsystem01">
-                <option selected id="selectedproductsystem01"></option>
-                
-              </select>
-            </div>
-            <div class="col-sm-6">
-              <p class="text-start fs-6">Seleziona il secondo product system</p>
-              <select class="form-select form-select-sm input-style" aria-label="Small select example" id="listaproductsystem02">
-                <option selected id="selectedproductsystem02"></option>
-                
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-          <div class="modal-footer">
-          <button class="btn btn-outline-danger btn-sm" data-bs-dismiss="modal">Chiudi</button>
-          <button class="btn btn-outline-secondary btn-sm confrontaProduct" data-bs-dismiss="modal" type="submit" disabled>Confronta</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-  `;
-}
 
 export function modalCalcolaProductSystem01(){
   return `
