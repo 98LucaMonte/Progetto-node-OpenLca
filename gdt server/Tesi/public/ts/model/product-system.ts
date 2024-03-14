@@ -6,7 +6,7 @@ import { JsonDatiCalcolo, JsonProcess } from "./types.js";
 
 import { calcolaProductSystem } from "../logic/calcolaProductSystem.js"
 import { creaModalInfoProductSystem } from "../logic/creaProductSystem.js"
-
+ 
 
 const apiCalculation = new ApiCalculation();
 

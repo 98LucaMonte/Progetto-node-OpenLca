@@ -4,7 +4,7 @@ import { creaGraficoImpactCategory } from "./grafici-view.js";
 import { creaViewRowImpactCategoriesValue, creaViewTableImpactCategoriesValue } from "./tabelle-view.js";
 
 const apiImpactResults = new ApiImpactResults();
-
+ 
 
 export function aggiungiGraficaCategorieImpatto(){
 

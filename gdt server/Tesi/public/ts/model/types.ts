@@ -79,7 +79,7 @@ export interface JsonDatiCalcolo{
     "idCalcolo":string
 
 }
-
+ 
 export interface EnviFlowData {
     enviFlow: {
       flow: {

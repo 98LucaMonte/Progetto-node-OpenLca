@@ -13,6 +13,7 @@ import { homeView } from './frontend/template/home-view.js';
 import { notFound } from './frontend/template/error-view.js';
 import { ProductSystem } from './model/product-system.js';
 import { creaPaginaRisultati, resultViewInventario, resultViewImpactCategory, inserisciGraficoFlow } from './frontend/template/result-view.js';
+import { creaPDF } from './logic/creaReportPdf.js';
 const productSystem = new ProductSystem();
 export class App {
     constructor(contentPage) {
@@ -99,7 +100,7 @@ export class App {
             if (buttonCreaPdf) {
                 buttonCreaPdf.addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
                     event.preventDefault();
-                    //await creaPdf();
+                    yield creaPDF();
                 }));
             }
         }));
@@ -109,23 +110,10 @@ export class App {
             if (buttonCreaPdf) {
                 buttonCreaPdf.addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
                     event.preventDefault();
-                    //await creaPdf();
+                    yield creaPDF();
                 }));
             }
         }));
-        /*page('/resultSankey',async ()=>{
-
-            await resultViewSankey(idCalcolo);
-
-            let buttonCreaPdf:HTMLButtonElement | null = document.getElementById('creaPdf') as HTMLButtonElement | null;
-            if(buttonCreaPdf){
-                buttonCreaPdf.addEventListener('click',async event => {
-                    event.preventDefault();
-                    //await creaPdf();
-                });
-            }
-     
-        });*/
         page('*', (ctx) => {
             //metodo per pagina non esistente
             notFound(ctx, contentPage);

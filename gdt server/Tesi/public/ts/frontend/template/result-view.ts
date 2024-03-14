@@ -5,7 +5,7 @@ import { aggiungiGraficaCategorieImpatto,creaTabellaCategorieImpatto } from './r
 import { aggiungiSankey, creaSankey } from './result-view-sankey.js';
 import { aggiungiGraficaInventorio, creaTabellaFlowsInputOutputValue } from './result-view-inventory.js';
 
-
+ 
 const apiFlowResults = new ApiFlowResults();
 
 export async function resultViewInventario(idCalcolo:string) {

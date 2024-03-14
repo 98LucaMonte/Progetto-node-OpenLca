@@ -7,13 +7,13 @@ import { notFound } from './frontend/template/error-view.js';
 import { ProductSystem } from './model/product-system.js';
 import { JsonDatiCalcolo } from './model/types.js';
 import { creaPaginaRisultati,resultViewInventario,resultViewImpactCategory,resultViewSankey,inserisciGraficoFlow } from './frontend/template/result-view.js';
+import { creaPDF } from './logic/creaReportPdf.js';
 
-   
+
 const productSystem = new ProductSystem();
 
-
 export class App {
-    
+         
     protected contentPage:HTMLDivElement;
 
     constructor(contentPage:HTMLDivElement) {
@@ -24,8 +24,8 @@ export class App {
     //Metodo usato per aggiungere le route dell'applicazione 
     private setupRoutes(contentPage:HTMLDivElement): void {
         let idCalcolo: string;
-        page('/', () => {
-            homeView(contentPage);
+        page('/', () => { 
+            homeView(contentPage); 
             
             //attendo il caricamento elementi della pagina
             document.addEventListener('DOMContentLoaded', (event) => {
@@ -117,7 +117,7 @@ export class App {
             if(buttonCreaPdf){
                 buttonCreaPdf.addEventListener('click',async event => {
                     event.preventDefault();
-                    //await creaPdf();
+                    await creaPDF();
                 });
             }
              
@@ -130,24 +130,11 @@ export class App {
             if(buttonCreaPdf){
                 buttonCreaPdf.addEventListener('click',async event => {
                     event.preventDefault();
-                    //await creaPdf();
+                    await creaPDF();
                 });
             }
      
         });
-        /*page('/resultSankey',async ()=>{
-
-            await resultViewSankey(idCalcolo);
-
-            let buttonCreaPdf:HTMLButtonElement | null = document.getElementById('creaPdf') as HTMLButtonElement | null;
-            if(buttonCreaPdf){
-                buttonCreaPdf.addEventListener('click',async event => {
-                    event.preventDefault();
-                    //await creaPdf();
-                });
-            }
-     
-        });*/
         page('*', (ctx:{ path:string }) => {
             //metodo per pagina non esistente
             notFound(ctx,contentPage)

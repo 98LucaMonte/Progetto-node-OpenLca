@@ -84,7 +84,7 @@ function creaMain(): string {
 
 </main>`;
 }
-
+ 
 export function homeView(contentPage: HTMLDivElement): void {
 
     contentPage.innerHTML = "";

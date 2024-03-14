@@ -2,7 +2,7 @@ import { ApiFlowResults } from "../../backend/apiFlowResult.js";
 import { EnviFlowData } from "../../model/types.js";
 import { setCategoryForSelect } from "./grafici-view.js";
 import { creaViewTableEnviFlowsInputValue, creaViewTableEnviFlowsOutputValue, creaViewRowEnviFlowsValue } from "./tabelle-view.js";
-
+ 
 const apiFlowResults = new ApiFlowResults();
 
 export function aggiungiGraficaInventorio(){

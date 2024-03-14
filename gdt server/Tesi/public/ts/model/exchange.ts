@@ -21,8 +21,8 @@ export class Exchange {
 
         return json;
 
-    }
-
+    } 
+ 
     creaJsonNuovoExchange(type:boolean,flow:any,flowProperty:any):JsonExchangeNuovo{
         
         let json = {

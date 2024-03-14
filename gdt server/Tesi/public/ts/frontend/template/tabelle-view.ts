@@ -1,5 +1,5 @@
 import { EnviFlowData, ImpactCategoryData } from "../../model/types";
-
+ 
 export function creaViewTableImpactCategoriesValue():string {
     return `
         <table data-bs-spy="scroll" class="table table-striped table-bordered table-scrollabile" id="tabella">

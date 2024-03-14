@@ -4,7 +4,7 @@ import { ApiCalculation } from "../backend/apiCalculation.js";
 import { JsonDatiCalcolo } from "../model/types.js";
 
 const apiCalculation = new ApiCalculation();
-
+ 
 
 //Metodo utilizzato per eseguire la chiamata API, che si occupa di prendere i dati in input inseriti dall'utente.
 export async function calcolaProductSystem (){

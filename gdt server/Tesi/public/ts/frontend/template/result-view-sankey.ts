@@ -1,5 +1,5 @@
 import { ApiResultQueries } from '../../backend/apiResultQueries.js';
-
+ 
 const apiResultQueries = new ApiResultQueries();
 
 export async function creaSankey(idCalcolo:string) {

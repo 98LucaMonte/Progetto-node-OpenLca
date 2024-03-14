@@ -3,7 +3,7 @@ import { EnviFlowData, ImpactCategoryData } from "../../model/types.js";
 export function creaGraficoImpactCategory(lista:ImpactCategoryData[]){
 
     let listaOrdinata = lista.sort(function(a, b) {
-        return b.amount - a.amount;
+        return b.amount - a.amount; 
     });
     listaOrdinata.slice(0,5);
 

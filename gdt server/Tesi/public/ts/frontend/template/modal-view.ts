@@ -2,7 +2,7 @@ import { ApiCalculation } from "../../backend/apiCalculation.js";
 import { JsonDatiCalcolo } from "../../model/types.js";
 
 const apiCalculation = new ApiCalculation();
-
+ 
 
 export function modalCalcolaProductSystem01(){
   return `

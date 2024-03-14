@@ -167,7 +167,7 @@ export class ApiCalculation {
      */
     putNuovoElement = async(type:string,json:object) =>{
         try {
-            let url = vps + "data/"+type+"/";
+            let url = vps + "data/"+type+"/"; 
             console.log(url);
             console.log(json);
             

@@ -22,7 +22,7 @@ export class ApiTechnosphereFlows {
             console.error('Errore durante la connessione:', error);
         }
     }
-
+ 
     /** I requisiti diretti di un processo j sono gli input e gli output in scala 
      * del prodotto collegato e i flussi di rifiuti di quel processo relativi alla domanda finale del sistema di prodotto.
      *
