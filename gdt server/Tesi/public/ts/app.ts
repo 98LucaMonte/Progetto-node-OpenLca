@@ -70,7 +70,6 @@ export class App {
                 if(buttonConfrontaProductSystem){
                     buttonConfrontaProductSystem.addEventListener('click',async (event)=>{
                         event.preventDefault();
-                        
                     })
                     
                 }
@@ -117,7 +116,7 @@ export class App {
             if(buttonCreaPdf){
                 buttonCreaPdf.addEventListener('click',async event => {
                     event.preventDefault();
-                    await creaPDF();
+                    await creaPDF(idCalcolo);
                 });
             }
              
@@ -130,7 +129,7 @@ export class App {
             if(buttonCreaPdf){
                 buttonCreaPdf.addEventListener('click',async event => {
                     event.preventDefault();
-                    await creaPDF();
+                    await creaPDF(idCalcolo);
                 });
             }
      

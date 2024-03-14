@@ -100,7 +100,7 @@ export class App {
             if (buttonCreaPdf) {
                 buttonCreaPdf.addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
                     event.preventDefault();
-                    yield creaPDF();
+                    yield creaPDF(idCalcolo);
                 }));
             }
         }));
@@ -110,7 +110,7 @@ export class App {
             if (buttonCreaPdf) {
                 buttonCreaPdf.addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
                     event.preventDefault();
-                    yield creaPDF();
+                    yield creaPDF(idCalcolo);
                 }));
             }
         }));
