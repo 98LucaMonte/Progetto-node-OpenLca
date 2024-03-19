@@ -22,89 +22,108 @@ export function creaPDF(idCalcolo) {
         const doc = new jsPDF();
         const datiCalcolo = yield apiResultQueries.getRichiestaFinale(idCalcolo);
         const nomeProductSystem = "" + datiCalcolo.techFlow.provider.name;
+        const listaImpactCategory = yield apiImpactResults.getTotalImpacts(idCalcolo);
         const listaInventory = yield apiFlowResults.getInventoryResult(idCalcolo);
         console.log(listaInventory);
-        const listaImpactCategory = yield apiImpactResults.getTotalImpacts(idCalcolo);
-        //Costruzione dati per la tabella degli impactCategory
-        let indice = 0;
-        let datiTabellaImpactCategory = listaImpactCategory.map((elemento) => {
-            const amountFormatted = parseFloat("" + elemento.amount).toFixed(7);
-            indice++;
-            return {
-                'Num': "" + indice,
-                'Nome': elemento.impactCategory.name,
-                'Categoria': elemento.impactCategory.category,
-                'Quantità': amountFormatted + " " + elemento.impactCategory.refUnit
-            };
-        }).sort((a, b) => {
-            const nomeA = a.Nome.toUpperCase();
-            const nomeB = b.Nome.toUpperCase();
-            return nomeA.localeCompare(nomeB);
-        });
-        //Costruzione dati per il grafico degli impactCategory
-        let datiGraficoImpactCategory = listaImpactCategory.sort(function (a, b) {
-            return b.amount - a.amount;
-        }).slice(0, 5).map((elemento) => {
-            const amountFormatted = parseFloat("" + elemento.amount).toFixed(7);
-            indice++;
-            return {
-                'Num': "" + indice,
-                'Nome': elemento.impactCategory.name,
-                'Categoria': elemento.impactCategory.category,
-                'Quantità': amountFormatted + " " + elemento.impactCategory.refUnit
-            };
-        });
-        //Costruzione tabella
-        let headers = ['Num', 'Nome', 'Categoria', 'Quantità'];
-        let config = {
-            "printHeaders": true,
-            "autoSize": true,
-            "fontSize": 10
-        };
         doc.setFontSize(14);
         //Titolo del PDF
         doc.text("Risultati del calcolo del sistema di prodotto: " + nomeProductSystem, 10, 10);
-        doc.setFontSize(10);
-        //Intestazione prima tabella
-        doc.text("Tabella che mostra le categorie di impatto del sistema di prodotto appena calcolato", 10, 20);
-        //Inserimento tabella
-        doc.table(10, 30, datiTabellaImpactCategory, headers, config);
+        //Formazione formato dati per la tabella e inserimento dei dati nella tabella
+        creaTabellaImpactCategory(doc, listaImpactCategory);
         //Inserimento nuova pagina
         doc.addPage();
-        // Costruzione grafico 
-        let canvas = document.createElement('canvas');
-        let ctx = canvas.getContext('2d');
-        canvas.width = 400;
-        canvas.height = 200;
-        let barWidth = canvas.width / datiGraficoImpactCategory.length;
-        let maxValue = Math.max(...datiGraficoImpactCategory.map(item => parseFloat(item.Quantità)));
-        let scaleFactor = canvas.height / maxValue;
-        // Definizione dei colori per le barre
-        const colors = ['#FF5733', '#33FF57', '#3357FF', '#FF33E5', '#E5FF33'];
-        if (ctx != null) {
-            // Disegna le barre sul canvas
-            datiGraficoImpactCategory.forEach((item, index) => {
-                let x = index * barWidth;
-                let y = canvas.height - parseFloat(item.Quantità) * scaleFactor;
-                let barHeight = parseFloat(item.Quantità) * scaleFactor;
-                if (ctx) {
-                    ctx.fillStyle = colors[index];
-                    ctx.fillRect(x, y, barWidth, barHeight);
-                }
-            });
-            // Disegna la legenda
-            ctx.font = '12px Arial';
-            ctx.fillStyle = '#000';
-            datiGraficoImpactCategory.forEach((item, index) => {
-                if (ctx)
-                    ctx.fillText(item.Nome, index * 100, canvas.height + 20);
-            });
-        }
-        // Converti il canvas in un'immagine data URL
-        let dataURL = canvas.toDataURL();
-        // Aggiungi l'immagine al documento PDF
-        doc.addImage(dataURL, 'PNG', 10, 10, 400, 200);
-        // Salva il documento come file PDF
+        //Formazione formato dati per il grafico e inserimento dei dati nel grafuco
+        //creaGraficoImpactCategory(doc,listaImpactCategory);
+        //Salva il documento come file PDF
         doc.save("Report_" + nomeProductSystem + ".pdf");
     });
 }
+function creaTabellaImpactCategory(doc, listaImpactCategory) {
+    //Costruzione dati per la tabella degli impactCategory
+    let indice = 0;
+    let datiTabellaImpactCategory = listaImpactCategory.sort((ele1, ele2) => {
+        const nomeEle1 = ele1.impactCategory.name.toUpperCase();
+        const nomeEle2 = ele2.impactCategory.name.toUpperCase();
+        return nomeEle1.localeCompare(nomeEle2);
+    }).map((elemento) => {
+        const amountFormatted = parseFloat("" + elemento.amount).toFixed(7);
+        indice++;
+        return {
+            'Num': "" + indice,
+            'Nome': elemento.impactCategory.name,
+            'Categoria': elemento.impactCategory.category,
+            'Quantità': amountFormatted + " " + elemento.impactCategory.refUnit
+        };
+    });
+    //Costruzione tabella
+    let headers = ['Num', 'Nome', 'Categoria', 'Quantità'];
+    let config = {
+        "printHeaders": true,
+        "autoSize": true,
+        "fontSize": 8
+    };
+    doc.setFontSize(10);
+    //Intestazione prima tabella
+    doc.text("Tabella che mostra le categorie di impatto del sistema di prodotto appena calcolato", 10, 20);
+    //Inserimento tabella
+    doc.table(10, 30, datiTabellaImpactCategory, headers, config);
+}
+/*
+function creaGraficoImpactCategory(doc:any, listaImpactCategory:ImpactCategoryData[]) {
+  // Costruzione dati per il grafico degli impactCategory
+  let datiGraficoImpactCategory = listaImpactCategory.sort((a, b) => b.amount - a.amount).slice(0, 5);
+
+  const listaNomeImpactCategory = datiGraficoImpactCategory.map(element => element.impactCategory.name);
+  const listaQuantitaImpactCategory = datiGraficoImpactCategory.map(element => element.amount);
+
+
+  const canvas = document.createElement('canvas');
+  canvas.width = 400; // Imposta larghezza del canvas
+  canvas.height = 400; // Imposta altezza del canvas
+
+  const ctx = canvas.getContext('2d');
+
+  //@ts-ignore
+  const myChart = new Chart(ctx,{
+    type: 'bar',
+    data: {
+      labels: listaNomeImpactCategory.slice(0, 5),
+      datasets: [{
+        data: listaQuantitaImpactCategory.slice(0, 5),
+        fill: true,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 205, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(54, 162, 235, 0.2)'
+        ],
+        borderColor: [
+          'rgb(255, 99, 132)',
+          'rgb(255, 159, 64)',
+          'rgb(255, 205, 86)',
+          'rgb(75, 192, 192)',
+          'rgb(54, 162, 235)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          type: 'logarithmic',
+          beginAtZero: true
+        }
+      }
+    }
+  });
+  // Disegna il grafico sul canvas
+  myChart.render();
+
+   // Converti il canvas in immagine base64
+   const dataURL = canvas.toDataURL('image/jpeg');
+
+   // Inserisci l'immagine nel documento PDF
+   doc.addImage(dataURL, 'JPEG', 10, 50, 180, 120);
+  
+}*/ 
